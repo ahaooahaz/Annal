@@ -1,0 +1,40 @@
+xterm*utf8Title: true
+xterm*cjkWidth: false
+XTerm*locale: zh_CN.UTF-8
+XTerm*faceNameDoublesize: WenQuanYi Micro Hei Mono:antialias=True:pixsize=14
+XTerm*faceName:DejaVu Sans Mono:antilias=True:pixsize=14
+
+XTerm*inputMethod:fcitx
+XTerm*SaveLines: 10240
+
+XTerm*geometry: 120x35+500+250
+XTerm*metaSendsEscape: true
+XTerm*eightBitInput: false
+XTerm*selectToClipboard: true
+xterm*utf8: true
+
+xterm*termName: xterm-256color
+!XTerm*cursorColor: *XtDefaultForeground
+
+XTerm*cursorBlink: true
+
+xterm*background:   #1a1a1a
+!xterm*foreground:   #ffffe0
+XTerm*foreground: lightyellow
+xterm*cursorColor:  #fee110
+xterm*color0:       #000000
+xterm*color1:       #9e1828
+xterm*color2:       #008800
+xterm*color3:       #968a38
+xterm*color4:       #414171
+xterm*color5:       #963c59
+xterm*color6:       #418179
+xterm*color7:       #bebebe
+xterm*color8:       #666666
+xterm*color9:       #cf6171
+xterm*color10:      #7cbc8c
+xterm*color11:      #fff796
+xterm*color12:      #4186be
+xterm*color13:      #f6e613
+xterm*color14:      #71bebe
+xterm*color15:      #ffffff

@@ -1,0 +1,51 @@
+{
+    "editor.fontFamily": "'Cascadia Code',Consolas, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 15,
+    "editor.fontWeight": 550,
+    "C_Cpp.errorSquiggles": "Enabled",
+    "cmake.configureOnOpen": true,
+    "[cpp]":{
+        "editor.wordBasedSuggestions": true,
+        "editor.suggest.insertMode": "replace",
+        "editor.semanticHighlighting.enabled": true
+    },
+    "[c]": {
+        "editor.wordBasedSuggestions": true,
+        "editor.suggest.insertMode": "replace",
+        "editor.semanticHighlighting.enabled": true
+    },
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**"
+    ],
+    "C_Cpp.default.browse.databaseFilename": "${workspaceFolder}/.vscode/.browse.c_cpp.db",
+    "C_Cpp.default.cStandard": "c11",
+    "C_Cpp.default.cppStandard": "c++11",
+    "explorer.confirmDelete": false,
+    "workbench.colorTheme": "Monokai",
+    "go.testFlags": [
+        "-v", // 打印单例测试信息
+        "-count=1" // 消除单测缓存
+    ],
+    "go.toolsManagement.autoUpdate": true,
+    "editor.renderControlCharacters": true,
+    "editor.renderWhitespace": "all",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "extensions.ignoreRecommendations": true,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "workbench.editor.showTabs": false,
+    "C_Cpp.updateChannel": "Insiders",
+    "Lua.diagnostics.severity" : {
+        "redefined-local" : "Hint",
+        "emmy-lua" : "Hint",
+        "undefined-global": "Hint",
+        "lowercase-global": "Hint",
+    }
+}
