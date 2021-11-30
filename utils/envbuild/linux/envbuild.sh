@@ -15,11 +15,15 @@ OpenCV=false
 SHELL_FOLDER=$(cd "$(dirname "$0")";pwd)
 
 FFMPEG_PATH=${SHELL_FOLDER}/../../../3rdparty/FFmpeg
+OPENCV_PATH=${SHELL_FOLDER}/../../../3rdparty/OpenCV
+OPENCV_CONTRIB_PATH=${SHELL_FOLDER}/../../../3rdparty/OpenCVContrib
 
 OMZ_CONFIG_PATH=${SHELL_FOLDER}/../../../appc/omz
 VIM_CONFIG_PATH=${SHELL_FOLDER}/../../../appc/vim
 GDB_CONFIG_PATH=${SHELL_FOLDER}/../../../appc/gdbinit
 TMUX_CONFIG_PATH=${SHELL_FOLDER}/../../../appc/tmux
+XTERM_CONFIG_PATH=${SHELL_FOLDER}/../../../appc/xterm
+
 
 function Usage() {
 cat << EOF
@@ -43,7 +47,7 @@ function log() {
         ;;
         warn)
         shift
-        echo -e "\034[32m$@\033[0m"
+        echo -e "\033[33m$@\033[0m"
         ;;
         error)
         shift
@@ -136,11 +140,16 @@ function install_tmux {
 }
 
 function install_vscode {
-    log info  "vscode todo"
+    log warn "install vscode and personal config TODO ..."
 }
 
 function install_xterm {
-    log info  "xterm todo"
+    log info "install xterm and personal config ..."
+    install xterm
+
+    cp ${XTERM_CONFIG_PATH}/.Xresources $HOME
+    xrdb $HOME/.Xresources
+    log info "install xterm and personal config done."
 }
 
 function install_gdb {
@@ -168,7 +177,42 @@ function install_FFmpeg {
 }
 
 function install_OpenCV() {
-    log info "OpenCV todo"
+    PREFIX=$HOME/.local/OpenCV/OpenCV-4.5.4
+    log info "install OpenCV to ${PREFIX} ..."
+    sudo apt-get install libgtk2.0-dev libjpeg-dev libpng-dev libtiff-dev libva-dev -y
+    mkdir -p ${OPENCV_PATH}/build
+    cd ${OPENCV_PATH}/build
+    cmake -D CMAKE_BUILD_TYPE=RELEASE \
+        -D CMAKE_INSTALL_PREFIX=${PREFIX} \
+        -D OPENCV_EXTRA_MODULES_PATH=${OPENCV_CONTRIB_PATH}/modules \
+        -D BUILD_TIFF=ON \
+        -D WITH_FFMPEG=ON \
+        -D WITH_TBB=ON \
+        -D BUILD_TBB=ON \
+        -D WITH_EIGEN=ON \
+        -D WITH_V4L=ON \
+        -D WITH_LIBV4L=ON \
+        -D WITH_VTK=OFF \
+        -D WITH_QT=OFF \
+        -D WITH_OPENGL=ON \
+        -D WITH_CUDA=ON \
+        -D OPENCV_ENABLE_NONFREE=ON \
+        -D INSTALL_C_EXAMPLES=ON \
+        -D INSTALL_PYTHON_EXAMPLES=ON \
+        -D BUILD_NEW_PYTHON_SUPPORT=ON \
+        -D OPENCV_GENERATE_PKGCONFIG=ON \
+        -D BUILD_TESTS=ON \
+        -D ENABLE_FAST_MATH=ON \
+        -D CUDA_FAST_MATH=ON \
+        -D WITH_CUBLAS=ON \
+        -D WITH_CUDNN=OFF \ # if CUDNN on should set behind 2 options.
+        -D CUDNN_LIBRARY= \
+        -D CUDNN_INCLUDE_DIR=/usr/local/cuda/include \
+        -D BUILD_EXAMPLES=OFF ..
+    make -j$(cat /proc/cpuinfo| grep "processor"| wc -l)
+    make install
+    cd -
+    log info "install OpenCV done."
 }
 
 function manager() {
@@ -220,13 +264,13 @@ function main() {
     do
     arg=$1
     case $arg in
-        -a|-all)
+        -a|--all)
         omz=true
         go=false
         vim=true
-        tmux=false
-        vscode=false
-        xterm=false
+        tmux=true
+        vscode=true
+        xterm=true
         gdb=true
         FFmpeg=false
         OpenCV=false
@@ -276,6 +320,7 @@ function main() {
     done
     check_system
     manager
+    load
 }
 
 main $@

@@ -7,3 +7,9 @@
 [submodule "3rdparty/FFmpeg"]
 	path = 3rdparty/FFmpeg
 	url = git@github.com:FFmpeg/FFmpeg.git
+[submodule "3rdparty/OpenCV"]
+	path = 3rdparty/OpenCV
+	url = git@github.com:opencv/opencv.git
+[submodule "3rdparty/OpenCVContrib"]
+	path = 3rdparty/OpenCVContrib
+	url = git@github.com:opencv/opencv_contrib.git

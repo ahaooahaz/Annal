@@ -114,9 +114,9 @@ source $ZSH/oh-my-zsh.sh
 # exec 3>&2 2>/tmp/zshstart.$$.log
 # setopt xtrace prompt_subst
 
-export PATH="/opt/hisi-linux/x86-arm/aarch64-himix100-linux/bin:$HOME/.local/bin:$HOME/.local/go/bin:$HOME/dev/go/bin:$HOME/.local/cmake/cmake-3.21.0/bin:$HOME/.local/protobuf/protobuf-3.17.3/bin:$HOME/.local/opencv/opencv-4.5.3/bin:$HOME/.local/node/node-v14.17.6/bin:$HOME/.local/keshub/2.0.6/keshub:$HOME/.local/FFmpeg/FFmpeg-n4.4/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/.local/FFmpeg/FFmpeg-n4.4/lib:$HOME/.local/protobuf/protobuf-3.17.3/lib:$HOME/.local/opencv/opencv-4.5.3/lib:$HOME/.local/node/node-v14.17.6/lib:$HOME/.local/cJSON/cJSON-1.7.15/lib:$LD_LIBRARY_PATH"
-export C_INCLUDE_PATH="$HOME/.local/opencv/opencv-4.5.3/include:$HOME/.local/FFmpeg/FFmpeg-n4.4/include:$HOME/.local/protobuf/protobuf-3.17.3/include:$HOME/.local/node/node-v14.17.6/include:$HOME/.local/cJSON/cJSON-1.7.15/include:$C_INCLUDE_PATH"
+export PATH="/opt/hisi-linux/x86-arm/aarch64-himix100-linux/bin:$HOME/.local/bin:$HOME/.local/go/bin:$HOME/dev/go/bin:$HOME/.local/cmake/cmake-3.21.0/bin:$HOME/.local/protobuf/protobuf-3.17.3/bin:$HOME/.local/OpenCV/OpenCV-4.5.4/bin:$HOME/.local/node/node-v14.17.6/bin:$HOME/.local/keshub/2.0.6/keshub:$HOME/.local/FFmpeg/FFmpeg-n4.4/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/.local/FFmpeg/FFmpeg-n4.4/lib:$HOME/.local/protobuf/protobuf-3.17.3/lib:$HOME/.local/OpenCV/OpenCV-4.5.4/lib:$HOME/.local/node/node-v14.17.6/lib:$HOME/.local/cJSON/cJSON-1.7.15/lib:$LD_LIBRARY_PATH"
+export C_INCLUDE_PATH="$HOME/.local/OpenCV/OpenCV-4.5.4/include:$HOME/.local/FFmpeg/FFmpeg-n4.4/include:$HOME/.local/protobuf/protobuf-3.17.3/include:$HOME/.local/node/node-v14.17.6/include:$HOME/.local/cJSON/cJSON-1.7.15/include:$C_INCLUDE_PATH"
 export CPLUS_INCLUDE_PATH=$C_INCLUDE_PATH
 export LIBRARY_PATH=$LD_LIBRARY_PATH
 export GOPATH="$HOME/dev/go"
