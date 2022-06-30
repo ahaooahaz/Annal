@@ -1,0 +1,20 @@
+[submodule "plugins/ohmyzsh"]
+	path = plugins/ohmyzsh
+	url = ../../ohmyzsh/ohmyzsh.git
+	branch = master
+[submodule "plugins/zsh-autosuggestions"]
+	path = plugins/zsh-autosuggestions
+	url = ../../zsh-users/zsh-autosuggestions.git
+	branch = master
+[submodule "plugins/zsh-syntax-highlighting"]
+	path = plugins/zsh-syntax-highlighting
+	url = ../../zsh-users/zsh-syntax-highlighting.git
+	branch = master
+[submodule "plugins/powerlevel10k"]
+	path = plugins/powerlevel10k
+	url = ../../romkatv/powerlevel10k.git
+	branch = master
+[submodule "plugins/.tmux"]
+	path = plugins/.tmux
+	url = ../../gpakosz/.tmux.git
+	branch = master
