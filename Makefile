@@ -16,20 +16,17 @@ PLUGINS = $(SUBMODULE_PLUGINS) $(INSTALL_PLUGINS)
 
 ENV_TARGETS = $(LINK_FILES) $(PLUGINS)
 
-ifeq ($(findstring "ubuntu", $(OS_RELEASE)),)
+ifneq ($(findstring "ubuntu", $(OS_RELEASE)),)
 	PKG_MANAGER := apt
 endif
 
-ifeq ($(findstring "centos", $(OS_RELEASE)),)
+ifneq ($(findstring "centos", $(OS_RELEASE)),)
 	PKG_MANAGER := yum
 endif
 
-ifeq ($(USER), "root")
+ifneq ($(USER), "root")
 	SUDO := sudo
 endif
-
-v:
-	echo $(USER)
 
 env: $(ENV_TARGETS)
 
