@@ -1,37 +1,65 @@
+source $VIMRUNTIME/defaults.vim
+
+" 文件备份, 修改时创建同名~文件作为备份文件
+if has("vms")
+    set nobackup
+else
+    set backup
+    if has("persistent_undo")
+        set undofile
+    endif
+endif
+
+" 与vi的兼容性设置
 set nocompatible
 
+" 记录N条命令和匹配记录
 set history=1000
 
-" 设置行号
+" 行号和当前光标位置以及命令显示
 set nu
-"
+set ruler
+set showcmd
+
+" 在状态行上显示补全匹配
+set wildmenu
+
+" 使<Esc>键生效更快
+set ttimeout
+set ttimeoutlen=100
+
+" 如果末行被截短，显示@@@而不是隐藏整行
+set display=truncate
+
+" 1.查找时不循环跳转,2.输入部分查找模式时显示相应的匹配点,3.高亮显示匹配字符,4.高亮显示括号匹配
+set nowrapscan
+set incsearch
+set hls
+set showmatch
+
+" 不把0开头的字符识别成八进制数
+set nrformats-=octal
+
 " 统一缩进为4空格
 set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 
-" 设置语法高亮
-filetype on
-syntax on
-syntax enable
 
 " 设置鼠标可用
-set mouse=a
+if has("mouse")
+    set mouse=a
+endif
+
+" 文件探测和语法高亮
+filetype plugin indent on
+syntax on
 
 " 为C程序设置自动缩进
 " set cindent
 set autoindent
 set smartindent
-
-" 查找时自动跳转
-set incsearch
-
-" 查找结果高亮
-set hls
-
-" 高亮显示匹配的括号
-set showmatch
 
 " 同步主选区"*寄存器与匿名寄存器""
 " set clipboard=unnamed
@@ -49,11 +77,11 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
 " 打开文件跳转至上次退出位置
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
 " makefile tab键不发生转换
-autocmd FileType make set noexpandtab
+" autocmd FileType make set noexpandtab
 
 " 修改vim的颜色 
 set background=dark
@@ -89,53 +117,8 @@ vnoremap <leader>d ""d
 
 set t_Co=256
 set laststatus=2
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
 
-autocmd VimEnter * silent !tmux set status off
-autocmd VimLeave * silent !tmux set status on
+"autocmd VimEnter * silent !tmux set status off
+" autocmd VimLeave * silent !tmux set status on
 
 " custom EOF.
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-Plugin 'davidhalter/jedi-vim'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-

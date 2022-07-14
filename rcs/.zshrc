@@ -150,3 +150,6 @@ alias cman="man -M /usr/share/man/zh_CN"
 if [ -f ${HOME}/.functionrc ]; then
     source ${HOME}/.functionrc
 fi
+
+alias v=vim
+alias vi=vim
