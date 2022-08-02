@@ -58,4 +58,8 @@ powerlevel10k:
 	-mv plugins/ohmyzsh/custom/themes/$@ plugins/ohmyzsh/custom/themes/$@.bak.$(TIMESTAMP)
 	ln -sr plugins/$@ plugins/ohmyzsh/custom/themes
 
+welcome:
+	$(SUDO) cp scripts/60-my-welcome-info /etc/update-motd.d
+
+
 .PHONY: $(LINK_FILES)

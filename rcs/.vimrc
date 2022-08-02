@@ -81,7 +81,7 @@ if has("autocmd")
 endif
 
 " makefile tab键不发生转换
-" autocmd FileType make set noexpandtab
+au FileType make set noexpandtab
 
 " 修改vim的颜色 
 set background=dark
@@ -96,6 +96,7 @@ let mapleader=","
 " nnoremap
 " <CR>: 回车键
 " <Esc>: Esc键
+nnoremap <leader>" Bi"<Esc>Ea"<Esc>
 nnoremap <F4> :w<cr>:!python %<cr>
 nnoremap <CR> i<CR><Esc>$
 nnoremap <leader>h ^
