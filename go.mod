@@ -6,6 +6,7 @@ require (
 	github.com/onrik/logrus v0.9.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.5.0
-	github.com/spf13/viper v1.12.0
+	github.com/stretchr/testify v1.7.1 // indirect
 	github.com/tidwall/gjson v1.14.1 // indirect
+	gopkg.in/yaml.v3 v3.0.0 // indirect
 )
