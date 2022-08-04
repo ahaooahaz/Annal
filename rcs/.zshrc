@@ -128,6 +128,7 @@ export LUA_LOCAL_PATH=$HOME/.luarocks
 export LUA_PATH="$LUA_LOCAL_PATH/share/lua/5.1/?.lua;$LUA_LOCAL_PATH/share/lua/5.1/?/?.lua;;"
 export GPG_TTY=$(tty)
 export GIT_EDITOR=vim
+export EDITOR=vim
 
 if [ -f ${HOME}/.inti_envrc ]; then
     source ${HOME}/.inti_envrc
