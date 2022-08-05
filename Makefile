@@ -48,6 +48,8 @@ ifneq ($(USER), "root")
 	SUDO := sudo
 endif
 
+all: cmd
+
 env: $(ENV_TARGETS)
 	echo "export ANNAL_ROOT_PATH=$(MKFILE_PATH)" > ${ANNALRC}
 cmd: $(CMD_TARGETS)
@@ -86,7 +88,7 @@ powerlevel10k:
 welcome:
 	$(SUDO) cp scripts/60-my-welcome-info /etc/update-motd.d
 
-$(CMD_TARGETS):
+$(CMD_TARGETS): $(GO_SRCS)
 	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -o $(OUTOUT_BINARIES)/$@ $(REPO)/cmd/$@/
 
 clean:

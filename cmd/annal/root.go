@@ -9,13 +9,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
-var verbose bool
+var (
+	verbose bool
+)
 
 var rootCmd = &cobra.Command{
-	Use:   "genVideo",
-	Short: "generate video for AHAOAHA",
-	Long:  `generate video for AHAOAHA.`,
+	Use:   "annal",
+	Short: "annal tools.",
+	Long:  `annal tools for everything.`,
 }
 
 func Execute() {
@@ -26,7 +27,7 @@ func Execute() {
 }
 
 func init() {
-
+	initEnv()
 }
 
 // initEnv reads in ENV variables.
@@ -36,5 +37,4 @@ func initEnv() {
 	if verbose {
 		log.SetLevel(log.DebugLevel)
 	}
-
 }
