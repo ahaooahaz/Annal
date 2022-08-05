@@ -77,11 +77,9 @@ ohmytmux:
 	ln -sf ~/.tmux/.tmux.conf ~/
 
 $(ZSH_PLUGINS):
-	-mv plugins/ohmyzsh/custom/plugins/$@ plugins/ohmyzsh/custom/plugins/$@.bak.$(TIMESTAMP)
 	ln -sr plugins/$@ plugins/ohmyzsh/custom/plugins
 
 powerlevel10k:
-	-mv plugins/ohmyzsh/custom/themes/$@ plugins/ohmyzsh/custom/themes/$@.bak.$(TIMESTAMP)
 	ln -sr plugins/$@ plugins/ohmyzsh/custom/themes
 
 # ssh login echo info.

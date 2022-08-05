@@ -13,6 +13,5 @@ var videoCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(videoCmd)
-
 	videoCmd.AddCommand(video.GenCmd)
 }

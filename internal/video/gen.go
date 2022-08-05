@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 
+	utils "github.com/AHAOAHA/encapsutils"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"gocv.io/x/gocv"
@@ -58,15 +59,28 @@ var GenCmd = &cobra.Command{
 }
 
 func init() {
-	GenCmd.Flags().StringSliceP("image", "i", []string{}, "source image")
+	GenCmd.Flags().StringSliceP("images", "i", []string{}, "source image")
 	GenCmd.Flags().StringP("output", "o", "annal.avi", "output video path")
 	GenCmd.Flags().IntP("fps", "f", 25, "video fps")
 	GenCmd.Flags().Uint64P("N", "", 25*60, "count of video frames")
-	GenCmd.Flags().IntP("width", "w", 1920, "video width")
-	GenCmd.Flags().IntP("height", "h", 1080, "video height")
+	GenCmd.Flags().IntP("width", "", 1920, "video width")
+	GenCmd.Flags().IntP("height", "", 1080, "video height")
 }
 
 func GenerateVideoFromImage(images []string, output string, fps int, width, height int, N uint64) (err error) {
+	fmt.Printf("source images: %+v\n", images)
+	mats := []*gocv.Mat{}
+	for _, img := range images {
+		if !utils.IsFile(img) {
+			fmt.Printf("image:[%v] not exist", img)
+			return
+		}
+		mat := gocv.IMRead(img, gocv.IMReadColor)
+		defer mat.Close()
+		gocv.Resize(mat, &mat, image.Point{X: width, Y: height}, 0, 0, gocv.InterpolationArea)
+		mats = append(mats, &mat)
+	}
+
 	fourcc := "MP42"
 	videoWriter, err := gocv.VideoWriterFile(output, fourcc, float64(fps), width, height, true)
 	if err != nil {
@@ -76,14 +90,6 @@ func GenerateVideoFromImage(images []string, output string, fps int, width, heig
 
 	if !videoWriter.IsOpened() {
 		return fmt.Errorf("open video file failed")
-	}
-
-	mats := []*gocv.Mat{}
-	for _, img := range images {
-		mat := gocv.IMRead(img, gocv.IMReadColor)
-		defer mat.Close()
-		gocv.Resize(mat, &mat, image.Point{X: width, Y: height}, 0, 0, gocv.InterpolationArea)
-		mats = append(mats, &mat)
 	}
 
 	for i := N * 0; i < N; i++ {
