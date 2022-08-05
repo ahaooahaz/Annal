@@ -7,8 +7,9 @@ RCS_DIR = appc
 GO = go
 GO_SRCS = $(shell find  .  -type f -regex  ".*.go$$")
 CMDS = $(shell ls cmd)
+ANNALRC = $${HOME}/.annalrc
 
-RCS = .zshrc .zshenv .bashrc .envrc .vimrc
+RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases
 CONFIGS = .p10k.zsh .tmux.conf.local 
 LINK_FILES = $(foreach file, $(RCS), $(MKFILE_PATH)/rcs/$(file))
 LINK_FILES += $(foreach file, $(CONFIGS), $(MKFILE_PATH)/configs/$(file))
@@ -16,7 +17,7 @@ LINK_FILES += $(foreach file, $(CONFIGS), $(MKFILE_PATH)/configs/$(file))
 # 来自submodule的工具
 SUBMODULE_PLUGINS = ohmyzsh ohmytmux
 # 来自包管理的工具, TODO: VERSION(9.0)
-INSTALL_PLUGINS = vim
+INSTALL_PLUGINS = 
 PLUGINS = $(SUBMODULE_PLUGINS) $(INSTALL_PLUGINS)
 
 ENV_TARGETS = $(LINK_FILES) $(PLUGINS)
@@ -48,10 +49,13 @@ ifneq ($(USER), "root")
 endif
 
 env: $(ENV_TARGETS)
+	echo "export ANNAL_ROOT_PATH=$(MKFILE_PATH)" > ${ANNALRC}
 cmd: $(CMD_TARGETS)
 
 $(INSTALL_PLUGINS):
+ifneq ($(INSTALL_PLUGINS),)
 	$(SUDO) $(PKG_MANAGER) install $(INSTALL_PLUGINS) -y
+endif
 
 $(LINK_FILES):
 	-mv ~/$(notdir $@) ~/$(notdir $@).bak.$(TIMESTAMP)

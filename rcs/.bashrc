@@ -117,6 +117,10 @@ if ! shopt -oq posix; then
 fi
 
 
-if [ -f ~/.envrc ]; then
-    source ~/.envrc
+if [ -f ${HOME}/.envrc ]; then
+    source ${HOME}/.envrc
+fi
+
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
 fi
