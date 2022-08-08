@@ -10,3 +10,5 @@ Synchronize develop environment, reference samples, utils and configuration to b
 * [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 * [powerlevel10k](https://github.com/romkatv/powerlevel10k)
 
+## notes
+

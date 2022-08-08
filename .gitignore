@@ -1,1 +1,6 @@
 *~
+/bin
+# videos
+*.avi
+*.mp4
+*.h264
