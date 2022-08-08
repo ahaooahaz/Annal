@@ -12,7 +12,7 @@ import (
 
 var GenCmd = &cobra.Command{
 	Use:   "gen",
-	Short: "gen video from single image",
+	Short: "gen video from single image, only support image(.jpeg) to video(.avi)",
 	Long:  `gen video from single image, only support image(.jpeg) to video(.avi)`,
 	Run: func(cmd *cobra.Command, args []string) {
 		images, err := cmd.Flags().GetStringSlice("images")
