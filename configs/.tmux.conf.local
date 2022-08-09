@@ -417,6 +417,10 @@ set-option -gq status-utf8 on
 # 解决vim ecs延迟的问题
 set -g escape-time 20
 
+# Ctrl Shift Left or Right to move tab.
+bind-key -n C-S-Left swap-window -t -1\; select-window -t -1
+bind-key -n C-S-Right swap-window -t +1\; select-window -t +1
+
 # move status line to top
 #set -g status-position top
 

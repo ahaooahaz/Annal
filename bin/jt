@@ -1,0 +1,31 @@
+#!/bin/bash
+
+details=${HOME}/.jtremotes.local
+
+function usage() {
+    echo "usage todo"
+}
+
+function o() {
+    if [ -z "$1" ]; then
+        usage
+        return
+    fi
+    
+    if [ ! -f "${details}" ]; then
+        usage
+        return
+    fi
+
+    for line in $(cat ${details})
+    do
+        read user ip password port <<< $(echo ${line} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
+        if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
+            exec sshpass -p ${password} ssh ${user}@${ip} -q -o StrictHostKeyChecking=no
+        fi
+    done
+
+    echo "not match details. insert remote machine into ${details}"
+}
+
+o $@

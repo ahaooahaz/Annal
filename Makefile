@@ -52,6 +52,7 @@ all: cmd
 
 env: $(ENV_TARGETS)
 	echo "export ANNAL_ROOT_PATH=$(MKFILE_PATH)" > ${ANNALRC}
+	cp configs/.jtremotes.local ~
 cmd: $(CMD_TARGETS)
 
 $(INSTALL_PLUGINS):
