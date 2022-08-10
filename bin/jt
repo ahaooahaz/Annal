@@ -3,10 +3,55 @@
 details=${HOME}/.jtremotes.local
 
 function usage() {
-    echo "usage todo"
+cat << USAGE
+usage: jt [OPTION] [PARAMS]
+        e    jump to remote machine with ssh.
+        s    save remote machine details.
+            -i|--ip         remote ip.
+            -u|--user       remote user.
+            -p|--password   remote password.
+            -P|--port       remote sshd service binding port.
+USAGE
 }
 
-function o() {
+function s() {
+    while [ $# -ne 0 ]
+    do
+        key=$1
+        case ${key} in
+            -i|--ip)
+                ip=$2
+                shift
+                shift
+                ;;
+            -u|--user)
+                user=$2
+                shift
+                shift
+                ;;
+            -p|--password)
+                password=$2
+                shift
+                shift
+                ;;
+            -P|--port)
+                port=$2
+                shift
+                shift
+                ;;
+            *)
+                usage
+                return 1
+        esac
+    done
+
+    [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}"  ] || usage
+    crypted=$(base64 <<< ${password})
+    echo "${user}:${ip}:${crypted}:${port}" >> ${details}
+    echo "OK"
+}
+
+function e() {
     if [ -z "$1" ]; then
         usage
         return
@@ -19,8 +64,9 @@ function o() {
 
     for line in $(cat ${details})
     do
-        read user ip password port <<< $(echo ${line} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
+        read user ip crypted port <<< $(echo ${line} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
         if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
+            password=$(base64 -d <<< ${crypted})
             exec sshpass -p ${password} ssh ${user}@${ip} -q -o StrictHostKeyChecking=no
         fi
     done
@@ -28,4 +74,10 @@ function o() {
     echo "not match details. insert remote machine into ${details}"
 }
 
-o $@
+if [ $# -eq 0 ]; then
+    usage
+elif [ $# -eq 1 ]; then
+    e $@
+fi
+
+$@ 2>/dev/null || usage
