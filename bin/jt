@@ -74,8 +74,21 @@ function e() {
 
 if [ $# -eq 0 ]; then
     usage
-elif [ $# -eq 1 ]; then
-    e $@
+    exit 0
 fi
 
-$@ 2>/dev/null || usage
+
+case $1 in
+    e)
+        $@
+        ;;
+    s)
+        $@
+        ;;
+    -h|--help)
+        usage
+        exit 0
+        ;;
+    *)
+        e $@
+esac
