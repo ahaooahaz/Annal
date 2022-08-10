@@ -57,6 +57,8 @@ function s() {
         esac
     done
 
+    [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}"  ] || usage; return 1
+
     if [ ! -z "$(grep -E "^[^:]*{1}:[^:]*${ip}{1}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" ]; then
         warn "ip already exist"
         exit 0
@@ -67,7 +69,6 @@ function s() {
         exit 1
     fi
 
-    [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}"  ] || usage
     crypted=$(base64 <<< ${password})
     echo "${user}:${ip}:${crypted}:${port}" >> ${details}
     info "OK"
