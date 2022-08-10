@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x
 details=${HOME}/.jtremotes.local
 
 function usage() {
@@ -11,6 +12,8 @@ usage: jt [OPTION] [PARAMS]
             -u|--user       remote user.
             -p|--password   remote password.
             -P|--port       remote sshd service binding port.
+
+        -h|--help   show help.
 USAGE
 }
 
@@ -57,16 +60,16 @@ function s() {
         esac
     done
 
-    [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}"  ] || [ usage -a return 1 ]
+    [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}" ] || usage && return
 
     if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" ]; then
         warn "ip already exist"
-        return 0
+        return
     fi
     
     if [ $(sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no 'exit' 2>/dev/null; echo $?) -ne 0 ]; then
         alert "ssh check remote machine failed"
-        exit 1
+        return
     fi
 
     crypted=$(base64 <<< ${password})
@@ -110,7 +113,6 @@ case $1 in
         ;;
     -h|--help)
         usage
-        exit 0
         ;;
     *)
         e $@
