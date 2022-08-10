@@ -57,11 +57,11 @@ function s() {
         esac
     done
 
-    [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}"  ] || usage; return 1
+    [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}"  ] || [ usage -a return 1 ]
 
-    if [ ! -z "$(grep -E "^[^:]*{1}:[^:]*${ip}{1}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" ]; then
+    if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" ]; then
         warn "ip already exist"
-        exit 0
+        return 0
     fi
     
     if [ $(sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no 'exit' 2>/dev/null; echo $?) -ne 0 ]; then
