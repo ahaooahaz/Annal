@@ -14,6 +14,18 @@ usage: jt [OPTION] [PARAMS]
 USAGE
 }
 
+function alert() {
+    echo -e "\033[31m$1\033[0m"
+}
+
+function warn() {
+    echo -e "\033[33m$1\033[0m"
+}
+
+function info() {
+    echo -e "\033[32m$1\033[0m"
+}
+
 function s() {
     while [ $# -ne 0 ]
     do
@@ -45,10 +57,20 @@ function s() {
         esac
     done
 
+    if [ ! -z "$(grep -E "^[^:]*{1}:[^:]*${ip}{1}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" ]; then
+        warn "ip already exist"
+        exit 0
+    fi
+    
+    if [ $(sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no 'exit' 2>/dev/null; echo $?) -ne 0 ]; then
+        alert "ssh check remote machine failed"
+        exit 1
+    fi
+
     [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}"  ] || usage
     crypted=$(base64 <<< ${password})
     echo "${user}:${ip}:${crypted}:${port}" >> ${details}
-    echo "OK"
+    info "OK"
 }
 
 function e() {
@@ -66,10 +88,10 @@ function e() {
     read user ip crypted port <<< $(echo ${detail} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
     if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
         password=$(base64 -d <<< ${crypted})
-        exec sshpass -p ${password} ssh ${user}@${ip} -q -o StrictHostKeyChecking=no
+        exec sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no
     fi
 
-    echo "not match details. insert remote machine into ${details}"
+    alert "not match details. insert remote machine into ${details}"
 }
 
 if [ $# -eq 0 ]; then
