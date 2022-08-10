@@ -5,7 +5,7 @@ details=${HOME}/.jtremotes.local
 function usage() {
 cat << USAGE
 usage: jt [OPTION] [PARAMS]
-        e    jump to remote machine with ssh.
+        e    jump to remote machine with ssh, default option.
         s    save remote machine details.
             -i|--ip         remote ip.
             -u|--user       remote user.
@@ -61,15 +61,13 @@ function e() {
         usage
         return
     fi
+    detail=$(grep -E "^[^:]*{1}:[^:]*${1}{1}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)
 
-    for line in $(cat ${details})
-    do
-        read user ip crypted port <<< $(echo ${line} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
-        if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
-            password=$(base64 -d <<< ${crypted})
-            exec sshpass -p ${password} ssh ${user}@${ip} -q -o StrictHostKeyChecking=no
-        fi
-    done
+    read user ip crypted port <<< $(echo ${detail} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
+    if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
+        password=$(base64 -d <<< ${crypted})
+        exec sshpass -p ${password} ssh ${user}@${ip} -q -o StrictHostKeyChecking=no
+    fi
 
     echo "not match details. insert remote machine into ${details}"
 }
