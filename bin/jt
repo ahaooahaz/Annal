@@ -59,7 +59,9 @@ function s() {
         esac
     done
 
-    [ ! -z "${ip}" -o ! -z "${port}" -o ! -z "${user}" -o ! -z "${password}" ] || usage && return
+    if [ -z "${ip}" -o -z "${port}" -o -z "${user}" -o -z "${password}" ]; then
+        usage && return
+    fi
 
     if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" ]; then
         warn "ip already exist"
