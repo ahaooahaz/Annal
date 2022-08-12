@@ -112,7 +112,7 @@ function e() {
 function l() {
     while read line
     do
-        echo $(echo ${line} | awk -F ':' '{print $2}')
+        info $(echo ${line} | awk -F ':' '{print $2}')
     done < ${details}
 }
 
