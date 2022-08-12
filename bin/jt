@@ -11,6 +11,8 @@ usage: jt [OPTION] [PARAMS]
             -u|--user       remote user.
             -p|--password   remote password.
             -P|--port       remote sshd service binding port.
+            -f|--focus      overwrite already exist detail.
+        l    show exist detail ips.
 
         -h|--help   show help.
 USAGE
@@ -53,6 +55,10 @@ function s() {
                 shift
                 shift
                 ;;
+            -f|--focus)
+                focus=true
+                shift
+                ;;
             *)
                 usage
                 return 1
@@ -63,7 +69,7 @@ function s() {
         usage && return
     fi
 
-    if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" ]; then
+    if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" -a -z "${focus}" ]; then
         warn "ip already exist"
         return
     fi
@@ -93,10 +99,21 @@ function e() {
     read user ip crypted port <<< $(echo ${detail} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
     if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
         password=$(base64 -d <<< ${crypted})
-        exec sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no
+        sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no
+        if [ $? -ne 0 ]; then
+            asert "exit status not OK"
+        fi
+        exit 0
     fi
 
     alert "not match details. insert remote machine into ${details}"
+}
+
+function l() {
+    while read line
+    do
+        echo $(echo ${line} | awk -F ':' '{print $2}')
+    done < ${details}
 }
 
 if [ $# -eq 0 ]; then
@@ -111,6 +128,9 @@ case $1 in
         ;;
     s)
         $@
+        ;;
+    l)
+        l
         ;;
     -h|--help)
         usage
