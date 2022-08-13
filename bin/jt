@@ -101,7 +101,7 @@ function e() {
         password=$(base64 -d <<< ${crypted})
         sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no
         if [ $? -ne 0 ]; then
-            asert "exit status not OK"
+            alert "exit status not OK"
         fi
         exit 0
     fi

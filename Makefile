@@ -17,7 +17,7 @@ LINK_FILES += $(foreach file, $(CONFIGS), $(MKFILE_PATH)/configs/$(file))
 # 来自submodule的工具
 SUBMODULE_PLUGINS = ohmyzsh ohmytmux
 # 来自包管理的工具, TODO: VERSION(9.0)
-INSTALL_PLUGINS = 
+INSTALL_PLUGINS = sshpass base64 ccc
 PLUGINS = $(SUBMODULE_PLUGINS) $(INSTALL_PLUGINS)
 
 ENV_TARGETS = $(LINK_FILES) $(PLUGINS)
@@ -56,9 +56,7 @@ env: $(ENV_TARGETS)
 cmd: $(CMD_TARGETS)
 
 $(INSTALL_PLUGINS):
-ifneq ($(INSTALL_PLUGINS),)
-	$(SUDO) $(PKG_MANAGER) install $(INSTALL_PLUGINS) -y
-endif
+	if ! type $@ 2>/dev/null; then $(SUDO) $(PKG_MANAGER) install $@ -y; fi
 
 $(LINK_FILES):
 	-mv ~/$(notdir $@) ~/$(notdir $@).bak.$(TIMESTAMP)
@@ -78,10 +76,10 @@ ohmytmux:
 	ln -sf ~/.tmux/.tmux.conf ~/
 
 $(ZSH_PLUGINS):
-	ln -sr plugins/$@ plugins/ohmyzsh/custom/plugins
+	-ln -sr plugins/$@ plugins/ohmyzsh/custom/plugins
 
 powerlevel10k:
-	ln -sr plugins/$@ plugins/ohmyzsh/custom/themes
+	-ln -sr plugins/$@ plugins/ohmyzsh/custom/themes
 
 # ssh login echo info.
 welcome:
@@ -94,4 +92,4 @@ clean:
 	-rm -rf $(OUTOUT_BINARIES)
 
 .PHONY: $(LINK_FILES) $(CMD_TARGETS) $(ENV_TARGETS)
-$(VERBOSE).SILENT:
+#$(VERBOSE).SILENT:
