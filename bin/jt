@@ -74,7 +74,7 @@ function s() {
         return
     fi
     
-    if [ $(sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no 'exit' 2>/dev/null; echo $?) -ne 0 ]; then
+    if [ $(sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null 'exit' 2>/dev/null; echo $?) -ne 0 ]; then
         alert "ssh check remote machine failed"
         return
     fi
