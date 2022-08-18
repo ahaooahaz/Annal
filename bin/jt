@@ -99,21 +99,23 @@ function e() {
     read user ip crypted port <<< $(echo ${detail} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
     if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
         password=$(base64 -d <<< ${crypted})
-        expect -c "
-            log_user 0
-            set timeout 60
-            spawn ssh ${user}@${ip} -p ${port} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
-            log_user 1
-            expect {
-                \"password:\" {send \"${password}\r\";exp_continue}
-                \"*#\" {}
-                \"*$\" {}
-                eof {exit 1}
-            }
-            set timeout -1
-            interact
-        "
-        exit 0
+       exec sshpass -p ${password} ssh ${user}@${ip} -p ${port} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+       # expect -c "
+       #     debug 1
+       #     log_user 0
+       #     set timeout 60
+       #     spawn ssh ${user}@${ip} -p ${port} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+       #     log_user 1
+       #     expect {
+       #         -re \".*(p|P)assword:\" {send \"${password}\r\";exp_continue}
+       #         -re \".*#\" {}
+       #         -re \".*\$\" {}
+       #         eof {exit 1}
+       #     }
+       #     set timeout -1
+       #     interact
+       # "
+       # exit 0
     fi
 
     alert "not match details. insert remote machine into ${details}"
