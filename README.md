@@ -10,11 +10,11 @@ Synchronize develop environment, reference samples, utils and configuration to b
 * [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 * [powerlevel10k](https://github.com/romkatv/powerlevel10k)
 
-## features
+## utils
 
 ### jt
 
-auto jump to remote machine by ssh.
+autojump to remote machine by ssh and sshpass, suitable for scenarios where multiple jump to different machines in a safe environment, password and details will save in ${HOME}/.jtremote.local, make sure it will not leak.
 
 usage:
 
@@ -27,6 +27,10 @@ usage: jt [OPTION] [PARAMS]
         -u|--user       remote user.
         -p|--password   remote password.
         -P|--port       remote sshd service binding port.
+        -f|--focus      overwrite already exist detail.
+    l   show exist detail ips.
+
+    -h|--help show help.
 ```
 
 ### video
