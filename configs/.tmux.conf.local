@@ -422,6 +422,10 @@ bind-key -n C-S-Right swap-window -t +1\; select-window -t +1
 
 # move status line to top
 #set -g status-position top
+#
+
+# set default shell
+set -g default-command /bin/zsh
 
 
 # -- tpm -----------------------------------------------------------------------
