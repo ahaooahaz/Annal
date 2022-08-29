@@ -1,6 +1,6 @@
 #!/bin/bash
 
-details=${HOME}/.jtremotes.local
+details=${HOME}/.config/jt.csv
 
 function usage() {
 cat << USAGE
@@ -77,6 +77,10 @@ function s() {
     if [ $(sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null 'exit' 2>/dev/null; echo $?) -ne 0 ]; then
         alert "ssh check remote machine failed"
         return
+    fi
+
+    if [ ! -f ${details} ]; then
+        mkdir -p $(dirname ${details})
     fi
 
     crypted=$(base64 <<< ${password})
