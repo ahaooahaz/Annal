@@ -98,7 +98,6 @@ let mapleader=","
 " <Esc>: Esc键
 nnoremap <leader>" Bi"<Esc>Ea"<Esc>
 nnoremap <F4> :w<cr>:!python %<cr>
-nnoremap <CR> i<CR><Esc>$
 nnoremap <leader>h ^
 nnoremap <leader>e $
 nnoremap <leader>wq :wq<CR>
@@ -108,6 +107,7 @@ nnoremap <leader>q :q<CR>
 nnoremap x "_x
 nnoremap d "_d
 nnoremap D "_D
+nnoremap <CR> o<Esc>
 
 " vnoremap
 vnoremap d "_d
