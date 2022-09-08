@@ -48,6 +48,11 @@ ifneq ($(USER), "root")
 	SUDO := sudo
 endif
 
+# while gocv already installed, build with video tools.
+ifeq ($(shell pkg-config --cflags -- opencv4 > /dev/null),)
+	BUILD_TAGS += gocv
+endif
+
 all: cmd
 
 env: $(ENV_TARGETS)
@@ -85,7 +90,7 @@ welcome:
 	$(SUDO) cp scripts/60-my-welcome-info /etc/update-motd.d
 
 $(CMD_TARGETS): $(GO_SRCS)
-	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -o $(OUTOUT_BINARIES)/$@ $(REPO)/cmd/$@/
+	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(BUILD_TAGS)' -o $(OUTOUT_BINARIES)/$@ $(REPO)/cmd/$@/
 
 clean:
 	-rm -rf $(OUTOUT_BINARIES)

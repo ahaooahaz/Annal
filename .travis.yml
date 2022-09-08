@@ -1,0 +1,31 @@
+language: go
+go: 1.17.x
+notifications:
+  email: true
+services:
+  - docker
+
+stages:
+  - build
+  - test
+
+sudo: false
+
+before_install:
+  - COVERAGE_REPORT=.coverage.txt
+
+install: true
+
+before_script: 
+  - git lfs pull
+  - go mod tidy
+
+jobs:
+  include:
+    - stage: build
+      script: make
+    - stage: test
+      script: go test go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic
+
+after_success: 
+  - bash <(curl -s https://codecov.io/bash) -f ${COVERAGE_REPORT} -t ${CODECOV_TOKEN}
