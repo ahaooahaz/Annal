@@ -3,10 +3,11 @@ go: 1.17.x
 notifications:
   email: true
 services:
-  #- docker
+  - docker
 
 stages:
   - build
+  - test
 
 sudo: true
 
@@ -24,3 +25,7 @@ jobs:
   include:
     - stage: build
       script: make cmd
+    - stage: test
+      script: docker run --rm -it -v $(pwd):/work -w /work --net=host  gocv/opencv bash -c "go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic"
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -f ${COVERAGE_REPORT} -t ${CODECOV_TOKEN}

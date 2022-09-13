@@ -1,6 +1,7 @@
 # Annal
 
 ![built status](https://api.travis-ci.com/AHAOAHA/Annal.svg)
+[![License](https://img.shields.io/github/license/AHAOAHA/Annal)](https://github.com/AHAOAHA/Annal/LICENSE)
 
 Synchronize develop environment, reference samples, utils and configuration to build develop environment quickly.
 
