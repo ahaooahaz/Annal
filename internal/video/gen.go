@@ -69,6 +69,10 @@ func init() {
 
 func GenerateVideoFromImage(images []string, output string, fps int, width, height int, N uint64) (err error) {
 	fmt.Printf("source images: %+v\n", images)
+	if len(images) == 0 {
+		fmt.Printf("images null\n")
+		return
+	}
 	mats := []*gocv.Mat{}
 	for _, img := range images {
 		if !utils.IsFile(img) {
