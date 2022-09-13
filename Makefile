@@ -8,6 +8,7 @@ GO = go
 GO_SRCS = $(shell find  .  -type f -regex  ".*.go$$")
 CMDS = $(shell ls cmd)
 ANNALRC = $${HOME}/.annalrc
+INSTALL_PATH = $${HOME}/.local/bin
 
 RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases
 CONFIGS = .p10k.zsh .tmux.conf.local 
@@ -23,7 +24,8 @@ PLUGINS = $(SUBMODULE_PLUGINS) $(INSTALL_PLUGINS)
 ENV_TARGETS = $(LINK_FILES) $(PLUGINS)
 CMD_TARGETS = $(CMDS)
 
-OUTOUT_BINARIES = bin
+OUTPUT_BINARIES = bin
+INSTALL_TARGETS = $(foreach cmd, $(CMD_TARGETS), $(OUTPUT_BINARIES)/$(cmd))
 
 ifeq ($(ARCH), arm64)
 	CGO_BUILD_OP := CGO_ENABLED=1 GOOS=linux CC=aarch64-linux-gnu-gcc GOOS=linux GOARCH=$(ARCH)
@@ -90,13 +92,17 @@ welcome:
 	$(SUDO) cp scripts/60-my-welcome-info /etc/update-motd.d
 
 $(CMD_TARGETS): $(GO_SRCS)
-	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(TAGS)' -o $(OUTOUT_BINARIES)/$@ $(REPO)/cmd/$@/
+	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(TAGS)' -o $(OUTPUT_BINARIES)/$@ $(REPO)/cmd/$@/
+
+install: $(INSTALL_TARGETS) scripts/jt
+	mkdir -p $(INSTALL_PATH)
+	mv $(INSTALL_TARGETS) $(INSTALL_PATH)
 
 test:
 	go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic -tags='$(TAGS)'
 
 clean:
-	-rm -rf $(OUTOUT_BINARIES)
+	-rm -rf $(OUTPUT_BINARIES)
 
 .PHONY: $(LINK_FILES) $(CMD_TARGETS) $(ENV_TARGETS)
 #$(VERBOSE).SILENT:
