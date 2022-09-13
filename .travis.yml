@@ -23,4 +23,4 @@ before_script:
 jobs:
   include:
     - stage: build
-      script: make build
+      script: make cmd
