@@ -1,4 +1,4 @@
-REPO = $(shell git remote -v | grep '^origin\s.*(fetch)$$' | awk '{print $$2}' | sed -E 's/^.*(\/\/|@)(.*)\.git\/?$$/\2/' | sed 's/:/\//g')
+REPO = $(shell git remote -v | grep '^origin\s.*(fetch)$$' | awk '{print $$2}' | sed -E 's/^.*(\/\/|@)//;s/\.git$$//' | sed 's/:/\//g')
 VERSION = 0.0.1
 OS_RELEASE = $(shell awk -F= '/^NAME/{print $$2}' /etc/os-release | tr A-Z a-z)
 TIMESTAMP = $(shell date +%s)
@@ -49,8 +49,8 @@ ifneq ($(USER), "root")
 endif
 
 # while gocv already installed, build with video tools.
-ifeq ($(shell pkg-config --cflags -- opencv4 > /dev/null),)
-	BUILD_TAGS += gocv
+ifneq ($(shell pkg-config --cflags -- opencv4 2>/dev/null),)
+	TAGS += gocv
 endif
 
 all: cmd
@@ -90,7 +90,10 @@ welcome:
 	$(SUDO) cp scripts/60-my-welcome-info /etc/update-motd.d
 
 $(CMD_TARGETS): $(GO_SRCS)
-	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(BUILD_TAGS)' -o $(OUTOUT_BINARIES)/$@ $(REPO)/cmd/$@/
+	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(TAGS)' -o $(OUTOUT_BINARIES)/$@ $(REPO)/cmd/$@/
+
+test:
+	go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic -tags='$(TAGS)'
 
 clean:
 	-rm -rf $(OUTOUT_BINARIES)

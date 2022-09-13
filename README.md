@@ -1,5 +1,7 @@
 # Annal
 
+![built status](https://api.travis-ci.com/AHAOAHA/Annal.svg)
+
 Synchronize develop environment, reference samples, utils and configuration to build develop environment quickly.
 
 ## plugins
@@ -57,3 +59,7 @@ Flags:
     -o, --output string    output video path (default "annal.avi")
         --width int        video width (default 1920)
 ```
+
+*video tools require gocv installed, if without gocv then without video tools*.
+
+## [MIT LICENSE](LICENSE)
