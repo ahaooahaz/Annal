@@ -96,7 +96,8 @@ $(CMD_TARGETS): $(GO_SRCS)
 
 install: $(INSTALL_TARGETS) scripts/jt
 	mkdir -p $(INSTALL_PATH)
-	mv $(INSTALL_TARGETS) $(INSTALL_PATH)
+	cp $(INSTALL_TARGETS) $(INSTALL_PATH)
+	cp scripts/jt $(INSTALL_PATH)
 
 test:
 	go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic -tags='$(TAGS)'
