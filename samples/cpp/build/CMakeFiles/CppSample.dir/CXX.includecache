@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/SENSETIME/zhanghao4/.annal/samples/cpp/src/main.cpp
+iostream
+-
+new
+-
+math.h
+-
+

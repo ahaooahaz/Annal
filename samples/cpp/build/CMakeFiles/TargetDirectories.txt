@@ -1,0 +1,3 @@
+/home/SENSETIME/zhanghao4/.annal/samples/cpp/build/CMakeFiles/rebuild_cache.dir
+/home/SENSETIME/zhanghao4/.annal/samples/cpp/build/CMakeFiles/CppSample.dir
+/home/SENSETIME/zhanghao4/.annal/samples/cpp/build/CMakeFiles/edit_cache.dir
