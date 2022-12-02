@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# set -x
+
 details=${HOME}/.config/jt.csv
 
 function usage() {
@@ -98,7 +100,7 @@ function e() {
         usage
         return
     fi
-    detail=$(grep -E "^[^:]*{1}:[^:]*${1}{1}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)
+    detail=$(tac ${details} 2>/dev/null | grep -E "^[^:]*{1}:[^:]*${1}{1}:[^:]*{1}:[0-9]{1,5}{1}$" 2>/dev/null)
 
     read user ip crypted port <<< $(echo ${detail} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
     if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
