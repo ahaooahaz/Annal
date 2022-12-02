@@ -1,12 +1,9 @@
 REPO = $(shell git remote -v | grep '^origin\s.*(fetch)$$' | awk '{print $$2}' | sed -E 's/^.*(\/\/|@)//;s/\.git$$//' | sed 's/:/\//g')
-VERSION = 0.0.1
+VERSION = 0.1.0
 OS_RELEASE = $(shell awk -F= '/^NAME/{print $$2}' /etc/os-release | tr A-Z a-z)
 TIMESTAMP = $(shell date +%s)
 MKFILE_PATH = $(shell pwd)
 RCS_DIR = appc
-GO = go
-GO_SRCS = $(shell find  .  -type f -regex  ".*.go$$")
-CMDS = $(shell ls cmd)
 ANNALRC = $${HOME}/.annalrc
 INSTALL_PATH = $${HOME}/.local/bin
 
@@ -14,6 +11,8 @@ RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases
 CONFIGS = .p10k.zsh .tmux.conf.local 
 LINK_FILES = $(foreach file, $(RCS), $(MKFILE_PATH)/rcs/$(file))
 LINK_FILES += $(foreach file, $(CONFIGS), $(MKFILE_PATH)/configs/$(file))
+
+BINARIES_CMDS = $(shell ls binaries/cmd)
 
 # 来自submodule的工具
 SUBMODULE_PLUGINS = ohmyzsh ohmytmux
@@ -27,17 +26,6 @@ CMD_TARGETS = $(CMDS)
 OUTPUT_BINARIES = bin
 INSTALL_TARGETS = $(foreach cmd, $(CMD_TARGETS), $(OUTPUT_BINARIES)/$(cmd))
 
-ifeq ($(ARCH), arm64)
-	CGO_BUILD_OP := CGO_ENABLED=1 GOOS=linux CC=aarch64-linux-gnu-gcc GOOS=linux GOARCH=$(ARCH)
-endif 
-
-COMMIT_ID ?= $(shell git rev-parse --short HEAD)
-BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
-LDFLAGS += -X "$(REPO)/version.BuildTS=$(shell TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')"
-LDFLAGS += -X "$(REPO)/version.GitHash=$(COMMIT_ID)"
-LDFLAGS += -X "$(REPO)/version.Version=$(VERSION)"
-LDFLAGS += -X "$(REPO)/version.GitBranch=$(BRANCH)"
-
 ifneq ($(findstring "ubuntu", $(OS_RELEASE)),)
 	PKG_MANAGER := apt
 endif
@@ -50,16 +38,10 @@ ifneq ($(USER), "root")
 	SUDO := sudo
 endif
 
-# while gocv already installed, build with video tools.
-ifneq ($(shell pkg-config --cflags -- opencv4 2>/dev/null),)
-	TAGS += gocv
-endif
-
-all: cmd
+all: build
 
 env: $(ENV_TARGETS)
-	echo "export ANNAL_ROOT_PATH=$(MKFILE_PATH)" > ${ANNALRC}
-cmd: $(CMD_TARGETS)
+	echo "export ANNAL_ROOT=$(MKFILE_PATH)" > ${ANNALRC}
 
 $(INSTALL_PLUGINS):
 	if ! type $@ 2>/dev/null; then $(SUDO) $(PKG_MANAGER) install $@ -y; fi
@@ -87,23 +69,23 @@ $(ZSH_PLUGINS):
 powerlevel10k:
 	-ln -sr plugins/$@ plugins/ohmyzsh/custom/themes
 
-# ssh login echo info.
-welcome:
-	$(SUDO) cp scripts/60-my-welcome-info /etc/update-motd.d
+$(BINARIES_CMDS): build
+	cp binaries/$@ .
 
-$(CMD_TARGETS): $(GO_SRCS)
-	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(TAGS)' -o $(OUTPUT_BINARIES)/$@ $(REPO)/cmd/$@/
-
-install: $(INSTALL_TARGETS) scripts/jt
-	mkdir -p $(INSTALL_PATH)
-	cp $(INSTALL_TARGETS) $(INSTALL_PATH)
-	cp scripts/jt $(INSTALL_PATH)
-
-test:
-	go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic -tags='$(TAGS)'
+build:
+	$(MAKE) -C binaries
 
 clean:
-	-rm -rf $(OUTPUT_BINARIES)
+	$(MAKE) -C binaries $@
+	rm -rf $(BINARIES_CMDS)
 
-.PHONY: $(LINK_FILES) $(CMD_TARGETS) $(ENV_TARGETS)
+install: $(BINARIES_CMDS)
+	mkdir -p $(INSTALL_PATH)
+	cp $^ $(INSTALL_PATH)
+
+UNFILES := $(foreach un, $(BINARIES_CMDS), $(INSTALL_PATH)/$(un))
+uninstall:
+	rm -f $(UNFILES)
+
+.PHONY: $(LINK_FILES) $(ENV_TARGETS)
 #$(VERBOSE).SILENT:

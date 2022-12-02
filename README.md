@@ -18,50 +18,16 @@ Synchronize develop environment, reference samples, utils and configuration to b
 
 ### jt
 
-autojump to remote machine by ssh and sshpass, suitable for scenarios where multiple jump to different machines in a safe environment, password and details will save in ${HOME}/.jtremote.local, make sure it will not leak.
+`jumpto` in order to improve the efficiency of switching between multiple machines.
 
-usage:
-
-``` shell
-$ jt -h
-usage: jt [OPTION] [PARAMS]
-    e    jump to remote machine with ssh, default option.
-    s    save remote machine details.
-        -i|--ip         remote ip.
-        -u|--user       remote user.
-        -p|--password   remote password.
-        -P|--port       remote sshd service binding port.
-        -f|--focus      overwrite already exist detail.
-    l   show exist detail ips.
-
-    -h|--help show help.
-```
+jump to remote machine by ssh and sshpass, suitable for scenarios where multiple jump to different machines in a safe environment, password and details will save in ${HOME}/.jtremote.local, make sure it will not leak.
 
 ### video
 
 #### gen
 
-generate video from single image, base on [hybridgroup/gocv](https://github.com/hybridgroup/gocv).
+generate video from image, base on [hybridgroup/gocv](https://github.com/hybridgroup/gocv).
 
-usage:
-
-```shell
-$ annal video gen -h
-gen video from single image, only support image(.jpeg) to video(.avi)
-
-Usage:
-    annal video gen [flags]
-
-Flags:
-        --N uint           count of video frames (default 1500)
-    -f, --fps int          video fps (default 25)
-        --height int       video height (default 1080)
-    -h, --help             help for gen
-    -i, --images strings   source image
-    -o, --output string    output video path (default "annal.avi")
-        --width int        video width (default 1920)
-```
-
-*video tools require gocv installed, if without gocv then without video tools*.
+*video tools require gocv for built*.
 
 ## [MIT LICENSE](LICENSE)

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/AHAOAHA/Annal/version"
+	"github.com/AHAOAHA/Annal/binaries/version"
 	"github.com/spf13/cobra"
 )
 

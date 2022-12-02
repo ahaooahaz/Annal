@@ -11,9 +11,9 @@ stages:
 
 sudo: true
 
-before_install:
+before_install: []
 
-install:
+install: []
 
 before_script:
   - go env -w GO111MODULE="on"
@@ -24,8 +24,10 @@ before_script:
 jobs:
   include:
     - stage: build
-      script: make cmd
+      script: make
     - stage: test
-      script: docker run --rm -it -v $(pwd):/work -w /work --net=host  gocv/opencv bash -c "go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic"
+      script: 
+        - cd binaries
+        - go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic
       after_success:
         - bash <(curl -s https://codecov.io/bash) -f ${COVERAGE_REPORT} -t ${CODECOV_TOKEN}
