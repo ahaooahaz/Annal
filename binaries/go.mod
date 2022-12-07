@@ -10,19 +10,29 @@ require (
 require (
 	github.com/AHAOAHA/encapsutils v0.0.0-20220915073630-ddceee1050cf
 	github.com/golang-migrate/migrate/v4 v4.15.2
+	github.com/google/uuid v1.3.0
+	github.com/huandu/go-sqlbuilder v1.17.0
+	github.com/jedib0t/go-pretty/v6 v6.4.3
+	github.com/jmoiron/sqlx v1.3.1
 	github.com/mattn/go-sqlite3 v1.14.16
 )
 
 require (
-	github.com/gopherjs/gopherjs v1.17.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
+	github.com/huandu/xstrings v1.3.2 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
-	github.com/smartystreets/assertions v1.13.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.1 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
-	golang.org/x/crypto v0.3.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/term v0.2.0 // indirect
+)
+
+require (
+	github.com/gopherjs/gopherjs v1.17.2 // indirect
+	github.com/mattn/go-runewidth v0.0.13 // indirect
+	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/smartystreets/assertions v1.13.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	golang.org/x/crypto v0.3.0 // indirect
 )

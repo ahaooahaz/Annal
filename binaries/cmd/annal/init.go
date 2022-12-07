@@ -44,6 +44,7 @@ func initEnv() (err error) {
 
 	migrations := config.ANNALROOT + "/migrations/sqlite3"
 	storageFile := config.ANNALROOT + "/storage/annal.db"
+	config.DBPATH = storageFile
 	err = encapsutils.MustCreateDir(filepath.Dir(storageFile), os.ModePerm)
 	if err != nil {
 		return
