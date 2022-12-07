@@ -18,7 +18,6 @@ install: []
 before_script:
   - go env -w GO111MODULE="on"
   - git lfs pull
-  - go mod tidy
   - export COVERAGE_REPORT=$(pwd)/.coverage.txt
 
 jobs:
@@ -26,6 +25,7 @@ jobs:
     - stage: build
       script:
         - cd binaries
+        - go mod tidy
         - make
     - stage: test
       script: 
