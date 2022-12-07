@@ -23,4 +23,5 @@ test:
 clean:
 	-rm -rf $(TARGETS)
 
-#$(VERBOSE).SILENT:
+migrate:
+	migrate -source file://./migrations/sqlite3/ -database sqlite3://../storage/ up 2

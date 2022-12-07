@@ -5,7 +5,7 @@ import (
 	"os"
 	"syscall"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/global"
+	"github.com/AHAOAHA/Annal/binaries/internal/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -15,7 +15,7 @@ var Cmd = &cobra.Command{
 	Short: "jumpto",
 	Long:  `auto jump to remote machine by ssh.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		command := fmt.Sprintf("%s/scripts/%s", global.ANNALROOT, "jt.sh")
+		command := fmt.Sprintf("%s/scripts/%s", config.ANNALROOT, "jt.sh")
 		logger := logrus.WithFields(logrus.Fields{
 			"command": command,
 			"args":    args,
