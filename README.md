@@ -22,12 +22,4 @@ Synchronize develop environment, reference samples, utils and configuration to b
 
 jump to remote machine by ssh and sshpass, suitable for scenarios where multiple jump to different machines in a safe environment, password and details will save in ${HOME}/.jtremote.local, make sure it will not leak.
 
-### video
-
-#### gen
-
-generate video from image, base on [hybridgroup/gocv](https://github.com/hybridgroup/gocv).
-
-*video tools require gocv for built*.
-
 ## [MIT LICENSE](LICENSE)
