@@ -1,8 +1,10 @@
 package todo
 
 import (
+	"bufio"
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
@@ -26,10 +28,13 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		UpdatedAt: time.Now().Unix(),
 		CreatedAt: time.Now().Unix(),
 	}
-	fmt.Print("title:")
-	fmt.Scanf("%s", &task.Title)
-	fmt.Print("desp:")
-	fmt.Scanf("%s", &task.Description)
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf("What todo:\n")
+	title, _, _ := reader.ReadLine()
+	task.Title = string(title)
+	fmt.Print("What desp:\n")
+	desp, _, _ := reader.ReadLine()
+	task.Description = string(desp)
 
 	err := storage.CreateTodoTasks(ctx, []*storage.TodoTask{task})
 	if err != nil {
