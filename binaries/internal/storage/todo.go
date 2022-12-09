@@ -88,15 +88,16 @@ func UpdateTodoTask(ctx context.Context, db DB, task *proto.TodoTask) (err error
 	su := sqlbuilder.NewUpdateBuilder()
 	su.Update(todosTable)
 	su.Set(
-		su.E(todosCols[3], task.Title),
-		su.E(todosCols[4], task.Description),
-		su.E(todosCols[5], task.Plan),
-		su.E(todosCols[6], task.Status),
-		su.E(todosCols[8], task.UpdatedAt),
+		su.E(todosCols[2], task.Title),
+		su.E(todosCols[3], task.Description),
+		su.E(todosCols[4], task.Plan),
+		su.E(todosCols[5], task.Status),
+		su.E(todosCols[7], task.UpdatedAt),
 	)
 	su.Where(
 		su.E(todosCols[1], task.UUID),
 	)
+
 	command, args := su.Build()
 	_, err = db.Exec(command, args...)
 	if err != nil {
@@ -108,22 +109,24 @@ func UpdateTodoTask(ctx context.Context, db DB, task *proto.TodoTask) (err error
 	return
 }
 
-func SelectTodoTaskForUpdate(ctx context.Context, db DB, ID int64) (task *proto.TodoTask, err error) {
+func SelectTodoTask(ctx context.Context, db DB, ID int64) (task *proto.TodoTask, err error) {
 	ss := sqlbuilder.NewSelectBuilder()
 	ss.From(todosTable)
 	ss.Select(todosCols...)
-	ss.ForUpdate()
+	ss.Where(
+		ss.E(todosCols[0], ID),
+	)
 	ss.Limit(1)
 
 	command, args := ss.Build()
-
 	task = &proto.TodoTask{}
-	err = db.Get(&task, command, args...)
+	err = db.Get(task, command, args...)
 	if err != nil {
 		logrus.WithFields(logrus.Fields{
 			"command": command,
 			"args":    args,
 		}).Errorf("exec failed, err: %v", err.Error())
 	}
+
 	return
 }

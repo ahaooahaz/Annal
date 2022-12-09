@@ -45,7 +45,7 @@ func doneTodoTask(ctx context.Context, ID int64) (err error) {
 	}
 
 	var task *proto.TodoTask
-	task, err = storage.SelectTodoTaskForUpdate(ctx, tx, ID)
+	task, err = storage.SelectTodoTask(ctx, tx, ID)
 	if err != nil {
 		logrus.Errorf("%v", err.Error())
 		tx.Rollback()
