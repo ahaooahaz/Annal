@@ -17,7 +17,7 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
 		defer cancel()
-		tasks, err := storage.ListTodoTasks(ctx)
+		tasks, err := storage.ListTodoTasks(ctx, storage.GetInstance())
 		if err != nil {
 			fmt.Printf("%v\n", err.Error())
 			return

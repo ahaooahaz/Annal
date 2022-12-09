@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"database/sql"
 	"sync"
 
 	"github.com/AHAOAHA/Annal/binaries/internal/config"
@@ -13,7 +14,13 @@ var (
 	once     sync.Once
 )
 
-func getInstance() (dv *sqlx.DB) {
+type DB interface {
+	Select(interface{}, string, ...interface{}) error
+	Exec(string, ...interface{}) (sql.Result, error)
+	Get(interface{}, string, ...interface{}) error
+}
+
+func GetInstance() (dv *sqlx.DB) {
 	once.Do(func() {
 		var err error
 		dv, err = sqlx.Open("sqlite3", config.DBPATH)

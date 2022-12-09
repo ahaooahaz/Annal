@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package AHAOAHA.Annal.TodoTask;
+
+import "github.com/srikrsna/protoc-gen-gotag/tagger/tagger.proto";
+import "github.com/envoyproxy/protoc-gen-validate/validate/validate.proto";
+
+option go_package = "./gen";
+
+enum TodoTaskStatus {
+    PENDING = 0;
+    DONE = 1;
+}
+
+message TodoTask {
+    int64 ID = 1 [(tagger.tags) = "db:\"id\""];
+    string UUID = 2 [(tagger.tags) = "db:\"uuid\""];
+    string title = 3 [(tagger.tags) = "db:\"title\"", (validate.rules).string = {min_len: 0, max_len: 256}];
+    string description = 4 [(tagger.tags) = "db:\"description\""];
+    int64 plan = 5 [(tagger.tags) = "db:\"plan\""];
+    TodoTaskStatus status = 6 [(tagger.tags) = "db:\"status\""];
+    int64 created_at = 7 [(tagger.tags) = "db:\"created_at\""];
+    int64 updated_at = 8 [(tagger.tags) = "db:\"updated_at\""];
+}

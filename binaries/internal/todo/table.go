@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/jedib0t/go-pretty/table"
 )
 
@@ -33,7 +33,7 @@ var columns = []Column{
 }
 
 // printTable prints an individual table of mounts.
-func printTable(title string, m []*storage.TodoTask, opts TableOptions) {
+func printTable(title string, m []*proto.TodoTask, opts TableOptions) {
 	tab := table.NewWriter()
 	tab.SetOutputMirror(os.Stdout)
 
@@ -49,10 +49,10 @@ func printTable(title string, m []*storage.TodoTask, opts TableOptions) {
 			v.UUID,
 			v.Title,
 			v.Description,
-			v.Plan,
+			time.Unix(v.Plan, 0).Format(_TimeFormatString),
 			v.Status,
-			time.Unix(v.CreatedAt, 0).String(),
-			time.Unix(v.UpdatedAt, 0).String(),
+			time.Unix(v.CreatedAt, 0).Format(_TimeFormatString),
+			time.Unix(v.UpdatedAt, 0).Format(_TimeFormatString),
 		})
 	}
 
