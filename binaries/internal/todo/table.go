@@ -6,10 +6,11 @@ import (
 
 	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/jedib0t/go-pretty/table"
+	"github.com/jedib0t/go-pretty/text"
 )
 
 type TableOptions struct {
-	Columns []int
+	Columns []Column
 	SortBy  int
 	Style   table.Style
 }
@@ -19,34 +20,41 @@ type Column struct {
 	Name      string
 	SortIndex int
 	Width     int
+	colors    []text.Color
 }
 
 var columns = []Column{
-	{ID: "id", Name: "ID", SortIndex: 1},
-	{ID: "uuid", Name: "UUID", SortIndex: 12, Width: 7},
-	{ID: "title", Name: "Title", SortIndex: 13, Width: 7},
-	{ID: "description", Name: "Description", SortIndex: 14, Width: 7},
-	{ID: "plan", Name: "Plan", SortIndex: 15, Width: 6},
-	{ID: "status", Name: "Status", SortIndex: 16, Width: 7},
-	{ID: "created_at", Name: "CreatedAt", SortIndex: 17, Width: 7},
-	{ID: "updated_at", Name: "UpdatedAt", SortIndex: 18, Width: 7},
+	{ID: "id", Name: "ID", colors: []text.Color{text.BgYellow}},
+	// {ID: "uuid", Name: "UUID", colors: []text.Color{text.BgCyan}},
+	{ID: "index", Name: "Index", colors: []text.Color{text.BgCyan}},
+	{ID: "title", Name: "Title"},
+	{ID: "description", Name: "Description"},
+	{ID: "plan", Name: "Plan", colors: []text.Color{text.BgHiRed}},
+	{ID: "status", Name: "Status", colors: []text.Color{text.BgHiGreen}},
+	{ID: "created_at", Name: "CreatedAt", colors: []text.Color{text.BgYellow}},
+	{ID: "updated_at", Name: "UpdatedAt", colors: []text.Color{text.BgYellow}},
 }
 
 // printTable prints an individual table of mounts.
 func printTable(title string, m []*proto.TodoTask, opts TableOptions) {
 	tab := table.NewWriter()
 	tab.SetOutputMirror(os.Stdout)
+	tab.SetStyle(opts.Style)
 
+	colors := []text.Colors{}
 	headers := table.Row{}
-	for _, v := range columns {
+	for _, v := range opts.Columns {
 		headers = append(headers, v.Name)
+		colors = append(colors, v.colors)
 	}
 	tab.AppendHeader(headers)
+	tab.SetColors(colors)
 
 	for _, v := range m {
 		tab.AppendRow([]interface{}{
 			v.ID,
-			v.UUID,
+			// v.UUID,
+			v.Index,
 			v.Title,
 			v.Description,
 			time.Unix(v.Plan, 0).Format(_TimeFormatString),

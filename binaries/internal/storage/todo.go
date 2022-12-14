@@ -54,7 +54,7 @@ func CreateTodoTasks(ctx context.Context, db DB, tasks []*proto.TodoTask) (err e
 	ss.InsertInto(todosTable)
 	ss.Cols(todosCols[1:]...)
 	for _, task := range tasks {
-		ss.Values(task.UUID, task.Title, task.Description, task.Plan, task.Status, task.CreatedAt, task.UpdatedAt)
+		ss.Values(task.UUID, task.Index, task.Title, task.Description, task.Plan, task.Status, task.CreatedAt, task.UpdatedAt)
 	}
 	command, args := ss.Build()
 	_, err = db.Exec(command, args...)
@@ -87,15 +87,27 @@ func DeleteTodoTasks(ctx context.Context, db DB, ids []interface{}) (err error) 
 func UpdateTodoTask(ctx context.Context, db DB, task *proto.TodoTask) (err error) {
 	su := sqlbuilder.NewUpdateBuilder()
 	su.Update(todosTable)
-	su.Set(
-		su.E(todosCols[2], task.Title),
-		su.E(todosCols[3], task.Description),
-		su.E(todosCols[4], task.Plan),
-		su.E(todosCols[5], task.Status),
-		su.E(todosCols[7], task.UpdatedAt),
-	)
+
+	if task.Status == proto.TodoTaskStatus_DONE {
+		su.Set(
+			su.E(todosCols[2], 0),
+			su.E(todosCols[3], task.Title),
+			su.E(todosCols[4], task.Description),
+			su.E(todosCols[5], task.Plan),
+			su.E(todosCols[6], task.Status),
+			su.E(todosCols[8], task.UpdatedAt),
+		)
+	} else {
+		su.Set(
+			su.E(todosCols[3], task.Title),
+			su.E(todosCols[4], task.Description),
+			su.E(todosCols[5], task.Plan),
+			su.E(todosCols[6], task.Status),
+			su.E(todosCols[8], task.UpdatedAt),
+		)
+	}
 	su.Where(
-		su.E(todosCols[1], task.UUID),
+		su.E(todosCols[2], task.Index),
 	)
 
 	command, args := su.Build()

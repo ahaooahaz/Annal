@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	"github.com/jedib0t/go-pretty/table"
 	"github.com/spf13/cobra"
 )
 
@@ -23,6 +24,9 @@ var listCmd = &cobra.Command{
 			return
 		}
 
-		printTable("test", tasks, TableOptions{})
+		printTable("test", tasks, TableOptions{
+			Columns: columns,
+			Style:   table.StyleColoredDark,
+		})
 	},
 }

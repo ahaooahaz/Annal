@@ -56,6 +56,27 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 	}
 	task.Plan = plan.Unix()
 
+	var tasks []*proto.TodoTask
+	tasks, err = storage.ListTodoTasks(ctx, storage.GetInstance())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v", err.Error())
+		return
+	}
+
+	useIndexs := make(map[int64]bool)
+	for _, t := range tasks {
+		useIndexs[t.GetIndex()] = true
+	}
+
+	var index int64
+	for index = 1; index <= 100; index++ {
+		_, used := useIndexs[index]
+		if !used {
+			break
+		}
+	}
+	task.Index = index
+
 	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), []*proto.TodoTask{task})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v", err.Error())

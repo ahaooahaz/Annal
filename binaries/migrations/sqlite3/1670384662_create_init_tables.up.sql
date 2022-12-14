@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `todos` (
     `id` integer PRIMARY KEY AUTOINCREMENT,
     `uuid` varchar(64) NOT NULL UNIQUE,
+    `idx` integer NOT NULL,
     `title` varchar(256) NOT NULL,
     `description` text NOT NULL,
     `plan` integer NOT NULL,

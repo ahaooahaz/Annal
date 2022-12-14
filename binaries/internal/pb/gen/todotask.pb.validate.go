@@ -61,6 +61,8 @@ func (m *TodoTask) validate(all bool) error {
 
 	// no validation rules for UUID
 
+	// no validation rules for Index
+
 	if l := utf8.RuneCountInString(m.GetTitle()); l < 0 || l > 256 {
 		err := TodoTaskValidationError{
 			field:  "Title",
@@ -85,7 +87,6 @@ func (m *TodoTask) validate(all bool) error {
 	if len(errors) > 0 {
 		return TodoTaskMultiError(errors)
 	}
-
 	return nil
 }
 

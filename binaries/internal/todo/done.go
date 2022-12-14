@@ -3,6 +3,7 @@ package todo
 import (
 	"context"
 	"strconv"
+	"time"
 
 	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
@@ -51,7 +52,7 @@ func doneTodoTask(ctx context.Context, ID int64) (err error) {
 		tx.Rollback()
 		return
 	}
-
+	task.UpdatedAt = time.Now().Unix()
 	task.Status = proto.TodoTaskStatus_DONE
 	err = storage.UpdateTodoTask(ctx, tx, task)
 	if err != nil {
