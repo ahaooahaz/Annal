@@ -4,7 +4,7 @@
 
 ![built status](https://api.travis-ci.com/AHAOAHA/Annal.svg)
 ![codecov](https://codecov.io/gh/AHAOAHA/Annal/branch/master/graph/badge.svg)
-[![License](https://img.shields.io/github/license/AHAOAHA/Annal)](https://github.com/AHAOAHA/Annal/LICENSE)
+[![License](https://img.shields.io/github/license/AHAOAHA/Annal)](https://raw.githubusercontent.com/AHAOAHA/Annal/master/LICENSE)
 
 Synchronize develop environment, reference samples, utils and configuration to build develop environment quickly.
 
