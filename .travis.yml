@@ -16,7 +16,7 @@ before_install: []
 install: []
 
 before_script:
-  - sudo apt-get install libgl1-mesa-dev libxinerama-dev libxcursor-dev libxrandr-dev -y
+  - sudo apt-get install libgl1-mesa-dev libxinerama-dev libxcursor-dev libxrandr-dev libxi-dev -y
   - go env -w GO111MODULE="on"
   - git lfs pull
   - export COVERAGE_REPORT=$(pwd)/.coverage.txt
