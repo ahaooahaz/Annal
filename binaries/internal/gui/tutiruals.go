@@ -29,7 +29,6 @@ var (
 
 	// TutorialIndex  defines how our tutorials should be laid out in the index tree
 	_tutorialIndex = map[string][]string{
-		"":     {"welcome", "todo"},
-		"todo": {"list"},
+		"": {"welcome"},
 	}
 )

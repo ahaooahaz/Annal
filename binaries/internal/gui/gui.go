@@ -10,7 +10,6 @@ import (
 	"fyne.io/fyne/v2/cmd/fyne_settings/settings"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/AHAOAHA/Annal/binaries/internal/config"
 	"github.com/spf13/cobra"
@@ -44,22 +43,9 @@ func gui(cmd *cobra.Command, args []string) {
 	w.SetMaster()
 
 	content := container.NewMax()
-	title := widget.NewLabel("")
-	intro := widget.NewLabel("")
+	intro := widget.NewLabel("intro")
 	intro.Wrapping = fyne.TextWrapWord
 	setTutorial := func(t Tutorial) {
-		if fyne.CurrentDevice().IsMobile() {
-			child := a.NewWindow(t.Title)
-			topWindow = child
-			child.SetContent(t.View(topWindow))
-			child.Show()
-			child.SetOnClosed(func() {
-				topWindow = w
-			})
-			return
-		}
-
-		title.SetText(t.Title)
 		intro.SetText(t.Intro)
 
 		content.Objects = []fyne.CanvasObject{t.View(w)}
@@ -67,14 +53,11 @@ func gui(cmd *cobra.Command, args []string) {
 	}
 
 	tutorial := container.NewBorder(
-		container.NewVBox(title, widget.NewSeparator(), intro), nil, nil, nil, content)
-	if fyne.CurrentDevice().IsMobile() {
-		w.SetContent(makeNav(setTutorial, false))
-	} else {
-		split := container.NewHSplit(makeNav(setTutorial, false), tutorial)
-		split.Offset = 0.2
-		w.SetContent(split)
-	}
+		container.NewVBox(intro), nil, nil, nil, content)
+
+	x := container.NewCenter(makeNav(setTutorial, true), tutorial)
+	w.SetContent(x)
+
 	w.Resize(fyne.NewSize(640, 460))
 
 	w.ShowAndRun()
@@ -82,34 +65,18 @@ func gui(cmd *cobra.Command, args []string) {
 }
 
 func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
-	newItem := fyne.NewMenuItem("New", nil)
-	checkedItem := fyne.NewMenuItem("Checked", nil)
-	checkedItem.Checked = true
-	disabledItem := fyne.NewMenuItem("Disabled", nil)
-	disabledItem.Disabled = true
-	otherItem := fyne.NewMenuItem("Other", nil)
-	mailItem := fyne.NewMenuItem("Mail", func() { fmt.Println("Menu New->Other->Mail") })
-	mailItem.Icon = theme.MailComposeIcon()
-	otherItem.ChildMenu = fyne.NewMenu("",
-		fyne.NewMenuItem("Project", func() { fmt.Println("Menu New->Other->Project") }),
-		mailItem,
-	)
-	fileItem := fyne.NewMenuItem("File", func() { fmt.Println("Menu New->File") })
-	fileItem.Icon = theme.FileIcon()
-	dirItem := fyne.NewMenuItem("Directory", func() { fmt.Println("Menu New->Directory") })
-	dirItem.Icon = theme.FolderIcon()
-	newItem.ChildMenu = fyne.NewMenu("",
-		fileItem,
-		dirItem,
-		otherItem,
-	)
-
 	openSettings := func() {
 		w := a.NewWindow("Fyne Settings")
 		w.SetContent(settings.NewSettings().LoadAppearanceScreen(w))
 		w.Resize(fyne.NewSize(480, 480))
 		w.Show()
 	}
+	todosItem := fyne.NewMenuItem("todos", func() {
+		// TODO: action todos
+	})
+	servertmpItem := fyne.NewMenuItem("servertmp", func() {
+		// TODO: action servertmp
+	})
 	settingsItem := fyne.NewMenuItem("Settings", openSettings)
 	settingsShortcut := &desktop.CustomShortcut{KeyName: fyne.KeyComma, Modifier: fyne.KeyModifierShortcutDefault}
 	settingsItem.Shortcut = settingsShortcut
@@ -147,7 +114,7 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 		}))
 
 	// a quit item will be appended to our first (File) menu
-	file := fyne.NewMenu("File", newItem, checkedItem, disabledItem)
+	file := fyne.NewMenu("File", todosItem, servertmpItem)
 	device := fyne.CurrentDevice()
 	if !device.IsMobile() && !device.IsBrowser() {
 		file.Items = append(file.Items, fyne.NewMenuItemSeparator(), settingsItem)
@@ -157,10 +124,7 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 		fyne.NewMenu("Edit", cutItem, copyItem, pasteItem, fyne.NewMenuItemSeparator(), findItem),
 		helpMenu,
 	)
-	checkedItem.Action = func() {
-		checkedItem.Checked = !checkedItem.Checked
-		main.Refresh()
-	}
+
 	return main
 }
 
@@ -212,16 +176,7 @@ func makeNav(setTutorial func(tutorial Tutorial), loadPrevious bool) fyne.Canvas
 		tree.Select(currentPref)
 	}
 
-	themes := container.NewGridWithColumns(2,
-		widget.NewButton("Dark", func() {
-			a.Settings().SetTheme(theme.DarkTheme())
-		}),
-		widget.NewButton("Light", func() {
-			a.Settings().SetTheme(theme.LightTheme())
-		}),
-	)
-
-	return container.NewBorder(nil, themes, nil, nil, tree)
+	return container.NewBorder(nil, nil, nil, nil)
 }
 
 func shortcutFocused(s fyne.Shortcut, w fyne.Window) {
