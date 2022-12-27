@@ -3,7 +3,7 @@ package gui
 import (
 	"io/ioutil"
 
-	"fyne.io/fyne"
+	"fyne.io/fyne/v2"
 	"github.com/AHAOAHA/Annal/binaries/internal/config"
 )
 
@@ -13,7 +13,7 @@ var (
 
 func initEnv() (err error) {
 	var iconRaw []byte
-	iconRaw, err = ioutil.ReadFile(config.ANNALROOT + "/icons/50.png")
+	iconRaw, err = ioutil.ReadFile(config.ANNALROOT + "/icons/icon.svg")
 	if err != nil {
 		return
 	}

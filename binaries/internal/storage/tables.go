@@ -5,5 +5,5 @@ var (
 )
 
 var (
-	todosCols = []string{`id`, `uuid`, `idx`, `title`, `description`, `plan`, `status`, `created_at`, `updated_at`}
+	TodosCols = []string{`id`, `uuid`, `idx`, `title`, `description`, `plan`, `status`, `created_at`, `updated_at`}
 )
