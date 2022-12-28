@@ -22,7 +22,10 @@ var Cmd = &cobra.Command{
 	Run:     gui,
 }
 
-var topWindow fyne.Window
+var (
+	// topWindow   fyne.Window
+	releaseFunc = []func(){releaseServeRTMP}
+)
 
 func gui(cmd *cobra.Command, args []string) {
 	if err := initEnv(); err != nil {
@@ -30,11 +33,13 @@ func gui(cmd *cobra.Command, args []string) {
 		return
 	}
 
+	defer release()
+
 	a := app.NewWithID("annal.gui")
 	a.SetIcon(icon)
 
 	w := a.NewWindow(config.PROJECT)
-	topWindow = w
+	// topWindow = w
 
 	w.SetMainMenu(makeMenu(a, w))
 	w.SetMaster()
@@ -96,4 +101,10 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 	)
 
 	return main
+}
+
+func release() {
+	for _, f := range releaseFunc {
+		f()
+	}
 }

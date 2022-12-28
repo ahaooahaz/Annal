@@ -30,6 +30,7 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		UpdatedAt: time.Now().Unix(),
 		CreatedAt: time.Now().Unix(),
 	}
+
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Printf("What todo:\n")
 	title, _, _ := reader.ReadLine()
