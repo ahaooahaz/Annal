@@ -6,3 +6,5 @@
 *.h264
 .vscode
 /annal
+/log
+/storage

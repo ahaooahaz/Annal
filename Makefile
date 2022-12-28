@@ -1,5 +1,5 @@
 REPO = $(shell git remote -v | grep '^origin\s.*(fetch)$$' | awk '{print $$2}' | sed -E 's/^.*(\/\/|@)//;s/\.git$$//' | sed 's/:/\//g')
-VERSION = 0.1.0
+VERSION = 1.0.1
 OS_RELEASE = $(shell awk -F= '/^NAME/{print $$2}' /etc/os-release | tr A-Z a-z)
 TIMESTAMP = $(shell date +%s)
 MKFILE_PATH = $(shell pwd)

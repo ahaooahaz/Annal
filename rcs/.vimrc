@@ -1,3 +1,5 @@
+" Depend on vim v9.0+.
+
 source $VIMRUNTIME/defaults.vim
 
 " 文件备份, 修改时创建同名~文件作为备份文件
