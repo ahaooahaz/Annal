@@ -17,6 +17,7 @@ type StatisticInformation struct {
 }
 
 func Statistic(ctx context.Context) (s *StatisticInformation) {
+	s = &StatisticInformation{}
 	tasks, err := storage.ListTodoTasks(ctx, storage.GetInstance())
 	if err != nil {
 		logrus.Errorf("list todo task failed, %s", err.Error())
