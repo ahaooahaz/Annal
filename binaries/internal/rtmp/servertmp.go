@@ -1,6 +1,7 @@
 package rtmp
 
 import (
+	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -21,8 +22,20 @@ var ServeRTMPCmd = &cobra.Command{
 }
 
 func doServeRTMP(cmd *cobra.Command, args []string) {
+	addr := ""
+	if len(args) != 0 {
+		addr = args[0]
+	}
 
-	server := &rtmp.Server{}
+	ctx, cancel := context.WithCancel(context.TODO())
+	defer cancel()
+	ServeRTMP(ctx, addr)
+}
+
+func ServeRTMP(ctx context.Context, addr string) {
+	server := &rtmp.Server{
+		Addr: addr,
+	}
 
 	l := &sync.RWMutex{}
 	type Channel struct {

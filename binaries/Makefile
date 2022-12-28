@@ -3,7 +3,7 @@ TIMESTAMP = $(shell date +%s)
 GO = go
 GO_SRCS = $(shell find  .  -type f -regex  ".*.go$$")
 TARGETS = $(shell ls cmd)
-VERSION ?= v0.1.0
+VERSION ?= 1.0.1
 
 COMMIT_ID ?= $(shell git rev-parse --short HEAD)
 BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
