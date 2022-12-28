@@ -2,6 +2,8 @@ package todo
 
 import (
 	"context"
+	"fmt"
+	"os"
 
 	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
@@ -14,14 +16,21 @@ var pruneCmd = &cobra.Command{
 	Use:   "prune",
 	Short: "prune task",
 	Long:  `prune task`,
-	Run:   pruneTodoTask,
+	Run:   pruneTodoTasks,
 }
 
-func pruneTodoTask(cmd *cobra.Command, args []string) {
+func pruneTodoTasks(cmd *cobra.Command, args []string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	var err error
+	err := PruneTodoTasks(ctx)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+		return
+	}
+}
+
+func PruneTodoTasks(ctx context.Context) (err error) {
 	var tx *sqlx.Tx
 	tx, err = storage.GetInstance().Beginx()
 	if err != nil {
@@ -56,4 +65,5 @@ func pruneTodoTask(cmd *cobra.Command, args []string) {
 		tx.Rollback()
 		return
 	}
+	return
 }

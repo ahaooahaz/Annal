@@ -29,7 +29,7 @@ func doneTodoTasks(cmd *cobra.Command, args []string) {
 			logrus.Errorf("%s", err.Error())
 			continue
 		}
-		err = doneTodoTask(ctx, id)
+		err = DoneTodoTask(ctx, id)
 		if err != nil {
 			logrus.Errorf("%s", err.Error())
 			continue
@@ -37,7 +37,7 @@ func doneTodoTasks(cmd *cobra.Command, args []string) {
 	}
 }
 
-func doneTodoTask(ctx context.Context, ID int64) (err error) {
+func DoneTodoTask(ctx context.Context, ID int64) (err error) {
 	var tx *sqlx.Tx
 	tx, err = storage.GetInstance().Beginx()
 	if err != nil {

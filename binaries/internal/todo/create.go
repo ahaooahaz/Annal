@@ -76,10 +76,28 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		}
 	}
 	task.Index = index
+	err = CreateTodoTasks(ctx, []*proto.TodoTask{task})
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+		return
+	}
+}
 
-	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), []*proto.TodoTask{task})
+func CreateTodoTasks(ctx context.Context, tasks []*proto.TodoTask) (err error) {
+	if len(tasks) == 0 {
+		return
+	}
+
+	for _, task := range tasks {
+		if err = task.Validate(); err != nil {
+			return
+		}
+	}
+
+	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), tasks)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v", err.Error())
 		return
 	}
+	return
 }

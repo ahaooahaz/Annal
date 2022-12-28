@@ -1,7 +1,6 @@
 GEN_PROTOS = gen/todotask.pb.go gen/todotask.pb.validate.go
 SRC_PROTOS = $(shell find . -maxdepth 1 -name "*.proto")
 
-
 genpb: $(GEN_PROTOS)
 
 $(GEN_PROTOS): $(SRC_PROTOS)
