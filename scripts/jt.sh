@@ -2,7 +2,8 @@
 
 # set -x
 
-details=${HOME}/.config/jt.csv
+old_details=${HOME}/.config/jt.csv
+details=${ANNAL_ROOT}/configs/jt.csv
 
 function usage() {
 cat << USAGE
@@ -134,25 +135,36 @@ function l() {
     done < ${details}
 }
 
-if [ $# -eq 0 ]; then
-    usage
-    exit 0
-fi
+function upgrade() {
+    # move config.
+    if [ -f ${old_details} ]; then
+        mv ${old_details} ${details}
+    fi
+}
 
-
-case $1 in
-    e)
-        $@
-        ;;
-    s)
-        $@
-        ;;
-    l)
-        l
-        ;;
-    -h|--help)
+function main() {
+    upgrade
+    if [ $# -eq 0 ]; then
         usage
-        ;;
-    *)
-        e $@
-esac
+        exit 0
+    fi
+
+    case $1 in
+        e)
+            $@
+            ;;
+        s)
+            $@
+            ;;
+        l)
+            l
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            e $@
+    esac
+}
+
+main $@
