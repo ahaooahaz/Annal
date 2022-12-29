@@ -10,6 +10,7 @@ import (
 	"github.com/AHAOAHA/Annal/binaries/internal/gui"
 	"github.com/AHAOAHA/Annal/binaries/internal/jt"
 	"github.com/AHAOAHA/Annal/binaries/internal/rtmp"
+	"github.com/AHAOAHA/Annal/binaries/internal/serve"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
 	"github.com/AHAOAHA/Annal/binaries/internal/todo"
 	"github.com/AHAOAHA/Annal/binaries/internal/version"
@@ -28,14 +29,17 @@ func init() {
 	rootCmd.AddCommand(rtmp.ServeRTMPCmd)
 	rootCmd.AddCommand(todo.Cmd)
 	rootCmd.AddCommand(version.Cmd)
+	rootCmd.AddCommand(serve.Cmd)
 }
 
 func initEnv() (err error) {
 	config.ANNALROOT = os.Getenv("ANNAL_ROOT")
 	now := time.Now()
 	config.LOGFILE = fmt.Sprintf("%s/log/%s", config.ANNALROOT, fmt.Sprintf("%04d-%02d-%02d.log", now.Year(), now.Month(), now.Day()))
+	config.ICONPATH = config.ANNALROOT + "/icons/icon.svg"
+	config.NOTIFYSENDSH = config.ANNALROOT + "/plugins/notify-send.sh/notify-send.sh"
 
-	err = encapsutils.MustCreateFile(config.LOGFILE)
+	err = encapsutils.CreateFile(config.LOGFILE)
 	if err != nil {
 		return
 	}
@@ -56,7 +60,7 @@ func initEnv() (err error) {
 	migrations := config.ANNALROOT + "/migrations/sqlite3"
 	storageFile := config.ANNALROOT + "/storage/annal.db"
 	config.DBPATH = storageFile
-	err = encapsutils.MustCreateDir(filepath.Dir(storageFile), os.ModePerm)
+	err = encapsutils.CreateDir(filepath.Dir(storageFile), os.ModePerm)
 	if err != nil {
 		return
 	}

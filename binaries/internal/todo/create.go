@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 )
@@ -25,7 +25,7 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	var err error
-	task := &proto.TodoTask{
+	task := &pb.TodoTask{
 		UUID:      uuid.New().String(),
 		UpdatedAt: time.Now().Unix(),
 		CreatedAt: time.Now().Unix(),
@@ -55,9 +55,21 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 	default:
 		plan = time.Now().Add(time.Hour)
 	}
-	task.Plan = plan.Unix()
 
-	var tasks []*proto.TodoTask
+	err = CreateTodoTask(ctx, string(title), string(desp), plan)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+		return
+	}
+}
+
+func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time) (err error) {
+	task := &pb.TodoTask{
+		Title:       title,
+		Description: desp,
+		Plan:        plan.Unix(),
+	}
+	var tasks []*pb.TodoTask
 	tasks, err = storage.ListTodoTasks(ctx, storage.GetInstance())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v", err.Error())
@@ -77,23 +89,6 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		}
 	}
 	task.Index = index
-	err = CreateTodoTasks(ctx, []*proto.TodoTask{task})
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
-		return
-	}
-}
-
-func CreateTodoTasks(ctx context.Context, tasks []*proto.TodoTask) (err error) {
-	if len(tasks) == 0 {
-		return
-	}
-
-	for _, task := range tasks {
-		if err = task.Validate(); err != nil {
-			return
-		}
-	}
 
 	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), tasks)
 	if err != nil {

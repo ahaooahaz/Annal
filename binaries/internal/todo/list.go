@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
 	"github.com/jedib0t/go-pretty/table"
 	"github.com/spf13/cobra"
 )
@@ -32,7 +32,7 @@ var listCmd = &cobra.Command{
 	},
 }
 
-func ListTodoTasks(ctx context.Context) (tasks []*proto.TodoTask, err error) {
+func ListTodoTasks(ctx context.Context) (tasks []*pb.TodoTask, err error) {
 	tasks, err = storage.ListTodoTasks(ctx, storage.GetInstance())
 	if err != nil {
 		fmt.Printf("%v\n", err.Error())

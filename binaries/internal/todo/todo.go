@@ -1,6 +1,10 @@
 package todo
 
-import "github.com/spf13/cobra"
+import (
+	"sync"
+
+	"github.com/spf13/cobra"
+)
 
 var Cmd = &cobra.Command{
 	Use:   "todo",
@@ -10,6 +14,10 @@ var Cmd = &cobra.Command{
 
 var (
 	_TimeFormatString = "2006-01-02 15:04:05"
+)
+
+var (
+	mu sync.Mutex
 )
 
 func init() {
