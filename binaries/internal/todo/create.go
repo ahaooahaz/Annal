@@ -1,7 +1,6 @@
 package todo
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"os"
@@ -21,42 +20,43 @@ var createCmd = &cobra.Command{
 	Run:     createTodoTask,
 }
 
+func init() {
+	createCmd.Flags().StringP("title", "t", "", "todotosk title")
+	createCmd.Flags().StringP("desp", "d", "", "todotosk desp")
+	createCmd.Flags().Int64P("plan", "p", 0, "plan time")
+
+	createCmd.MarkFlagRequired("title")
+	createCmd.MarkFlagRequired("desp")
+	createCmd.MarkFlagRequired("plan")
+}
+
 func createTodoTask(cmd *cobra.Command, args []string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	var err error
-	task := &pb.TodoTask{
-		UUID:      uuid.New().String(),
-		UpdatedAt: time.Now().Unix(),
-		CreatedAt: time.Now().Unix(),
+
+	var title, desp string
+
+	title, err = cmd.Flags().GetString("title")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", err.Error())
+		return
 	}
 
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf("What todo:\n")
-	title, _, _ := reader.ReadLine()
-	task.Title = string(title)
-	fmt.Printf("What desp:\n")
-	desp, _, _ := reader.ReadLine()
-	task.Description = string(desp)
-	fmt.Printf("When todo: (default: 1 hour later)\n")
-	var planT int
-	var plan time.Time
-
-	fmt.Scanf("%d\n", planT)
-	switch planT {
-	case 1:
-		fmt.Printf("Input time: (format: %s)\n", _TimeFormatString)
-		planS, _, _ := reader.ReadLine()
-		plan, err = time.Parse(_TimeFormatString, string(planS))
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err.Error())
-			return
-		}
-	default:
-		plan = time.Now().Add(time.Hour)
+	desp, err = cmd.Flags().GetString("desp")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", err.Error())
+		return
 	}
 
-	err = CreateTodoTask(ctx, string(title), string(desp), plan, notify)
+	var plan int64
+	plan, err = cmd.Flags().GetInt64("plan")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", err.Error())
+		return
+	}
+
+	err = CreateTodoTask(ctx, title, desp, time.Unix(plan, 0), notify)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		return
