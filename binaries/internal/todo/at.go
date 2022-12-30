@@ -2,6 +2,7 @@ package todo
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -17,10 +18,13 @@ var (
 	_AtTimeFormatString = "200601021504"
 )
 
-func notify(task *pb.TodoTask) (err error) {
+func notify(task *pb.TodoTask, timeout uint64) (err error) {
 	commandLine := []string{"#!/bin/bash"}
 	jobpath := config.ATJOBS + "/" + task.GetUUID() + ".sh"
-	step1 := []string{config.NOTIFYSENDSH, "-ti", task.GetTitle(), "-d", task.GetDescription(), "-t", "3"}
+	step1 := []string{config.NOTIFYSENDSH, "-ti", task.GetTitle(), "-t", fmt.Sprintf("%d", timeout)}
+	if strings.TrimSpace(task.GetDescription()) != "" {
+		step1 = append(step1, []string{"-d", task.GetDescription()}...)
+	}
 	step2 := []string{"rm", "-rf", jobpath}
 	strings.Join(step1, " ")
 	commandLine = append(commandLine, strings.Join(step1, " "))

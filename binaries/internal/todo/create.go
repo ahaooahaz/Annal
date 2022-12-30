@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
@@ -21,9 +22,10 @@ var createCmd = &cobra.Command{
 }
 
 func init() {
-	createCmd.Flags().StringP("title", "t", "", "todotosk title")
-	createCmd.Flags().StringP("desp", "d", "", "todotosk desp")
-	createCmd.Flags().Int64P("plan", "p", 0, "plan time")
+	createCmd.Flags().StringP("title", "ti", "", "todotosk title (max length 256)")
+	createCmd.Flags().StringP("desp", "d", "", "todotosk desp (max length 1024)")
+	createCmd.Flags().Int64P("notify-timeout", "nt", 3, "notify timeout seconds")
+	createCmd.Flags().StringP("plan", "p", time.Now().Add(time.Hour).Format(_TimeFormatString), fmt.Sprintf("plan time, format: %s", _TimeFormatString))
 
 	createCmd.MarkFlagRequired("title")
 	createCmd.MarkFlagRequired("desp")
@@ -43,27 +45,45 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		return
 	}
 
+	if strings.TrimSpace(title) != "" {
+		fmt.Fprintf(os.Stderr, "title format invalid")
+		return
+	}
+
 	desp, err = cmd.Flags().GetString("desp")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s", err.Error())
 		return
 	}
 
-	var plan int64
-	plan, err = cmd.Flags().GetInt64("plan")
+	var planStr string
+	planStr, err = cmd.Flags().GetString("plan")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", err.Error())
+		return
+	}
+	var plan time.Time
+	plan, err = time.Parse(_TimeFormatString, planStr)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "parse plan time failed, err: %v", err.Error())
+		return
+	}
+
+	var notifyTimeout uint64
+	notifyTimeout, err = cmd.Flags().GetUint64("notify-timeout")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s", err.Error())
 		return
 	}
 
-	err = CreateTodoTask(ctx, title, desp, time.Unix(plan, 0), notify)
+	err = CreateTodoTask(ctx, title, desp, plan, notifyTimeout, notify)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		return
 	}
 }
 
-func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time, notify func(task *pb.TodoTask) error) (err error) {
+func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time, notifyTimeout uint64, notify func(task *pb.TodoTask, timeout uint64) error) (err error) {
 	task := &pb.TodoTask{
 		UUID:        uuid.NewString(),
 		Title:       title,
@@ -97,7 +117,7 @@ func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time, not
 		return
 	}
 
-	err = notify(task)
+	err = notify(task, notifyTimeout)
 	if err != nil {
 		return
 	}

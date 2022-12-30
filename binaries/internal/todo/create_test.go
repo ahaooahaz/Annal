@@ -19,7 +19,7 @@ func TestCreateTodoTask(t *testing.T) {
 	err := storage.Sqlite3Migrate("../../../migrations/sqlite3", config.DBPATH)
 	assert.Equal(t, nil, err)
 	defer os.Remove(config.DBPATH)
-	err = CreateTodoTask(context.Background(), "test", "test", time.Now(), func(task *gen.TodoTask) error { return nil })
+	err = CreateTodoTask(context.Background(), "test", "test", time.Now(), 1, func(*gen.TodoTask, uint64) error { return nil })
 	// err = CreateTodoTask(context.Background(), "test", "test", time.Now(), notify)
 	assert.Equal(t, nil, err)
 }
