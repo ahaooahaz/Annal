@@ -56,14 +56,14 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		plan = time.Now().Add(time.Hour)
 	}
 
-	err = CreateTodoTask(ctx, string(title), string(desp), plan)
+	err = CreateTodoTask(ctx, string(title), string(desp), plan, notify)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		return
 	}
 }
 
-func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time) (err error) {
+func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time, notify func(task *pb.TodoTask) error) (err error) {
 	task := &pb.TodoTask{
 		UUID:        uuid.NewString(),
 		Title:       title,
@@ -92,12 +92,12 @@ func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time) (er
 	}
 	task.Index = index
 
-	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), tasks)
+	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), []*pb.TodoTask{task})
 	if err != nil {
 		return
 	}
 
-	err = CreateAtJob(task)
+	err = notify(task)
 	if err != nil {
 		return
 	}

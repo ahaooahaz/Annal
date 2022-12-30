@@ -14,12 +14,12 @@ import (
 )
 
 var (
-	_AtTimeFormatString = "15:04 2006-01-02"
+	_AtTimeFormatString = "200601021504"
 )
 
-func CreateAtJob(task *pb.TodoTask) (err error) {
+func notify(task *pb.TodoTask) (err error) {
 	commandLine := []string{"#!/bin/bash"}
-	jobpath := config.ATJOBS + task.GetUUID() + ".sh"
+	jobpath := config.ATJOBS + "/" + task.GetUUID() + ".sh"
 	step1 := []string{config.NOTIFYSENDSH, "-ti", task.GetTitle(), "-d", task.GetDescription(), "-t", "3"}
 	step2 := []string{"rm", "-rf", jobpath}
 	strings.Join(step1, " ")
@@ -41,15 +41,22 @@ func CreateAtJob(task *pb.TodoTask) (err error) {
 			logrus.Errorf(err.Error())
 			return
 		}
+		_, err = write.WriteString("\n")
+		if err != nil {
+			logrus.Errorf(err.Error())
+			return
+		}
 	}
+	write.Flush()
 
 	attime := time.Unix(task.GetPlan(), 0).Format(_AtTimeFormatString)
 	step3 := []string{"at", "-t", attime, "-f", jobpath}
-
-	cmd := exec.Command("/bin/bash", "-c", strings.Join(step3, " "))
+	command3 := strings.Join(step3, " ")
+	cmd := exec.Command("/bin/bash", "-c", command3)
 	err = cmd.Run()
+	out, _ := cmd.Output()
 	if err != nil {
-		logrus.Errorf(err.Error())
+		logrus.Errorf("command3: %s, error: %d, output: %v", command3, err.Error(), string(out))
 		return
 	}
 	return
