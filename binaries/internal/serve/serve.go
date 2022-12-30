@@ -3,7 +3,6 @@ package serve
 import (
 	"net"
 
-	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
@@ -30,8 +29,6 @@ func doServe(cmd *cobra.Command, args []string) {
 
 func StartServe(addr string) {
 	s := grpc.NewServer()
-
-	pb.RegisterTodoServiceServer(s, &todoServe{})
 
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {

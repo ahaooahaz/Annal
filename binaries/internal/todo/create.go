@@ -65,14 +65,16 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 
 func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time) (err error) {
 	task := &pb.TodoTask{
+		UUID:        uuid.NewString(),
 		Title:       title,
 		Description: desp,
 		Plan:        plan.Unix(),
+		CreatedAt:   time.Now().Unix(),
+		UpdatedAt:   time.Now().Unix(),
 	}
 	var tasks []*pb.TodoTask
 	tasks, err = storage.ListTodoTasks(ctx, storage.GetInstance())
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v", err.Error())
 		return
 	}
 
@@ -92,7 +94,11 @@ func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time) (er
 
 	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), tasks)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v", err.Error())
+		return
+	}
+
+	err = CreateAtJob(task)
+	if err != nil {
 		return
 	}
 	return

@@ -6,6 +6,7 @@ var (
 	LOGFILE   = ""
 	DBPATH    = ""
 	ICONPATH  = ""
+	ATJOBS    = ""
 )
 
 var (

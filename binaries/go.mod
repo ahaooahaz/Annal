@@ -8,7 +8,7 @@ require (
 )
 
 require (
-	github.com/AHAOAHA/encapsutils v0.0.0-20221229062318-932da9d1373f
+	github.com/AHAOAHA/encapsutils v0.0.0-20221230073425-2d6a3034d051
 	github.com/envoyproxy/protoc-gen-validate v0.6.2
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/uuid v1.3.0
@@ -22,7 +22,6 @@ require (
 
 require (
 	fyne.io/fyne/v2 v2.3.0
-	google.golang.org/genproto v0.0.0-20220314164441-57ef72a4c106
 	google.golang.org/grpc v1.45.0
 )
 
@@ -66,6 +65,7 @@ require (
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/term v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
+	google.golang.org/genproto v0.0.0-20220314164441-57ef72a4c106 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/js/dom v0.0.0-20210725211120-f030747120f2 // indirect
 )

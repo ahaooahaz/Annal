@@ -10,7 +10,6 @@ import (
 	"github.com/AHAOAHA/Annal/binaries/internal/gui"
 	"github.com/AHAOAHA/Annal/binaries/internal/jt"
 	"github.com/AHAOAHA/Annal/binaries/internal/rtmp"
-	"github.com/AHAOAHA/Annal/binaries/internal/serve"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
 	"github.com/AHAOAHA/Annal/binaries/internal/todo"
 	"github.com/AHAOAHA/Annal/binaries/internal/version"
@@ -29,7 +28,7 @@ func init() {
 	rootCmd.AddCommand(rtmp.ServeRTMPCmd)
 	rootCmd.AddCommand(todo.Cmd)
 	rootCmd.AddCommand(version.Cmd)
-	rootCmd.AddCommand(serve.Cmd)
+	// rootCmd.AddCommand(serve.Cmd) // TODO:
 }
 
 func initEnv() (err error) {
@@ -37,15 +36,11 @@ func initEnv() (err error) {
 	now := time.Now()
 	config.LOGFILE = fmt.Sprintf("%s/log/%s", config.ANNALROOT, fmt.Sprintf("%04d-%02d-%02d.log", now.Year(), now.Month(), now.Day()))
 	config.ICONPATH = config.ANNALROOT + "/icons/icon.svg"
-	config.NOTIFYSENDSH = config.ANNALROOT + "/plugins/notify-send.sh/notify-send.sh"
-
-	err = encapsutils.CreateFile(config.LOGFILE)
-	if err != nil {
-		return
-	}
+	config.NOTIFYSENDSH = config.ANNALROOT + "/scripts/notify-send.sh"
+	config.ATJOBS = config.ANNALROOT + "/.at.jobs"
 
 	var f *os.File
-	f, err = os.OpenFile(config.LOGFILE, os.O_WRONLY|os.O_APPEND, 0666)
+	f, err = encapsutils.CreateFile(config.LOGFILE)
 	if err != nil {
 		return
 	}
