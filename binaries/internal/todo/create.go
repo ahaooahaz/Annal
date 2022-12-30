@@ -22,9 +22,9 @@ var createCmd = &cobra.Command{
 }
 
 func init() {
-	createCmd.Flags().StringP("title", "ti", "", "todotosk title (max length 256)")
+	createCmd.Flags().StringP("title", "t", "", "todotosk title (max length 256)")
 	createCmd.Flags().StringP("desp", "d", "", "todotosk desp (max length 1024)")
-	createCmd.Flags().Int64P("notify-timeout", "nt", 3, "notify timeout seconds")
+	createCmd.Flags().Uint64P("notify", "n", 3, "notify timeout seconds")
 	createCmd.Flags().StringP("plan", "p", time.Now().Add(time.Hour).Format(_TimeFormatString), fmt.Sprintf("plan time, format: %s", _TimeFormatString))
 
 	createCmd.MarkFlagRequired("title")
@@ -45,7 +45,7 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	if strings.TrimSpace(title) != "" {
+	if strings.TrimSpace(title) == "" {
 		fmt.Fprintf(os.Stderr, "title format invalid")
 		return
 	}
@@ -63,14 +63,14 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		return
 	}
 	var plan time.Time
-	plan, err = time.Parse(_TimeFormatString, planStr)
+	plan, err = time.ParseInLocation(_TimeFormatString, planStr, time.Local)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "parse plan time failed, err: %v", err.Error())
 		return
 	}
 
 	var notifyTimeout uint64
-	notifyTimeout, err = cmd.Flags().GetUint64("notify-timeout")
+	notifyTimeout, err = cmd.Flags().GetUint64("notify")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s", err.Error())
 		return
