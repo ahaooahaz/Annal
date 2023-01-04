@@ -2,7 +2,7 @@ ifeq ($(OS), Windows_NT)
 SHELL = cmd.exe
 # Windows
 TARGETS = $(shell dir cmd /b)
-GO_SRCS = $(shell for /r cmd %%i in (*) do @echo %%i)
+GO_SRCS = $(shell for /r . %%i in (*.go) do @echo %%i)
 
 else
 UNAME_S := $(shell uname -s)
