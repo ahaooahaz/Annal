@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/AHAOAHA/Annal/binaries/internal/config"
+	"github.com/AHAOAHA/Annal/binaries/internal/image"
 )
 
 func init() {
