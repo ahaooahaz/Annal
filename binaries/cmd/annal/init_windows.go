@@ -12,6 +12,7 @@ func init() {
 		panic(err.Error())
 	}
 
+	rootCmd.AddCommand(image.Cmd)
 }
 
 func initEnv() (err error) {

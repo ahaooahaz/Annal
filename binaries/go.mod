@@ -22,6 +22,7 @@ require (
 
 require (
 	fyne.io/fyne/v2 v2.3.0
+	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8
 	google.golang.org/grpc v1.45.0
 )
 
@@ -65,6 +66,7 @@ require (
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/term v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
+	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20220314164441-57ef72a4c106 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/js/dom v0.0.0-20210725211120-f030747120f2 // indirect
@@ -75,6 +77,6 @@ require (
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/smartystreets/assertions v1.13.0 // indirect
-	github.com/stretchr/testify v1.8.1 // indirect
+	github.com/stretchr/testify v1.8.1
 	golang.org/x/crypto v0.3.0 // indirect
 )

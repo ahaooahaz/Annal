@@ -8,6 +8,7 @@ import (
 
 	"github.com/AHAOAHA/Annal/binaries/internal/config"
 	"github.com/AHAOAHA/Annal/binaries/internal/gui"
+	"github.com/AHAOAHA/Annal/binaries/internal/image"
 	"github.com/AHAOAHA/Annal/binaries/internal/jt"
 	"github.com/AHAOAHA/Annal/binaries/internal/rtmp"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
@@ -28,7 +29,7 @@ func init() {
 	rootCmd.AddCommand(rtmp.ServeRTMPCmd)
 	rootCmd.AddCommand(todo.Cmd)
 	rootCmd.AddCommand(version.Cmd)
-	// rootCmd.AddCommand(serve.Cmd) // TODO:
+	rootCmd.AddCommand(image.Cmd)
 }
 
 func initEnv() (err error) {
