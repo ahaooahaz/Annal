@@ -3,6 +3,9 @@ SHELL = cmd.exe
 # Windows
 TARGETS = $(shell dir cmd /b)
 GO_SRCS = $(shell for /r . %%i in (*.go) do @echo %%i)
+REPO = github.com/AHAOAHA/Annal/binaries
+BUILT_TS ?= $(shell echo %date:~0,4%%date:~5,2%%date:~8,2%%time:~0,2%%time:~3,2%%time:~6,2%)
+BINARY_SUFFIX = .exe
 
 else
 UNAME_S := $(shell uname -s)
@@ -16,9 +19,6 @@ GO_SRCS = $(shell find  .  -type f -regex  ".*.go$$")
 TARGETS = $(shell ls cmd)
 endif
 endif
-
-v:
-	echo $(GO_SRCS)
 
 COMMIT_ID ?= $(shell git rev-parse --short HEAD)
 BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
@@ -34,7 +34,7 @@ LDFLAGS += -X "$(REPO)/version.GitBranch=$(BRANCH)"
 build: $(TARGETS)
 
 $(TARGETS): $(GO_SRCS)
-	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(TAGS)' -o $@ $(REPO)/cmd/$@/
+	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(TAGS)' -o $@$(BINARY_SUFFIX) $(REPO)/cmd/$@/
 
 test:
 	go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic -tags='$(TAGS)'
