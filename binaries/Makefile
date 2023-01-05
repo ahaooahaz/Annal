@@ -11,7 +11,7 @@ else
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Linux)
 # Linux
-REPO = $(shell git remote -v | grep '^origin\s.*(fetch)$$' | awk '{print $$2}' | sed -E 's/^.*(\/\/|@)//;s/\.git$$//' | sed 's/:/\//g')
+REPO = $(shell git remote -v | grep '^origin\s.*(fetch)$$' | awk '{print $$2}' | sed -E 's/^.*(\/\/|@)//;s/\.git$$//' | sed 's/:/\//g')/binaries
 TIMESTAMP = $(shell date +%s)
 BUILT_TS ?= $(shell TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')
 
