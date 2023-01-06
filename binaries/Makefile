@@ -1,4 +1,5 @@
 ifeq ($(OS), Windows_NT)
+PLATFORM = windows
 SHELL = cmd.exe
 # Windows
 TARGETS = $(shell dir cmd /b)
@@ -10,6 +11,7 @@ BINARY_SUFFIX = .exe
 else
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Linux)
+PLATFORM = linux
 # Linux
 REPO = $(shell git remote -v | grep '^origin\s.*(fetch)$$' | awk '{print $$2}' | sed -E 's/^.*(\/\/|@)//;s/\.git$$//' | sed 's/:/\//g')/binaries
 TIMESTAMP = $(shell date +%s)
@@ -40,4 +42,8 @@ test:
 	go test ./... -coverprofile=${COVERAGE_REPORT} -covermode=atomic -tags='$(TAGS)'
 
 clean:
-	-rm -rf $(TARGETS)
+ifeq ($(PLATFORM), linux)
+	-rm -rf $(TARGETS)$(BINARY_SUFFIX)
+else ifeq ($(PLATFORM), windows)
+	-del $(TARGETS)$(BINARY_SUFFIX)
+endif

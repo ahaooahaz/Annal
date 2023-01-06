@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	"golang.org/x/oauth2"
 )
@@ -77,7 +78,7 @@ func newUploadRequest(ctx context.Context, token, imagepath string) (request *ht
 		return
 	}
 
-	p := filepath.Base(imagepath)
+	p := fmt.Sprintf("%s/%s", time.Now().Format("20060102"), filepath.Base(imagepath))
 
 	request, err = http.NewRequest(http.MethodPut, fmt.Sprintf(_UPLOADTEMPLATE, p), bytes.NewReader(msgRaw))
 	if err != nil {
