@@ -11,11 +11,14 @@ import (
 	"path/filepath"
 	"time"
 
+	goimgtype "github.com/shamsher31/goimgtype"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/oauth2"
 )
 
 const (
-	_UPLOADTEMPLATE = "https://api.github.com/repos/AHAOAHA/ImageHosting/contents/images/%s"
+	_UPLOADTEMPLATE = "https://api.github.com/repos/%s/contents/%s"
+	_PROXYTEMPLATE  = `https://cdn.jsdelivr.net/gh/%s@%s/%s`
 )
 
 type uploadMessage struct {
@@ -24,10 +27,19 @@ type uploadMessage struct {
 	SHA     string `json:"sha"`
 }
 
-func GithubPutImage(ctx context.Context, token, path string) (err error) {
-	var request *http.Request
-	request, err = newUploadRequest(ctx, token, path)
+func GithubPutImage(ctx context.Context, repo, branch, token, imagepath string) (url string, err error) {
+	_, err = goimgtype.Get(imagepath)
 	if err != nil {
+		logrus.Errorf("get image type failed, err: %v", err.Error())
+		return
+	}
+
+	p := fmt.Sprintf("images/%s/%s", time.Now().Format("20060102"), filepath.Base(imagepath))
+
+	var request *http.Request
+	request, err = newUploadRequest(ctx, repo, token, imagepath, p)
+	if err != nil {
+		logrus.Errorf("new request failed, err: %v", err.Error())
 		return
 	}
 
@@ -35,29 +47,35 @@ func GithubPutImage(ctx context.Context, token, path string) (err error) {
 		&oauth2.Token{AccessToken: token},
 	)
 
-	client := oauth2.NewClient(ctx, tokenSource)
-	var response *http.Response
-	response, err = client.Do(request)
-	if err != nil {
-		return
-	}
-	defer response.Body.Close()
+	if !debug {
+		client := oauth2.NewClient(ctx, tokenSource)
+		var response *http.Response
+		response, err = client.Do(request)
+		if err != nil {
+			logrus.Errorf("do request failed, err: %v", err.Error())
+			return
+		}
+		defer response.Body.Close()
 
-	if response.StatusCode != http.StatusOK {
-		err = fmt.Errorf("response status code: %v", response.StatusCode)
-		return
+		if response.StatusCode/100 != 2 {
+			err = fmt.Errorf("response status code: %v", response.StatusCode)
+			return
+		}
+
+		var b []byte
+		b, err = ioutil.ReadAll(response.Body)
+		if err != nil {
+			return
+		}
+		logrus.Infof("response: %v", string(b))
 	}
 
-	// var b []byte
-	// b, err = ioutil.ReadAll(response.Body)
-	// if err != nil {
-	// 	return
-	// }
+	url = fmt.Sprintf(_PROXYTEMPLATE, repo, branch, p)
 
 	return
 }
 
-func newUploadRequest(ctx context.Context, token, imagepath string) (request *http.Request, err error) {
+func newUploadRequest(ctx context.Context, repo, token, imagepath, hostimagepath string) (request *http.Request, err error) {
 	var content []byte
 	content, err = ioutil.ReadFile(imagepath)
 	if err != nil {
@@ -78,9 +96,7 @@ func newUploadRequest(ctx context.Context, token, imagepath string) (request *ht
 		return
 	}
 
-	p := fmt.Sprintf("%s/%s", time.Now().Format("20060102"), filepath.Base(imagepath))
-
-	request, err = http.NewRequest(http.MethodPut, fmt.Sprintf(_UPLOADTEMPLATE, p), bytes.NewReader(msgRaw))
+	request, err = http.NewRequest(http.MethodPut, fmt.Sprintf(_UPLOADTEMPLATE, repo, hostimagepath), bytes.NewReader(msgRaw))
 	if err != nil {
 		return
 	}
