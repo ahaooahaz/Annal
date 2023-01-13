@@ -57,7 +57,7 @@ func notify(task *pb.TodoTask, timeout uint64) (err error) {
 	err = cmd.Run()
 	out, _ := cmd.Output()
 	if err != nil {
-		logrus.Errorf("command3: %s, error: %d, output: %v", command3, err.Error(), string(out))
+		logrus.Errorf("command3: %s, error: %s, output: %v", command3, err.Error(), string(out))
 		return
 	}
 	return
