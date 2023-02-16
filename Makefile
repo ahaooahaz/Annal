@@ -81,7 +81,7 @@ clean:
 
 install: $(BINARIES_CMDS)
 	mkdir -p $(INSTALL_PATH)
-	ln -s $(shell pwd)/binaries/annal $(INSTALL_PATH)/annal
+	if [ ! -h $(INSTALL_PATH)/annal ]; then ln -s $(shell pwd)/binaries/annal $(INSTALL_PATH)/annal; fi
 
 UNFILES := $(foreach un, $(BINARIES_CMDS), $(INSTALL_PATH)/$(un))
 uninstall:
