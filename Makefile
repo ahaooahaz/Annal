@@ -20,7 +20,7 @@ SUBMODULE_PLUGINS = ohmyzsh ohmytmux
 INSTALL_PLUGINS = sshpass base64 at
 PLUGINS = $(SUBMODULE_PLUGINS) $(INSTALL_PLUGINS)
 
-ENV_TARGETS = $(LINK_FILES) $(PLUGINS)
+ENV_TARGETS = $(LINK_FILES) $(PLUGINS) docker-wechat
 CMD_TARGETS = $(CMDS)
 
 OUTPUT_BINARIES = bin
@@ -62,6 +62,10 @@ ohmytmux:
 	ln -sr plugins/.tmux ~/.tmux
 	-mv ~/.tmux.conf ~/.tmux.conf.bak.$(TIMESTAMP)
 	ln -sf ~/.tmux/.tmux.conf ~/
+
+docker-wechat:
+	-rm ~/.local/bin/wechat
+	ln -sf scripts/$@.sh ~/.local/bin/wechat
 
 $(ZSH_PLUGINS):
 	-ln -sr plugins/$@ plugins/ohmyzsh/custom/plugins
