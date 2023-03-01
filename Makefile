@@ -65,7 +65,7 @@ ohmytmux:
 
 docker-wechat:
 	-rm ~/.local/bin/wechat
-	ln -sf scripts/$@.sh ~/.local/bin/wechat
+	ln -sr scripts/$@.sh ~/.local/bin/wechat
 
 $(ZSH_PLUGINS):
 	-ln -sr plugins/$@ plugins/ohmyzsh/custom/plugins
