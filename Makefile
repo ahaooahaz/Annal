@@ -63,9 +63,9 @@ ohmytmux:
 	-mv ~/.tmux.conf ~/.tmux.conf.bak.$(TIMESTAMP)
 	ln -sf ~/.tmux/.tmux.conf ~/
 
-docker-wechat:
-	-rm ~/.local/bin/wechat
-	ln -sr scripts/$@.sh ~/.local/bin/wechat
+wechat wechat.work:
+	-rm ~/.local/bin/$@
+	ln -sr scripts/docker-$@.sh ~/.local/bin/$@
 
 $(ZSH_PLUGINS):
 	-ln -sr plugins/$@ plugins/ohmyzsh/custom/plugins
