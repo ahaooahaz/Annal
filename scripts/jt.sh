@@ -68,8 +68,32 @@ function s() {
         esac
     done
 
-    if [ -z "${ip}" -o -z "${port}" -o -z "${user}" -o -z "${password}" ]; then
-        usage && return
+    if [ -z ${ip} ]; then
+        echo -n "ip: "
+        read ip
+    else
+        echo "ip: ${ip}"
+    fi
+
+    if [ -z ${user} ]; then
+        echo -n "user: "
+        read user
+    else
+        echo "user: ${user}"
+    fi
+
+    if [ -z ${port} ]; then
+        echo -n "port: "
+        read port
+    else
+        echo "port: ${port}"
+    fi
+
+    if [ -z ${password} ]; then
+        echo -n "password: "
+        read password
+    else
+        echo "password: ${password}"
     fi
 
     if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" -a -z "${focus}" ]; then
