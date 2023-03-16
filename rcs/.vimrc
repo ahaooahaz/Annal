@@ -3,14 +3,14 @@
 source $VIMRUNTIME/defaults.vim
 
 " 文件备份, 修改时创建同名~文件作为备份文件
-if has("vms")
-    set nobackup
-else
-    set backup
-    if has("persistent_undo")
-        set undofile
-    endif
-endif
+" if has("vms")
+"     set nobackup
+" else
+"     set backup
+"     if has("persistent_undo")
+"         set undofile
+"     endif
+" endif
 
 " 与vi的兼容性设置
 set nocompatible

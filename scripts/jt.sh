@@ -2,7 +2,8 @@
 
 # set -x
 
-details=${HOME}/.config/jt.csv
+old_details=${HOME}/.config/jt.csv
+details=${ANNAL_ROOT}/configs/jt.csv
 
 function usage() {
 cat << USAGE
@@ -67,8 +68,32 @@ function s() {
         esac
     done
 
-    if [ -z "${ip}" -o -z "${port}" -o -z "${user}" -o -z "${password}" ]; then
-        usage && return
+    if [ -z ${ip} ]; then
+        echo -n "ip: "
+        read ip
+    else
+        echo "ip: ${ip}"
+    fi
+
+    if [ -z ${user} ]; then
+        echo -n "user: "
+        read user
+    else
+        echo "user: ${user}"
+    fi
+
+    if [ -z ${port} ]; then
+        echo -n "port: "
+        read port
+    else
+        echo "port: ${port}"
+    fi
+
+    if [ -z ${password} ]; then
+        echo -n "password: "
+        read password
+    else
+        echo "password: ${password}"
     fi
 
     if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" -a -z "${focus}" ]; then
@@ -134,25 +159,36 @@ function l() {
     done < ${details}
 }
 
-if [ $# -eq 0 ]; then
-    usage
-    exit 0
-fi
+function upgrade() {
+    # move config.
+    if [ -f ${old_details} ]; then
+        mv ${old_details} ${details}
+    fi
+}
 
-
-case $1 in
-    e)
-        $@
-        ;;
-    s)
-        $@
-        ;;
-    l)
-        l
-        ;;
-    -h|--help)
+function main() {
+    upgrade
+    if [ $# -eq 0 ]; then
         usage
-        ;;
-    *)
-        e $@
-esac
+        exit 0
+    fi
+
+    case $1 in
+        e)
+            $@
+            ;;
+        s)
+            $@
+            ;;
+        l)
+            l
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            e $@
+    esac
+}
+
+main $@

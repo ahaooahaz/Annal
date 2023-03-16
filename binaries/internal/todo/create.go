@@ -1,14 +1,14 @@
 package todo
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
-	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 )
@@ -21,46 +21,80 @@ var createCmd = &cobra.Command{
 	Run:     createTodoTask,
 }
 
+func init() {
+	createCmd.Flags().StringP("title", "t", "", "todotosk title (max length 256)")
+	createCmd.Flags().StringP("desp", "d", "", "todotosk desp (max length 1024)")
+	createCmd.Flags().Uint64P("notify", "n", 3, "notify timeout seconds")
+	createCmd.Flags().StringP("plan", "p", time.Now().Add(time.Hour).Format(_TimeFormatString), fmt.Sprintf("plan time, format: %s", _TimeFormatString))
+
+	createCmd.MarkFlagRequired("title")
+	createCmd.MarkFlagRequired("desp")
+	createCmd.MarkFlagRequired("plan")
+}
+
 func createTodoTask(cmd *cobra.Command, args []string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	var err error
-	task := &proto.TodoTask{
-		UUID:      uuid.New().String(),
-		UpdatedAt: time.Now().Unix(),
-		CreatedAt: time.Now().Unix(),
+
+	var title, desp string
+
+	title, err = cmd.Flags().GetString("title")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", err.Error())
+		return
 	}
 
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Printf("What todo:\n")
-	title, _, _ := reader.ReadLine()
-	task.Title = string(title)
-	fmt.Printf("What desp:\n")
-	desp, _, _ := reader.ReadLine()
-	task.Description = string(desp)
-	fmt.Printf("When todo: (default: 1 hour later)\n")
-	var planT int
+	if strings.TrimSpace(title) == "" {
+		fmt.Fprintf(os.Stderr, "title format invalid")
+		return
+	}
+
+	desp, err = cmd.Flags().GetString("desp")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", err.Error())
+		return
+	}
+
+	var planStr string
+	planStr, err = cmd.Flags().GetString("plan")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", err.Error())
+		return
+	}
 	var plan time.Time
-
-	fmt.Scanf("%d\n", planT)
-	switch planT {
-	case 1:
-		fmt.Printf("Input time: (format: %s)\n", _TimeFormatString)
-		planS, _, _ := reader.ReadLine()
-		plan, err = time.Parse(_TimeFormatString, string(planS))
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "%s\n", err.Error())
-			return
-		}
-	default:
-		plan = time.Now().Add(time.Hour)
+	plan, err = time.ParseInLocation(_TimeFormatString, planStr, time.Local)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "parse plan time failed, err: %v", err.Error())
+		return
 	}
-	task.Plan = plan.Unix()
 
-	var tasks []*proto.TodoTask
+	var notifyTimeout uint64
+	notifyTimeout, err = cmd.Flags().GetUint64("notify")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s", err.Error())
+		return
+	}
+
+	err = CreateTodoTask(ctx, title, desp, plan, notifyTimeout, notify)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+		return
+	}
+}
+
+func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time, notifyTimeout uint64, notify func(task *pb.TodoTask, timeout uint64) error) (err error) {
+	task := &pb.TodoTask{
+		UUID:        uuid.NewString(),
+		Title:       title,
+		Description: desp,
+		Plan:        plan.Unix(),
+		CreatedAt:   time.Now().Unix(),
+		UpdatedAt:   time.Now().Unix(),
+	}
+	var tasks []*pb.TodoTask
 	tasks, err = storage.ListTodoTasks(ctx, storage.GetInstance())
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v", err.Error())
 		return
 	}
 
@@ -77,27 +111,14 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		}
 	}
 	task.Index = index
-	err = CreateTodoTasks(ctx, []*proto.TodoTask{task})
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
-		return
-	}
-}
 
-func CreateTodoTasks(ctx context.Context, tasks []*proto.TodoTask) (err error) {
-	if len(tasks) == 0 {
+	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), []*pb.TodoTask{task})
+	if err != nil {
 		return
 	}
 
-	for _, task := range tasks {
-		if err = task.Validate(); err != nil {
-			return
-		}
-	}
-
-	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), tasks)
+	err = notify(task, notifyTimeout)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v", err.Error())
 		return
 	}
 	return

@@ -13,8 +13,8 @@ import (
 
 var ServeRTMPCmd = &cobra.Command{
 	Use:   "servertmp",
-	Short: "simple rtmp server.",
-	Long:  `simple rtmp server.`,
+	Short: "simple rtmp server",
+	Long:  `simple rtmp server`,
 	Run:   doServeRTMP,
 }
 

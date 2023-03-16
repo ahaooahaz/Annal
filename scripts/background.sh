@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: update background.
 
 picpath=${HOME}/Pictures/$(date +%s)-background.jpeg
 
