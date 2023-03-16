@@ -1,4 +1,5 @@
 #!/bin/sh
+# shh login info.
 
 cat << EOF
 

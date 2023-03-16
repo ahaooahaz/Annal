@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
+	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
 	"github.com/jedib0t/go-pretty/table"
 	"github.com/jedib0t/go-pretty/text"
 )
@@ -36,7 +36,7 @@ var columns = []Column{
 }
 
 // printTable prints an individual table of mounts.
-func printTable(title string, m []*proto.TodoTask, opts TableOptions) {
+func printTable(title string, m []*pb.TodoTask, opts TableOptions) {
 	tab := table.NewWriter()
 	tab.SetOutputMirror(os.Stdout)
 	tab.SetStyle(opts.Style)

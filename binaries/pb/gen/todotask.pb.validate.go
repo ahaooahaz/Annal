@@ -87,6 +87,7 @@ func (m *TodoTask) validate(all bool) error {
 	if len(errors) > 0 {
 		return TodoTaskMultiError(errors)
 	}
+
 	return nil
 }
 

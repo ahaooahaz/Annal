@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -38,9 +38,9 @@ func PruneTodoTasks(ctx context.Context) (err error) {
 		return
 	}
 
-	var tasks []*proto.TodoTask
+	var tasks []*pb.TodoTask
 	tasks, err = storage.ListTodoTasksWithCondition(ctx, tx, map[string]interface{}{
-		"status": proto.TodoTaskStatus_DONE.Number(),
+		"status": pb.TodoTaskStatus_DONE.Number(),
 	})
 	if err != nil {
 		logrus.Errorf("%v", err.Error())

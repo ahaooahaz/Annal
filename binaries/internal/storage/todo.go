@@ -6,10 +6,10 @@ import (
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/sirupsen/logrus"
 
-	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
+	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
 )
 
-func ListTodoTasks(ctx context.Context, db DB) (tasks []*proto.TodoTask, err error) {
+func ListTodoTasks(ctx context.Context, db DB) (tasks []*pb.TodoTask, err error) {
 	ss := sqlbuilder.NewSelectBuilder()
 	ss.From(todosTable)
 	ss.Select(TodosCols...)
@@ -26,7 +26,7 @@ func ListTodoTasks(ctx context.Context, db DB) (tasks []*proto.TodoTask, err err
 	return
 }
 
-func ListTodoTasksWithCondition(ctx context.Context, db DB, conditions map[string]interface{}) (tasks []*proto.TodoTask, err error) {
+func ListTodoTasksWithCondition(ctx context.Context, db DB, conditions map[string]interface{}) (tasks []*pb.TodoTask, err error) {
 	ss := sqlbuilder.NewSelectBuilder()
 	ss.From(todosTable)
 	ss.Select(TodosCols...)
@@ -49,7 +49,7 @@ func ListTodoTasksWithCondition(ctx context.Context, db DB, conditions map[strin
 	return
 }
 
-func CreateTodoTasks(ctx context.Context, db DB, tasks []*proto.TodoTask) (err error) {
+func CreateTodoTasks(ctx context.Context, db DB, tasks []*pb.TodoTask) (err error) {
 	ss := sqlbuilder.NewInsertBuilder()
 	ss.InsertInto(todosTable)
 	ss.Cols(TodosCols[1:]...)
@@ -84,11 +84,11 @@ func DeleteTodoTasks(ctx context.Context, db DB, ids []interface{}) (err error) 
 	return
 }
 
-func UpdateTodoTask(ctx context.Context, db DB, task *proto.TodoTask) (err error) {
+func UpdateTodoTask(ctx context.Context, db DB, task *pb.TodoTask) (err error) {
 	su := sqlbuilder.NewUpdateBuilder()
 	su.Update(todosTable)
 
-	if task.Status == proto.TodoTaskStatus_DONE {
+	if task.Status == pb.TodoTaskStatus_DONE {
 		su.Set(
 			su.E(TodosCols[2], 0),
 			su.E(TodosCols[3], task.Title),
@@ -121,7 +121,7 @@ func UpdateTodoTask(ctx context.Context, db DB, task *proto.TodoTask) (err error
 	return
 }
 
-func SelectTodoTask(ctx context.Context, db DB, ID int64) (task *proto.TodoTask, err error) {
+func SelectTodoTask(ctx context.Context, db DB, ID int64) (task *pb.TodoTask, err error) {
 	ss := sqlbuilder.NewSelectBuilder()
 	ss.From(todosTable)
 	ss.Select(TodosCols...)
@@ -131,7 +131,7 @@ func SelectTodoTask(ctx context.Context, db DB, ID int64) (task *proto.TodoTask,
 	ss.Limit(1)
 
 	command, args := ss.Build()
-	task = &proto.TodoTask{}
+	task = &pb.TodoTask{}
 	err = db.Get(task, command, args...)
 	if err != nil {
 		logrus.WithFields(logrus.Fields{
