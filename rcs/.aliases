@@ -3,3 +3,7 @@ alias vi=vim
 alias say=spd-say
 alias a=annal
 alias t=tmux
+
+alias kubectx='kubectl config use-context '
+
+alias jt='annal jt'

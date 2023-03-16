@@ -5,4 +5,10 @@ var (
 	ANNALROOT = ""
 	LOGFILE   = ""
 	DBPATH    = ""
+	ICONPATH  = ""
+	ATJOBS    = ""
+)
+
+var (
+	NOTIFYSENDSH = ""
 )

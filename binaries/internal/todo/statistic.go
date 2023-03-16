@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	proto "github.com/AHAOAHA/Annal/binaries/internal/pb/gen"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
 	"github.com/sirupsen/logrus"
 )
 
@@ -25,9 +25,9 @@ func Statistic(ctx context.Context) (s *StatisticInformation) {
 	}
 	for _, task := range tasks {
 		switch task.GetStatus() {
-		case proto.TodoTaskStatus_DONE:
+		case pb.TodoTaskStatus_DONE:
 			s.Done++
-		case proto.TodoTaskStatus_PENDING:
+		case pb.TodoTaskStatus_PENDING:
 			if time.Now().Unix() < task.GetPlan() {
 				s.Expired++
 			} else {

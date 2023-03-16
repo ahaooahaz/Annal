@@ -17,10 +17,10 @@ BINARIES_CMDS = $(shell ls binaries/cmd)
 # 来自submodule的工具
 SUBMODULE_PLUGINS = ohmyzsh ohmytmux
 # 来自包管理的工具, TODO: VERSION(9.0)
-INSTALL_PLUGINS = sshpass base64
+INSTALL_PLUGINS = sshpass base64 at
 PLUGINS = $(SUBMODULE_PLUGINS) $(INSTALL_PLUGINS)
 
-ENV_TARGETS = $(LINK_FILES) $(PLUGINS)
+ENV_TARGETS = $(LINK_FILES) $(PLUGINS) docker-wechat
 CMD_TARGETS = $(CMDS)
 
 OUTPUT_BINARIES = bin
@@ -63,6 +63,10 @@ ohmytmux:
 	-mv ~/.tmux.conf ~/.tmux.conf.bak.$(TIMESTAMP)
 	ln -sf ~/.tmux/.tmux.conf ~/
 
+wechat wechat.work:
+	-rm ~/.local/bin/$@
+	ln -sr scripts/docker-$@.sh ~/.local/bin/$@
+
 $(ZSH_PLUGINS):
 	-ln -sr plugins/$@ plugins/ohmyzsh/custom/plugins
 
@@ -81,7 +85,7 @@ clean:
 
 install: $(BINARIES_CMDS)
 	mkdir -p $(INSTALL_PATH)
-	cp $^ $(INSTALL_PATH)
+	if [ ! -h $(INSTALL_PATH)/annal ]; then ln -s $(shell pwd)/binaries/annal $(INSTALL_PATH)/annal; fi
 
 UNFILES := $(foreach un, $(BINARIES_CMDS), $(INSTALL_PATH)/$(un))
 uninstall:
