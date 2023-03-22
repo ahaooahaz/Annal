@@ -40,8 +40,13 @@ func initEnv() (err error) {
 	config.NOTIFYSENDSH = config.ANNALROOT + "/scripts/notify-send.sh"
 	config.ATJOBS = config.ANNALROOT + "/.at.jobs"
 
+	err = encapsutils.CreateDir(filepath.Dir(config.LOGFILE), os.ModePerm)
+	if err != nil {
+		return
+	}
+
 	var f *os.File
-	f, err = encapsutils.CreateFile(config.LOGFILE)
+	f, err = os.OpenFile(config.LOGFILE, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		return
 	}
