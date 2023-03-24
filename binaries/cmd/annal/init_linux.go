@@ -7,10 +7,8 @@ import (
 	"time"
 
 	"github.com/AHAOAHA/Annal/binaries/internal/config"
-	"github.com/AHAOAHA/Annal/binaries/internal/gui"
 	"github.com/AHAOAHA/Annal/binaries/internal/image"
 	"github.com/AHAOAHA/Annal/binaries/internal/jt"
-	"github.com/AHAOAHA/Annal/binaries/internal/rtmp"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
 	"github.com/AHAOAHA/Annal/binaries/internal/todo"
 	"github.com/AHAOAHA/Annal/binaries/internal/version"
@@ -24,9 +22,7 @@ func init() {
 		panic(err.Error())
 	}
 
-	rootCmd.AddCommand(gui.Cmd)
 	rootCmd.AddCommand(jt.Cmd)
-	rootCmd.AddCommand(rtmp.ServeRTMPCmd)
 	rootCmd.AddCommand(todo.Cmd)
 	rootCmd.AddCommand(version.Cmd)
 	rootCmd.AddCommand(image.Cmd)
