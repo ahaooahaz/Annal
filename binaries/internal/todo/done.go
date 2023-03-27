@@ -38,6 +38,8 @@ func doneTodoTasks(cmd *cobra.Command, args []string) {
 }
 
 func DoneTodoTask(ctx context.Context, ID int64) (err error) {
+	fetch(ctx)
+
 	var tx *sqlx.Tx
 	tx, err = storage.GetInstance().Beginx()
 	if err != nil {

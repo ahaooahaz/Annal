@@ -1,15 +1,20 @@
 package todo
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"os"
 	"strings"
 	"time"
 
+	"github.com/AHAOAHA/Annal/binaries/internal/config"
+	"github.com/AHAOAHA/Annal/binaries/internal/notify"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
 	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
+	"github.com/AHAOAHA/encapsutils"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -36,6 +41,8 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	var err error
+
+	fetch(ctx)
 
 	var title, desp string
 
@@ -76,14 +83,14 @@ func createTodoTask(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	err = CreateTodoTask(ctx, title, desp, plan, notifyTimeout, notify)
+	err = CreateTodoTask(ctx, title, desp, plan, notifyTimeout)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		return
 	}
 }
 
-func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time, notifyTimeout uint64, notify func(task *pb.TodoTask, timeout uint64) error) (err error) {
+func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time, notifyTimeout uint64) (err error) {
 	task := &pb.TodoTask{
 		UUID:        uuid.NewString(),
 		Title:       title,
@@ -112,12 +119,45 @@ func CreateTodoTask(ctx context.Context, title, desp string, plan time.Time, not
 	}
 	task.Index = index
 
-	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), []*pb.TodoTask{task})
+	commandLine := []string{"#!/bin/bash"}
+	jobpath := config.ATJOBS + "/" + task.GetUUID() + ".sh"
+	step1 := []string{config.NOTIFYSENDSH, "-ti", fmt.Sprintf("'%s'", task.GetTitle()), "-d", fmt.Sprintf("'%s'", task.GetDescription()), "-t", fmt.Sprintf("%d", 10)}
+	step2 := []string{"rm", "-rf", jobpath}
+	strings.Join(step1, " ")
+	commandLine = append(commandLine, strings.Join(step1, " "))
+	commandLine = append(commandLine, strings.Join(step2, " "))
+
+	var f *os.File
+	f, err = encapsutils.CreateFile(jobpath)
+	if err != nil {
+		logrus.Errorf(err.Error())
+		return
+	}
+	defer f.Close()
+
+	write := bufio.NewWriter(f)
+	for _, c := range commandLine {
+		_, err = write.WriteString(c)
+		if err != nil {
+			logrus.Errorf(err.Error())
+			return
+		}
+		_, err = write.WriteString("\n")
+		if err != nil {
+			logrus.Errorf(err.Error())
+			return
+		}
+	}
+	write.Flush()
+
+	var jobID uint64
+	jobID, err = notify.CreateOnTimeJob(ctx, jobpath, time.Unix(task.GetPlan(), 0))
 	if err != nil {
 		return
 	}
 
-	err = notify(task, notifyTimeout)
+	task.NotifyJobId = jobID
+	err = storage.CreateTodoTasks(ctx, storage.GetInstance(), []*pb.TodoTask{task})
 	if err != nil {
 		return
 	}

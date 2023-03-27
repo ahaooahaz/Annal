@@ -10,6 +10,7 @@ option go_package = "./gen";
 enum TodoTaskStatus {
     PENDING = 0;
     DONE = 1;
+    EXPIRED = 2;
 }
 
 message TodoTask {
@@ -22,4 +23,6 @@ message TodoTask {
     TodoTaskStatus status = 7 [(tagger.tags) = "db:\"status\""];
     int64 created_at = 8 [(tagger.tags) = "db:\"created_at\""];
     int64 updated_at = 9 [(tagger.tags) = "db:\"updated_at\""];
+
+    uint64 notify_job_id = 101 [(tagger.tags) = "db:\"notify_job_id\""];
 }

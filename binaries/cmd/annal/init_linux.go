@@ -7,10 +7,8 @@ import (
 	"time"
 
 	"github.com/AHAOAHA/Annal/binaries/internal/config"
-	"github.com/AHAOAHA/Annal/binaries/internal/gui"
 	"github.com/AHAOAHA/Annal/binaries/internal/image"
 	"github.com/AHAOAHA/Annal/binaries/internal/jt"
-	"github.com/AHAOAHA/Annal/binaries/internal/rtmp"
 	"github.com/AHAOAHA/Annal/binaries/internal/storage"
 	"github.com/AHAOAHA/Annal/binaries/internal/todo"
 	"github.com/AHAOAHA/Annal/binaries/internal/version"
@@ -24,9 +22,7 @@ func init() {
 		panic(err.Error())
 	}
 
-	rootCmd.AddCommand(gui.Cmd)
 	rootCmd.AddCommand(jt.Cmd)
-	rootCmd.AddCommand(rtmp.ServeRTMPCmd)
 	rootCmd.AddCommand(todo.Cmd)
 	rootCmd.AddCommand(version.Cmd)
 	rootCmd.AddCommand(image.Cmd)
@@ -40,8 +36,13 @@ func initEnv() (err error) {
 	config.NOTIFYSENDSH = config.ANNALROOT + "/scripts/notify-send.sh"
 	config.ATJOBS = config.ANNALROOT + "/.at.jobs"
 
+	err = encapsutils.CreateDir(filepath.Dir(config.LOGFILE), os.ModePerm)
+	if err != nil {
+		return
+	}
+
 	var f *os.File
-	f, err = encapsutils.CreateFile(config.LOGFILE)
+	f, err = os.OpenFile(config.LOGFILE, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		return
 	}
