@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/storage"
 	"github.com/AHAOAHA/Annal/binaries/pb/gen"
+	"github.com/AHAOAHA/Annal/binaries/storage"
 	"github.com/sirupsen/logrus"
 )
 

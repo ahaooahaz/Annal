@@ -6,12 +6,15 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/config"
-	"github.com/AHAOAHA/Annal/binaries/internal/image"
-	"github.com/AHAOAHA/Annal/binaries/internal/jt"
-	"github.com/AHAOAHA/Annal/binaries/internal/storage"
-	"github.com/AHAOAHA/Annal/binaries/internal/todo"
-	"github.com/AHAOAHA/Annal/binaries/internal/version"
+	"github.com/AHAOAHA/Annal/binaries/cmd/annal/child/jt"
+	"github.com/AHAOAHA/Annal/binaries/cmd/annal/child/version"
+	"github.com/AHAOAHA/Annal/binaries/cmd/annal/child/webrtc"
+
+	"github.com/AHAOAHA/Annal/binaries/config"
+
+	"github.com/AHAOAHA/Annal/binaries/storage"
+	"github.com/AHAOAHA/Annal/binaries/todo"
+
 	"github.com/AHAOAHA/encapsutils"
 	"github.com/sirupsen/logrus"
 )
@@ -25,7 +28,7 @@ func init() {
 	rootCmd.AddCommand(jt.Cmd)
 	rootCmd.AddCommand(todo.Cmd)
 	rootCmd.AddCommand(version.Cmd)
-	rootCmd.AddCommand(image.Cmd)
+	rootCmd.AddCommand(webrtc.Cmd)
 }
 
 func initEnv() (err error) {

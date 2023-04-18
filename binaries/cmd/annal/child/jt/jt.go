@@ -5,7 +5,7 @@ import (
 	"os"
 	"syscall"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/config"
+	"github.com/AHAOAHA/Annal/binaries/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

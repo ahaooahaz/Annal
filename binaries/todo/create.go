@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/config"
-	"github.com/AHAOAHA/Annal/binaries/internal/notify"
-	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	"github.com/AHAOAHA/Annal/binaries/config"
+	"github.com/AHAOAHA/Annal/binaries/notify"
 	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
+	"github.com/AHAOAHA/Annal/binaries/storage"
 	"github.com/AHAOAHA/encapsutils"
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"

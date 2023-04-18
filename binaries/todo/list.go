@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/storage"
 	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
+	"github.com/AHAOAHA/Annal/binaries/storage"
 	"github.com/jedib0t/go-pretty/table"
 	"github.com/spf13/cobra"
 )

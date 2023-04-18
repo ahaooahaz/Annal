@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/storage"
 	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
+	"github.com/AHAOAHA/Annal/binaries/storage"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

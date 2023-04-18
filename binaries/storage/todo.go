@@ -6,8 +6,8 @@ import (
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/sirupsen/logrus"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/utils"
 	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
+	"github.com/AHAOAHA/Annal/binaries/utils"
 )
 
 func ListTodoTasks(ctx context.Context, db DB) (tasks []*pb.TodoTask, err error) {

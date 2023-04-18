@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/storage"
-	"github.com/AHAOAHA/Annal/binaries/internal/utils"
 	pb "github.com/AHAOAHA/Annal/binaries/pb/gen"
+	"github.com/AHAOAHA/Annal/binaries/storage"
+	"github.com/AHAOAHA/Annal/binaries/utils"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

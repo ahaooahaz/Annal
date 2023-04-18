@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/AHAOAHA/Annal/binaries/internal/config"
-	"github.com/AHAOAHA/Annal/binaries/internal/storage"
+	"github.com/AHAOAHA/Annal/binaries/config"
+	"github.com/AHAOAHA/Annal/binaries/storage"
 	"github.com/stretchr/testify/assert"
 )
 
