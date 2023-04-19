@@ -1,6 +1,8 @@
 package rtc
 
 import (
+	"fmt"
+
 	"github.com/pion/webrtc/v3"
 	"github.com/sirupsen/logrus"
 )
@@ -22,6 +24,12 @@ func OfferPublishToAnswer(api *webrtc.API, videoFile string, videoFps int, gener
 		return
 	}
 
+	peerConnection.OnICECandidate(func(candidate *webrtc.ICECandidate) {
+		if candidate == nil {
+			return
+		}
+	})
+
 	err = peerConnection.SetLocalDescription(offer1)
 	if err != nil {
 		return
@@ -30,6 +38,7 @@ func OfferPublishToAnswer(api *webrtc.API, videoFile string, videoFps int, gener
 
 	offer2 = *peerConnection.LocalDescription()
 	logrus.Debug("offer2: ", offer2.SDP)
+	fmt.Printf("%+v\n", offer2.SDP)
 
 	answer, err = generateAnswerFunc(offer2)
 	if err != nil {

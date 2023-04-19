@@ -4,8 +4,11 @@ import (
 	"net"
 
 	"github.com/pion/interceptor"
+	"github.com/pion/logging"
 	"github.com/pion/webrtc/v3"
 )
+
+var logger = logging.NewDefaultLoggerFactory().NewLogger("zlmediakit")
 
 type RTCEngine_NETWORKTYPE int
 
@@ -21,13 +24,11 @@ type RTCEngineConfiguration struct {
 	UDP         *net.UDPAddr
 }
 
+func init() {
+
+}
+
 func NewRTCEngine(conf *RTCEngineConfiguration) (api *webrtc.API, err error) {
-	if conf == nil {
-		conf = &RTCEngineConfiguration{
-			NetworkType: RTCEngineNETWORKTYPE_UDP,
-			UDP:         &net.UDPAddr{IP: net.IP{0, 0, 0, 0}, Port: 31938},
-		}
-	}
 	var t, u bool
 	switch conf.NetworkType {
 	case RTCEngineNETWORKTYPE_TCP:
@@ -37,8 +38,6 @@ func NewRTCEngine(conf *RTCEngineConfiguration) (api *webrtc.API, err error) {
 	case RTCEngineNETWORKTYPE_MIX:
 		t = true
 		u = true
-	default:
-		panic("invalid network type")
 	}
 
 	m := &webrtc.MediaEngine{}
@@ -60,27 +59,21 @@ func NewRTCEngine(conf *RTCEngineConfiguration) (api *webrtc.API, err error) {
 			webrtc.NetworkTypeUDP4,
 		})
 		var tcpListener *net.TCPListener
-		tcpListener, err = net.ListenTCP("tcp", &net.TCPAddr{
-			IP:   net.IP{0, 0, 0, 0},
-			Port: 31937,
-		})
+		tcpListener, err = net.ListenTCP("tcp", conf.TCP)
 		if err != nil {
 			return
 		}
 
-		tcpMux := webrtc.NewICETCPMux(nil, tcpListener, 8)
+		tcpMux := webrtc.NewICETCPMux(logger, tcpListener, 8)
 		settingEngine.SetICETCPMux(tcpMux)
 	}
 	if u {
 		var udpListener *net.UDPConn
-		udpListener, err = net.ListenUDP("udp", &net.UDPAddr{
-			IP:   net.IP{0, 0, 0, 0},
-			Port: 31938,
-		})
+		udpListener, err = net.ListenUDP("udp", conf.UDP)
 		if err != nil {
 			return
 		}
-		udpMux := webrtc.NewICEUDPMux(nil, udpListener)
+		udpMux := webrtc.NewICEUDPMux(logger, udpListener)
 		settingEngine.SetICEUDPMux(udpMux)
 	}
 

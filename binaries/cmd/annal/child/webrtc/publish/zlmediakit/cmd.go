@@ -75,5 +75,5 @@ func init() {
 	arg_STREAM = Cmd.Flags().StringP("stream", "s", "stream", "zlmediakit stream name")
 	arg_SOURCE = Cmd.Flags().StringP("source", "", "test.h264", "zlmediakit source file (H264)")
 	arg_TCP = Cmd.Flags().BoolP("tcp", "", false, " use tcp to send h264 data")
-	arg_UDP = Cmd.Flags().BoolP("udp", "", true, " use udp to send h264 data")
+	arg_UDP = Cmd.Flags().BoolP("udp", "", false, " use udp to send h264 data")
 }
