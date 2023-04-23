@@ -22,12 +22,12 @@ var Cmd = &cobra.Command{
 
 		if *arg_TCP {
 			conf.NetworkType = rtc.RTCEngineNETWORKTYPE_TCP
-			conf.TCP = &net.TCPAddr{IP: net.IP{0, 0, 0, 0}, Port: 31937}
+			conf.TCP = &net.TCPAddr{IP: net.IP{0, 0, 0, 0}, Port: 31922}
 		}
 
 		if *arg_UDP {
 			conf.NetworkType = rtc.RTCEngineNETWORKTYPE_UDP
-			conf.UDP = &net.UDPAddr{IP: net.IP{0, 0, 0, 0}, Port: 31938}
+			conf.UDP = &net.UDPAddr{IP: net.IP{0, 0, 0, 0}, Port: 31921}
 		}
 
 		if *arg_UDP && *arg_TCP {

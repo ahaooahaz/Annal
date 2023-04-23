@@ -24,10 +24,6 @@ type RTCEngineConfiguration struct {
 	UDP         *net.UDPAddr
 }
 
-func init() {
-
-}
-
 func NewRTCEngine(conf *RTCEngineConfiguration) (api *webrtc.API, err error) {
 	var t, u bool
 	switch conf.NetworkType {
@@ -52,6 +48,7 @@ func NewRTCEngine(conf *RTCEngineConfiguration) (api *webrtc.API, err error) {
 
 	settingEngine := webrtc.SettingEngine{}
 
+	// settingEngine.SetOfferingDTLSRole(webrtc.DTLSRoleClient)
 	if t {
 		// Enable support only for TCP ICE candidates.
 		settingEngine.SetNetworkTypes([]webrtc.NetworkType{
@@ -66,6 +63,9 @@ func NewRTCEngine(conf *RTCEngineConfiguration) (api *webrtc.API, err error) {
 
 		tcpMux := webrtc.NewICETCPMux(logger, tcpListener, 8)
 		settingEngine.SetICETCPMux(tcpMux)
+		settingEngine.SetAnsweringDTLSRole(webrtc.DTLSRoleClient)
+		settingEngine.SetDTLSInsecureSkipHelloVerify(true)
+
 	}
 	if u {
 		var udpListener *net.UDPConn

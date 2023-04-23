@@ -19,7 +19,11 @@ require (
 	google.golang.org/protobuf v1.27.1
 )
 
-require github.com/pion/webrtc/v3 v3.1.59
+require (
+	github.com/pion/interceptor v0.1.12
+	github.com/pion/logging v0.2.2
+	github.com/pion/webrtc/v3 v3.1.59
+)
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
@@ -35,8 +39,6 @@ require (
 	github.com/pion/datachannel v1.5.5 // indirect
 	github.com/pion/dtls/v2 v2.2.6 // indirect
 	github.com/pion/ice/v2 v2.3.2 // indirect
-	github.com/pion/interceptor v0.1.12 // indirect
-	github.com/pion/logging v0.2.2 // indirect
 	github.com/pion/mdns v0.0.7 // indirect
 	github.com/pion/randutil v0.1.0 // indirect
 	github.com/pion/rtcp v1.2.10 // indirect
