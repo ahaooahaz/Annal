@@ -117,11 +117,13 @@ function s() {
 
 function e() {
     if [ -z "$1" ]; then
+        alert "you need input remote machine ip suffix"
         usage
         return
     fi
     
     if [ ! -f "${details}" ]; then
+        alert "you need save remote machine details first, use 'jt s'"
         usage
         return
     fi
