@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"sync"
 
-	"github.com/AHAOAHA/Annal/binaries/config"
+	"github.com/ahaooahaz/Annal/binaries/config"
 	"github.com/huandu/go-sqlbuilder"
 	"github.com/jmoiron/sqlx"
 )

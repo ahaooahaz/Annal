@@ -5,8 +5,8 @@ import (
 	"net"
 	"os"
 
-	"github.com/AHAOAHA/Annal/binaries/rtc"
-	zlmkit "github.com/AHAOAHA/Annal/binaries/wrapper/ZLMediaKit"
+	"github.com/ahaooahaz/Annal/binaries/rtc"
+	zlmkit "github.com/ahaooahaz/Annal/binaries/wrapper/ZLMediaKit"
 	"github.com/pion/webrtc/v3"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -14,8 +14,8 @@ import (
 
 var Cmd = &cobra.Command{
 	Use:   "zlmediakit",
-	Short: "zlmediakit",
-	Long:  `zlmediakit`,
+	Short: "zlmediakit WebRTC client",
+	Long:  `zlmediakit WebRTC client`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var api *webrtc.API
 		conf := &rtc.RTCEngineConfiguration{}

@@ -2,9 +2,7 @@
 
 ![icon](./icons/icon.svg)
 
-![built status](https://api.travis-ci.com/AHAOAHA/Annal.svg)
-![codecov](https://codecov.io/gh/AHAOAHA/Annal/branch/master/graph/badge.svg)
-[![License](https://img.shields.io/github/license/AHAOAHA/Annal)](https://raw.githubusercontent.com/AHAOAHA/Annal/master/LICENSE)
+![built status](https://github.com/ahaooahaz/Annal/actions/workflows/ci.yaml/badge.svg) ![codecov](https://codecov.io/gh/ahaooahaz/Annal/branch/words/develop/graph/badge.svg) [![License](https://img.shields.io/github/license/ahaooahaz/Annal)](https://raw.githubusercontent.com/ahaooahaz/Annal/master/LICENSE)
 
 Synchronize develop environment, reference samples, utils and configuration to build develop environment quickly.
 
@@ -25,4 +23,9 @@ Synchronize develop environment, reference samples, utils and configuration to b
 
 jump to remote machine by ssh and sshpass, suitable for scenarios where multiple jump to different machines in a safe environment, password and details will save in ${HOME}/.jtremote.local, make sure it will not leak.
 
+### WebRTC
+
+WebRTC publish video stream to server, server support [zlmediakit](https://github.com/ZLMediaKit/ZLMediaKit).
+
 ### [MIT LICENSE](LICENSE)
+

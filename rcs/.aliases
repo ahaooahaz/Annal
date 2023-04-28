@@ -8,3 +8,6 @@ alias kubectx='kubectl config use-context '
 
 alias jt='annal jt'
 alias todo='annal todo'
+
+alias wr='annal words remb'
+alias wc='annal words check'

@@ -4,7 +4,7 @@ SHELL = cmd.exe
 # Windows
 TARGETS = $(shell dir cmd /b)
 GO_SRCS = $(shell for /r . %%i in (*.go) do @echo %%i)
-REPO = github.com/AHAOAHA/Annal/binaries
+REPO = github.com/ahaooahaz/Annal/binaries
 BUILT_TS ?= $(shell echo %date:~0,4%%date:~5,2%%date:~8,2%%time:~0,2%%time:~3,2%%time:~6,2%)
 BINARY_SUFFIX = .exe
 

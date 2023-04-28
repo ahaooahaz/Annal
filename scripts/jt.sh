@@ -3,7 +3,7 @@
 # set -x
 
 old_details=${HOME}/.config/jt.csv
-details=${ANNAL_ROOT}/configs/jt.csv
+details=${HOME}/.config/annal/jt/jt.csv
 
 function usage() {
 cat << USAGE

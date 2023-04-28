@@ -1,4 +1,4 @@
-module github.com/AHAOAHA/Annal/binaries
+module github.com/ahaooahaz/Annal/binaries
 
 go 1.17
 
@@ -8,7 +8,6 @@ require (
 )
 
 require (
-	github.com/AHAOAHA/encapsutils v0.0.0-20221230073425-2d6a3034d051
 	github.com/envoyproxy/protoc-gen-validate v0.6.2
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/uuid v1.3.0
@@ -20,6 +19,8 @@ require (
 )
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
+	github.com/ahaooahaz/encapsutils v0.0.0-20230425060950-94c3cfe4462a
 	github.com/pion/interceptor v0.1.12
 	github.com/pion/logging v0.2.2
 	github.com/pion/webrtc/v3 v3.1.59

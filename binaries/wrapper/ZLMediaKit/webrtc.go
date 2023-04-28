@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/AHAOAHA/Annal/binaries/rtc"
+	"github.com/ahaooahaz/Annal/binaries/rtc"
 	"github.com/pion/webrtc/v3"
 	"github.com/sirupsen/logrus"
 )

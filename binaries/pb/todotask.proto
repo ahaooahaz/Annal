@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package AHAOAHA.Annal;
+package ahaooahaz.Annal;
 
 import "github.com/srikrsna/protoc-gen-gotag/tagger/tagger.proto";
 import "github.com/envoyproxy/protoc-gen-validate/validate/validate.proto";

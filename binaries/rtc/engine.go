@@ -48,8 +48,11 @@ func NewRTCEngine(conf *RTCEngineConfiguration) (api *webrtc.API, err error) {
 
 	settingEngine := webrtc.SettingEngine{}
 
-	// settingEngine.SetOfferingDTLSRole(webrtc.DTLSRoleClient)
+	settingEngine.SetAnsweringDTLSRole(webrtc.DTLSRoleClient)
 	if t {
+		// TCP只支持passive候选地址，作为客户端时，无法通过TCP与对端建立链接.
+		// https://github.com/pion/webrtc/issues/2458
+
 		// Enable support only for TCP ICE candidates.
 		settingEngine.SetNetworkTypes([]webrtc.NetworkType{
 			webrtc.NetworkTypeTCP4,

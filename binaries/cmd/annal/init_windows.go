@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/AHAOAHA/Annal/binaries/config"
+	"github.com/ahaooahaz/Annal/binaries/config"
 )
 
 func init() {

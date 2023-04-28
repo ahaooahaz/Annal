@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package ahaooahaz.Annal;
+
+import "github.com/srikrsna/protoc-gen-gotag/tagger/tagger.proto";
+
+option go_package = "./gen";
+
+message Word {
+    uint64 ID = 1 [(tagger.tags) = "db:\"id\""];
+    string word = 2 [(tagger.tags) = "db:\"word\""];
+    string pronunciation = 3 [(tagger.tags) = "db:\"pronunciation\""];
+    string CN = 4 [(tagger.tags) = "db:\"cn\""];
+    int32 status = 5 [(tagger.tags) = "db:\"status\""];
+    string meta = 6 [(tagger.tags) = "db:\"meta\""];
+    int64 created_at = 7 [(tagger.tags) = "db:\"created_at\""];
+    int64 updated_at = 8 [(tagger.tags) = "db:\"updated_at\""];
+}
