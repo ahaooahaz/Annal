@@ -2,7 +2,7 @@
 
 ![icon](./icons/icon.svg)
 
-![built status](https://github.com/ahaooahaz/Annal/actions/workflows/ci.yaml/badge.svg) ![codecov](https://codecov.io/gh/ahaooahaz/Annal/branch/words/develop/graph/badge.svg) [![License](https://img.shields.io/github/license/ahaooahaz/Annal)](https://raw.githubusercontent.com/ahaooahaz/Annal/master/LICENSE)
+![built status](https://github.com/ahaooahaz/Annal/actions/workflows/ci.yaml/badge.svg) ![codecov](https://codecov.io/gh/ahaooahaz/Annal/branch/master/graph/badge.svg) [![License](https://img.shields.io/github/license/ahaooahaz/Annal)](https://raw.githubusercontent.com/ahaooahaz/Annal/master/LICENSE)
 
 Synchronize develop environment, reference samples, utils and configuration to build develop environment quickly.
 
