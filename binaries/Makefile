@@ -21,6 +21,7 @@ GO_SRCS = $(shell find  .  -type f -regex  ".*.go$$")
 TARGETS = $(shell ls cmd)
 endif
 endif
+VENDOR_LIST = go.mod go.sum
 
 COMMIT_ID ?= $(shell git rev-parse --short HEAD)
 BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
@@ -35,7 +36,7 @@ LDFLAGS += -X "$(REPO)/version.GitBranch=$(BRANCH)"
 
 build: $(TARGETS)
 
-$(TARGETS): $(GO_SRCS)
+$(TARGETS): $(GO_SRCS) $(VENDOR_LIST)
 	${CGO_BUILD_OP} $(GO) build -ldflags '${LDFLAGS} -X "$(REPO)/version.App=$@"' -tags='$(TAGS)' -o $@$(BINARY_SUFFIX) $(REPO)/cmd/$@/
 
 test:
