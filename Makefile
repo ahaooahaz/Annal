@@ -7,7 +7,7 @@ RCS_DIR = appc
 ANNALRC = $${HOME}/.annalrc
 INSTALL_PATH = $${HOME}/.local/bin
 
-RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases
+RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases .bash_profile
 CONFIGS = .p10k.zsh .tmux.conf.local 
 LINK_FILES = $(foreach file, $(RCS), $(MKFILE_PATH)/rcs/$(file))
 LINK_FILES += $(foreach file, $(CONFIGS), $(MKFILE_PATH)/configs/$(file))
