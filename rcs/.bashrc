@@ -120,7 +120,3 @@ fi
 if [ -f ${HOME}/.envrc ]; then
     source ${HOME}/.envrc
 fi
-
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
-fi
