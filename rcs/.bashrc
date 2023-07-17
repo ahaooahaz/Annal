@@ -120,3 +120,10 @@ fi
 if [ -f ${HOME}/.envrc ]; then
     source ${HOME}/.envrc
 fi
+
+apps=(kubectl helm)
+for app in ${apps}; do
+    if [ $(type ${app} >/dev/null 2>&1; echo $?) -eq 0 ]; then
+        source <(${app} completion bash)
+    fi
+done

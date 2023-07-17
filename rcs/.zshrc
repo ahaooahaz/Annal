@@ -128,3 +128,10 @@ alias cman="man -M /usr/share/man/zh_CN"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+apps=(kubectl helm)
+for app in ${apps}; do
+    if [ $(type ${app} >/dev/null 2>&1; echo $?) -eq 0 ]; then
+        source <(${app} completion zsh)
+    fi
+done
