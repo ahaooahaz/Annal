@@ -16,8 +16,8 @@ BINARIES_CMDS = $(shell ls binaries/cmd)
 
 # 来自submodule的工具
 SUBMODULE_PLUGINS = ohmyzsh ohmytmux
-# 来自包管理的工具, TODO: VERSION(9.0)
-INSTALL_PLUGINS = sshpass base64 at
+# 来自包管理的工具
+INSTALL_PLUGINS = sshpass base64 at xsel
 PLUGINS = $(SUBMODULE_PLUGINS) $(INSTALL_PLUGINS)
 
 ENV_TARGETS = $(LINK_FILES) $(PLUGINS) docker-wechat
