@@ -1,0 +1,55 @@
+# Rime custom settings
+# encoding: utf-8
+patch:
+  # 修改输入模式列表
+  schema_list:
+    - schema: "luna_pinyin_simp"
+  # 修改设置菜单标题
+  switcher/caption: "【设置菜单】"
+  # 用半角作为设置菜单中的分隔符
+  switcher/option_list_separator: "/"
+  # inline_ascii: 在输入法的临时英文编辑区内输入字母、数字、符号、空格等，回车上屏后自动复位到中文
+  # commit_code: 已输入的编码字符上屏并切换至西文输入模式
+  # commit_text: 已输入的候选文字上屏并切换至西文输入模式
+  # clear: 丢弃已输入的内容并切换至西文输入模式
+  # noop: 屏蔽该切换键
+  ascii_composer/switch_key:
+    Caps_Lock: commit_text
+    Shift_R: commit_code
+    Shift_L: commit_code
+  # 设置候选字符为7
+  menu/page_size: 7
+  key_binder/bindings:
+    # 使用Enter上屏选中的文字
+    - when: has_menu
+      accept: Return
+      send: space
+    # 使用'[]'上下翻页
+    - when: paging
+      accept: bracketleft
+      send: Page_Up
+    - when: has_menu
+      accept: bracketright
+      send: Page_Down
+    # 选词时，通过ctrl+hjkl移动选词
+    - accept: "Control+k"
+      send: "Up"
+      when: "composing"
+    - accept: "Control+j"
+      send: "Down"
+      when: "composing"
+    - accept: "Control+h"
+      send: "Left"
+      when: "composing"
+    - accept: "Control+l"
+      send: "Right"
+      when: "composing"
+    - accept: "Tab"
+      send: "Down"
+      when: "has_menu"
+    # 与zsh冲突
+    # - accept: "Shift+Tab"
+    #   send: "Up"
+    #   when: "has_menu"
+
+

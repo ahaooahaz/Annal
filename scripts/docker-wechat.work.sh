@@ -8,9 +8,9 @@ docker run -d --name wxwork --device /dev/snd --ipc="host" \
     -v $HOME:/HostHome \
     -v $HOME/.wine-WXWork:/home/wechat/.deepinwine/Deepin-WXWork \
     -e DISPLAY=unix$DISPLAY \
-    -e XMODIFIERS=@im=fcitx \
-    -e QT_IM_MODULE=fcitx \
-    -e GTK_IM_MODULE=fcitx \
+    -e XMODIFIERS=@im=ibus \
+    -e QT_IM_MODULE=ibus \
+    -e GTK_IM_MODULE=ibus \
     -e AUDIO_GID=`getent group audio | cut -d: -f3` \
     -e GID=`id -g` \
     -e UID=`id -u` \

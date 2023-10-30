@@ -1,0 +1,11 @@
+---
+name: ahaooahaz_pinyin
+version: "1"
+sort: by_weight
+use_preset_vocabulary: true
+import_tables:
+  - luna_pinyin
+...
+
+张昊	zhanghao
+张昊	ahaooahaz

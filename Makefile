@@ -63,6 +63,16 @@ ohmytmux:
 	-mv ~/.tmux.conf ~/.tmux.conf.bak.$(TIMESTAMP)
 	ln -sf ~/.tmux/.tmux.conf ~/
 
+rime:
+	-mkdir -p ~/.config/ibus/rime
+	-mv ~/.config/ibus/rime/default.custom.yaml ~/.config/ibus/rime/default.custom.yaml.bak.$(TIMESTAMP)
+	ln -sr configs/rime/default.custom.yaml ~/.config/ibus/rime/default.custom.yaml
+	-mv ~/.config/ibus/rime/luna_pinyin_simp.custom.yaml ~/.config/ibus/rime/luna_pinyin_simp.custom.yaml.bak.$(TIMESTAMP)
+	ln -sr configs/rime/luna_pinyin_simp.custom.yaml ~/.config/ibus/rime/luna_pinyin_simp.custom.yaml
+	-mv ~/.config/ibus/rime/ahaooahaz_pinyin.dict.yaml ~/.config/ibus/rime/ahaooahaz_pinyin.dict.yaml.bak.$(TIMESTAMP)
+	ln -sr configs/rime/ahaooahaz_pinyin.dict.yaml ~/.config/ibus/rime/ahaooahaz_pinyin.dict.yaml
+
+
 wechat wechat.work:
 	-rm ~/.local/bin/$@
 	ln -sr scripts/docker-$@.sh ~/.local/bin/$@

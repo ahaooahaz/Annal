@@ -1,0 +1,16 @@
+patch:
+  # 默认英文输入模式
+  "switches/@0/reset": 1
+  # 使用自定义词典
+  translator/dictionary: ahaooahaz_pinyin
+  # emoji支持
+  switches/@next:
+    name: emoji_suggestion
+    reset: 1
+    states: ["🈚︎", "🈶️"]
+  "engine/filters/@before 0": simplifier@emoji_suggestion
+  emoji_suggestion:
+    opencc_config: emoji.json
+    option_name: emoji_suggestion
+    tips: none
+    inherit_comment: false
