@@ -1,8 +1,8 @@
 patch:
   # 默认英文输入模式
-  "switches/@0/reset": 1
+  switches/@0/reset: 1
   # 使用自定义词典
-  translator/dictionary: ahaooahaz_pinyin
+  translator/dictionary: luna_pinyin.extended
   # emoji支持
   switches/@next:
     name: emoji_suggestion

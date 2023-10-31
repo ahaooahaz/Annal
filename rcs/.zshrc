@@ -135,3 +135,6 @@ for app in ${apps}; do
         source <(${app} completion zsh)
     fi
 done
+
+# fix echo <fe0f> chars when rime input a emoji.
+setopt COMBINING_CHARS

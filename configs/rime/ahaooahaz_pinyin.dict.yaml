@@ -4,8 +4,11 @@ version: "1"
 sort: by_weight
 use_preset_vocabulary: true
 import_tables:
-  - luna_pinyin
 ...
 
 张昊	zhanghao
 张昊	ahaooahaz
+阿昊	a hao
+阿昊	a hao o
+洗头膏	xi tou gao
+沐浴露	mu yu lu

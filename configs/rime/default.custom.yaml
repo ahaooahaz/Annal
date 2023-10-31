@@ -4,10 +4,14 @@ patch:
   # 修改输入模式列表
   schema_list:
     - schema: "luna_pinyin_simp"
-  # 修改设置菜单标题
-  switcher/caption: "【设置菜单】"
-  # 用半角作为设置菜单中的分隔符
-  switcher/option_list_separator: "/"
+  switcher:
+    # 修改设置菜单标题
+    caption: "【设置菜单】"
+    # 用半角作为设置菜单中的分隔符
+    option_list_separator: "/"
+    # 只保留F4为打开设置菜单
+    hotkeys:
+    - F4
   # inline_ascii: 在输入法的临时英文编辑区内输入字母、数字、符号、空格等，回车上屏后自动复位到中文
   # commit_code: 已输入的编码字符上屏并切换至西文输入模式
   # commit_text: 已输入的候选文字上屏并切换至西文输入模式
@@ -25,7 +29,7 @@ patch:
       accept: Return
       send: space
     # 使用'[]'上下翻页
-    - when: paging
+    - when: has_menu
       accept: bracketleft
       send: Page_Up
     - when: has_menu
