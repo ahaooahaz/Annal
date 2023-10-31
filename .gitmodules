@@ -21,3 +21,9 @@
 [submodule "plugins/notify-send.sh"]
 	path = plugins/notify-send.sh
 	url = ../../vlevit/notify-send.sh.git
+[submodule "plugins/rime"]
+	path = plugins/rime
+	url = ../../ssnhd/rime.git
+[submodule "plugins/rime-emoji"]
+	path = plugins/rime-emoji
+	url = ../../rime/rime-emoji.git

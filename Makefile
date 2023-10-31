@@ -6,6 +6,7 @@ MKFILE_PATH = $(shell pwd)
 RCS_DIR = appc
 ANNALRC = $${HOME}/.annalrc
 INSTALL_PATH = $${HOME}/.local/bin
+SHELL = /bin/bash
 
 RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases .bash_profile
 CONFIGS = .p10k.zsh .tmux.conf.local 
@@ -63,14 +64,20 @@ ohmytmux:
 	-mv ~/.tmux.conf ~/.tmux.conf.bak.$(TIMESTAMP)
 	ln -sf ~/.tmux/.tmux.conf ~/
 
-rime:
-	-mkdir -p ~/.config/ibus/rime
-	-mv ~/.config/ibus/rime/default.custom.yaml ~/.config/ibus/rime/default.custom.yaml.bak.$(TIMESTAMP)
-	ln -sr configs/rime/default.custom.yaml ~/.config/ibus/rime/default.custom.yaml
-	-mv ~/.config/ibus/rime/luna_pinyin_simp.custom.yaml ~/.config/ibus/rime/luna_pinyin_simp.custom.yaml.bak.$(TIMESTAMP)
-	ln -sr configs/rime/luna_pinyin_simp.custom.yaml ~/.config/ibus/rime/luna_pinyin_simp.custom.yaml
-	-mv ~/.config/ibus/rime/ahaooahaz_pinyin.dict.yaml ~/.config/ibus/rime/ahaooahaz_pinyin.dict.yaml.bak.$(TIMESTAMP)
-	ln -sr configs/rime/ahaooahaz_pinyin.dict.yaml ~/.config/ibus/rime/ahaooahaz_pinyin.dict.yaml
+RIME_CONFIGS = $(shell find configs/rime -maxdepth 1 -type f)
+$(RIME_CONFIGS):
+	ln -srf $@ ~/.config/ibus/rime/
+rime-config: $(RIME_CONFIGS)
+
+RIME_DICTS = $(shell find plugins/rime -regex '.*\.dict\..*yaml$$' -type f)
+$(RIME_DICTS):
+	ln -srf $@ ~/.config/ibus/rime/
+rime-dict: $(RIME_DICTS)
+
+RIME_EMOJI = plugins/rime-emoji/opencc
+$(RIME_EMOJI):
+	ln -srf $@ ~/.config/ibus/rime
+rime-emoji: $(RIME_EMOJI)
 
 
 wechat wechat.work:
@@ -101,5 +108,5 @@ UNFILES := $(foreach un, $(BINARIES_CMDS), $(INSTALL_PATH)/$(un))
 uninstall:
 	rm -f $(UNFILES)
 
-.PHONY: $(LINK_FILES) $(ENV_TARGETS)
+.PHONY: $(LINK_FILES) $(ENV_TARGETS) $(RIME_CONFIGS) $(RIME_DICTS) $(RIME_EMOJI)
 #$(VERBOSE).SILENT:

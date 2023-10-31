@@ -1,16 +1,66 @@
 patch:
-  # 默认英文输入模式
-  switches/@0/reset: 1
+  switches:
+      - name: ascii_mode # 0 中文，1 英文
+        reset: 1
+        states: ["中文", "西文"]
+      - name: full_shape # 全角/半角符号开关
+        states: ["半角", "全角"]
+      - name: zh_simp # (※1) 繁简转换
+        reset: 1
+        states: ["漢字", "汉字"]
+      - name: ascii_punct
+        states: ["。，", "．，"]
+      - name: emoji_suggestion # emoji开关
+        reset: 1
+        states: ["🈚︎", "🈶️"]
+      - options: [ "utf8", "gbk", "gb2312" ] # (※2)字符集选单
+        reset: 0 # 默认 UTF8
+        states:
+          - UTF-8
+          - GBK
+          - GB2312
+  # 启用罕见字过滤
+  engine/filters:
+    - simplifier
+    - simplifier@emoji_suggestion
+    - uniquifier
+    - charset_filter@gbk # (※3) GBK 过滤
+    - single_char_filter
   # 使用自定义词典
-  translator/dictionary: luna_pinyin.extended
-  # emoji支持
-  switches/@next:
-    name: emoji_suggestion
-    reset: 1
-    states: ["🈚︎", "🈶️"]
-  "engine/filters/@before 0": simplifier@emoji_suggestion
+  translator/dictionary: ahaooahaz.extended
   emoji_suggestion:
     opencc_config: emoji.json
     option_name: emoji_suggestion
-    tips: none
+    tags: abc
+    tips: all # (※4) 显示 emoji 备注
     inherit_comment: false
+
+  # 快捷表情和符号
+  punctuator:
+    import_preset: symbols
+    symbols:
+      "/fs": [ ½, ‰, ¼, ⅓, ⅔, ¾, ⅒ ]
+      "/xh": [ ＊, ×, ✱, ★, ☆, ✩, ✧, ❋, ❊, ❉, ❈, ❅, ✿, ✲ ]
+      "/sg": [ 🍇, 🍉, 🍌, 🍍, 🍎, 🍏, 🍑, 🍒, 🍓, 🍗, 🍦, 🎂, 🍺, 🍻 ]
+      "/dq": [ 🌍, 🌎, 🌏, 🌐, 🌑, 🌒, 🌓, 🌔, 🌕, 🌖, 🌗, 🌘 ]
+      "/dw": [ 🙈, 🐵, 🐈, 🐷, 🐨, 🐼, 🐾, 🐔, 🐬, 🐠, 🦋 ]
+      "/bq": [ 😀, 😁, 😂, 😃, 😄, 😅, 😆, 😉, 😊, 😋, 😎, 😍, 😘, 😗 ]
+      "/ss": [ 💪, 👈, 👉, 👆, 👇, ✋, 👌, 👍, 👎, ✊, 👊, 👋, 👏, 👐 ]
+    half_shape:
+      "#": "#"
+      "*": "*"
+      "`": "`"
+      "~": "~"
+      "@": "@"
+      "=": "="
+      '\': "、"
+      "%": "%"
+      "$": ["¥", "$" ]
+      "|": ["|", "｜", "·"]
+      # 必须这样symbols才能生效，并与recongizer/patterns/punct配合生效
+      "/": ["/"]
+      "'": {pair: [ "「", "」" ] }
+      "[": "【"
+      "]": "】"
+      "<": "《"
+      ">": "》"

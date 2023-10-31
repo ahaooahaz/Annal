@@ -12,6 +12,10 @@ patch:
     # 只保留F4为打开设置菜单
     hotkeys:
     - F4
+    # 仅显示开关首字，如"全角"只显示"全"
+    abbreviate_options: false
+
+  # 可用的按鍵有 Caps_Lock, Shift_L, Shift_R, Control_L, control_R
   # inline_ascii: 在输入法的临时英文编辑区内输入字母、数字、符号、空格等，回车上屏后自动复位到中文
   # commit_code: 已输入的编码字符上屏并切换至西文输入模式
   # commit_text: 已输入的候选文字上屏并切换至西文输入模式
@@ -55,5 +59,15 @@ patch:
     # - accept: "Shift+Tab"
     #   send: "Up"
     #   when: "has_menu"
-
-
+  
+  recognizer:
+    patterns:
+      # 出现认为是email解析不再出现中文候选
+      email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
+      # 符合这个格式,就会解析punctuator/symbols;
+      # ！！！！！要留意的是，假如若设定/01就是表情很坑的一点是
+      punct: "^/[A-Za-z0-9]+$"
+      # 如果以大写字母开头，后面字符不再找字典里中文了，不出候选了，这时空格与回车上屏字符相同
+      uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
+      # 符合下列规则就当成一个url，不再找字典中文
+      url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"

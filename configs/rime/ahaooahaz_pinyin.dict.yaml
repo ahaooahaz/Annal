@@ -1,6 +1,6 @@
 ---
 name: ahaooahaz_pinyin
-version: "1"
+version: "2023.10.31"
 sort: by_weight
 use_preset_vocabulary: true
 import_tables:
