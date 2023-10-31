@@ -13,6 +13,9 @@ Synchronize develop environment, reference samples, utils and configuration to b
 * [ohmytmux](https://github.com/gpakosz/.tmux)
 * [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 * [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+* [rime](https://github.com/rime/home)
+    * [rime-emoji](https://github.com/rime/rime-emoji)
+    * [rime-dict](https://github.com/ssnhd/rime)
 
 
 ## utils
