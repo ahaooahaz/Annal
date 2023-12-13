@@ -8,7 +8,7 @@ ANNALRC = $${HOME}/.annalrc
 INSTALL_PATH = $${HOME}/.local/bin
 SHELL = /bin/bash
 
-RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases .bash_profile
+RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases .bash_profile .profile
 CONFIGS = .p10k.zsh .tmux.conf.local 
 LINK_FILES = $(foreach file, $(RCS), $(MKFILE_PATH)/rcs/$(file))
 LINK_FILES += $(foreach file, $(CONFIGS), $(MKFILE_PATH)/configs/$(file))
