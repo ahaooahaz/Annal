@@ -86,6 +86,24 @@
         },
         {
             "name": "rime",
+            "links": [
+                {
+                    "dst": "configs/rime/ahaooahaz_pinyin.dict.yaml",
+                    "link": "~/.config/ibus/rime/ahaooahaz_pinyin.dict.yaml"
+                },
+                {
+                    "dst": "configs/rime/ahaooahaz.extended.dict.yaml",
+                    "link": "~/.config/ibus/rime/ahaooahaz.extended.dict.yaml"
+                },
+                {
+                    "dst": "configs/rime/default.custom.yaml",
+                    "link": "~/.config/ibus/rime/default.custom.yaml"
+                },
+                {
+                    "dst": "configs/rime/luna_pinyin_simp.custom.yaml",
+                    "link": "~/.config/ibus/rime/luna_pinyin_simp.custom.yaml"
+                }
+            ],
             "actions": [
                 "link"
             ],
@@ -118,7 +136,7 @@
                 },
                 {
                     "name": "rime-emoji",
-                    "repo": "ssnhd/rime",
+                    "repo": "rime/rime-emoji",
                     "links": [
                         {
                             "dst": "plugins/rime-emoji/opencc",
@@ -130,6 +148,70 @@
                         "link"
                     ]
                 }
+            ]
+        },
+        {
+            "name": "kitty",
+            "links": [
+                {
+                    "dst": "configs/kitty",
+                    "link": "~/.config/kitty"
+                }
+            ],
+            "actions": [
+                "link"
+            ]
+        },
+        {
+            "name": "vim",
+            "links": [
+                {
+                    "dst": "rcs/.vimrc",
+                    "link": "~/.vimrc"
+                },
+                {
+                    "dst": "configs/nvim",
+                    "link": "~/.config/nvim"
+                }
+            ],
+            "actions": [
+                "link"
+            ]
+        },
+        {
+            "name": "env",
+            "links": [
+                {
+                    "dst": "rcs/.zshrc",
+                    "link": "~/.zshrc"
+                },
+                {
+                    "dst": "rcs/.bashrc",
+                    "link": "~/.bashrc"
+                },
+                {
+                    "dst": "rcs/.aliases",
+                    "link": "~/.aliases"
+                },
+                {
+                    "dst": "rcs/.bash_profile",
+                    "link": "~/.bash_profile"
+                },
+                {
+                    "dst": "rcs/.envrc",
+                    "link": "~/.envrc"
+                },
+                {
+                    "dst": "rcs/.profile",
+                    "link": "~/.profile"
+                },
+                {
+                    "dst": "rcs/.zshenv",
+                    "link": "~/.zshenv"
+                }
+            ],
+            "actions": [
+                "link"
             ]
         }
     ]

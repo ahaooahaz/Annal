@@ -14,7 +14,7 @@ def built_link(plugins):
                     if dst != None and link != None:
                         abslink = os.path.expanduser(link)
                         absdst = os.path.abspath(dst)
-                        os.makedirs(os.path.dirname(link), exist_ok=True)
+                        os.makedirs(os.path.dirname(abslink), exist_ok=True)
                         try:
                             os.rename(abslink, abslink+".backup")
                         except:
