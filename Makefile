@@ -7,25 +7,16 @@ RCS_DIR = appc
 ANNALRC = $${HOME}/.annalrc
 INSTALL_PATH = $${HOME}/.local/bin
 SHELL = /bin/bash
+.SHELLFLAGS := -e -u -o pipefail -c
+VERBOSE ?= 1
 
 RCS = .zshrc .zshenv .bashrc .envrc .vimrc .aliases .bash_profile .profile
-CONFIGS = .p10k.zsh .tmux.conf.local 
-LINK_FILES = $(foreach file, $(RCS), $(MKFILE_PATH)/rcs/$(file))
-LINK_FILES += $(foreach file, $(CONFIGS), $(MKFILE_PATH)/configs/$(file))
+CONFIGS_RCS = .p10k.zsh .tmux.conf.local
+HOME_LINK_FILES = $(foreach file, $(RCS), $(MKFILE_PATH)/rcs/$(file))
+HOME_LINK_FILES += $(foreach file, $(CONFIGS), $(MKFILE_PATH)/configs/$(file))
+SCRIPTS = $(shell find scripts -type f)
 
-BINARIES_CMDS = $(shell ls binaries/cmd)
-
-# 来自submodule的工具
-SUBMODULE_PLUGINS = ohmyzsh ohmytmux
-# 来自包管理的工具
-INSTALL_PLUGINS = sshpass base64 at xsel
-PLUGINS = $(SUBMODULE_PLUGINS) $(INSTALL_PLUGINS)
-
-ENV_TARGETS = $(LINK_FILES) $(PLUGINS) docker-wechat
-CMD_TARGETS = $(CMDS)
-
-OUTPUT_BINARIES = bin
-INSTALL_TARGETS = $(foreach cmd, $(CMD_TARGETS), $(OUTPUT_BINARIES)/$(cmd))
+PACKAGE_PLUGINS = sshpass base64 at xsel
 
 ifneq ($(findstring "ubuntu", $(OS_RELEASE)),)
 	PKG_MANAGER := apt
@@ -41,44 +32,15 @@ endif
 
 all: build
 
-env: $(ENV_TARGETS)
-	echo "export ANNAL_ROOT=$(MKFILE_PATH)" > ${ANNALRC}
+env:
+	python3 install.py
 
-$(INSTALL_PLUGINS):
+$(PACKAGE_PLUGINS):
 	if ! type $@ 2>/dev/null; then $(SUDO) $(PKG_MANAGER) install $@ -y; fi
 
 $(LINK_FILES):
 	-mv ~/$(notdir $@) ~/$(notdir $@).bak.$(TIMESTAMP)
 	ln -sf $@ ~/
-
-ZSH_PLUGINS = zsh-autosuggestions  zsh-syntax-highlighting
-ZSH_THEMES = powerlevel10k
-
-ohmyzsh: $(ZSH_PLUGINS) $(ZSH_THEMES)
-	-mv ~/.oh-my-zsh ~/.oh-my-zsh.bak.$(TIMESTAMP)
-	ln -sr plugins/$@ ~/.oh-my-zsh
-
-ohmytmux:
-	-mv ~/.tmux ~/.tmux.bak.$(TIMESTAMP)
-	ln -sr plugins/.tmux ~/.tmux
-	-mv ~/.tmux.conf ~/.tmux.conf.bak.$(TIMESTAMP)
-	ln -sf ~/.tmux/.tmux.conf ~/
-
-RIME_CONFIGS = $(shell find configs/rime -maxdepth 1 -type f)
-$(RIME_CONFIGS):
-	ln -srf $@ ~/.config/ibus/rime/
-rime-config: $(RIME_CONFIGS)
-
-RIME_DICTS = $(shell find plugins/rime -regex '.*\.dict\..*yaml$$' -type f)
-$(RIME_DICTS):
-	ln -srf $@ ~/.config/ibus/rime/
-rime-dict: $(RIME_DICTS)
-
-RIME_EMOJI = plugins/rime-emoji/opencc
-$(RIME_EMOJI):
-	ln -srf $@ ~/.config/ibus/rime
-rime-emoji: $(RIME_EMOJI)
-
 
 wechat wechat.work:
 	-rm ~/.local/bin/$@
@@ -100,6 +62,7 @@ clean:
 	$(MAKE) -C binaries $@
 	rm -rf $(BINARIES_CMDS)
 
+BINARIES_CMDS = $(shell ls binaries/cmd)
 install: $(BINARIES_CMDS)
 	mkdir -p $(INSTALL_PATH)
 	if [ ! -h $(INSTALL_PATH)/annal ]; then ln -s $(shell pwd)/binaries/annal $(INSTALL_PATH)/annal; fi
@@ -109,4 +72,4 @@ uninstall:
 	rm -f $(UNFILES)
 
 .PHONY: $(LINK_FILES) $(ENV_TARGETS) $(RIME_CONFIGS) $(RIME_DICTS) $(RIME_EMOJI)
-#$(VERBOSE).SILENT:
+$(VERBOSE).SILENT:

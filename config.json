@@ -1,0 +1,136 @@
+{
+    "plugins": [
+        {
+            "name": "ohmyzsh",
+            "repo": "ohmyzsh/ohmyzsh",
+            "links": [
+                {
+                    "dst": "plugins/ohmyzsh",
+                    "link": "~/.oh-my-zsh"
+                }
+            ],
+            "actions": [
+                "clone",
+                "link"
+            ],
+            "childrens": [
+                {
+                    "name": "powerlevel10k",
+                    "repo": "romkatv/powerlevel10k",
+                    "links": [
+                        {
+                            "dst": "plugins/powerlevel10k",
+                            "link": "~/.oh-my-zsh/custom/themes/powerlevel10k"
+                        },
+                        {
+                            "dst": "configs/.p10k.zsh",
+                            "link": "~/.p10k.zsh"
+                        }
+                    ],
+                    "actions": [
+                        "clone",
+                        "link"
+                    ]
+                },
+                {
+                    "name": "zsh-autosuggestions",
+                    "repo": "zsh-users/zsh-autosuggestions",
+                    "links": [
+                        {
+                            "dst": "plugins/zsh-autosuggestions",
+                            "link": "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+                        }
+                    ],
+                    "actions": [
+                        "clone",
+                        "link"
+                    ]
+                },
+                {
+                    "name": "zsh-syntax-highlighting",
+                    "repo": "zsh-users/zsh-syntax-highlighting",
+                    "links": [
+                        {
+                            "dst": "plugins/zsh-syntax-highlighting",
+                            "link": "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+                        }
+                    ],
+                    "actions": [
+                        "clone",
+                        "link"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "tmux",
+            "repo": "gpakosz/.tmux",
+            "links": [
+                {
+                    "dst": "plugins/tmux",
+                    "link": "~/.tmux"
+                },
+                {
+                    "dst": "plugins/tmux/.tmux.conf",
+                    "link": "~/.tmux.conf"
+                },
+                {
+                    "dst": "configs/.tmux.conf.local",
+                    "link": "~/.tmux.conf.local"
+                }
+            ],
+            "actions": [
+                "clone",
+                "link"
+            ]
+        },
+        {
+            "name": "rime",
+            "actions": [
+                "link"
+            ],
+            "childrens": [
+                {
+                    "name": "rime-dict",
+                    "repo": "ssnhd/rime",
+                    "links": [
+                        {
+                            "dst": "plugins/rime-dict/配置文件/easy_en.dict.yaml",
+                            "link": "~/.config/ibus/rime/easy_en.dict.yaml"
+                        },
+                        {
+                            "dst": "plugins/rime-dict/配置文件/luna_pinyin.dict.yaml",
+                            "link": "~/.config/ibus/rime/luna_pinyin.dict.yaml"
+                        },
+                        {
+                            "dst": "plugins/rime-dict/配置文件/luna_pinyin.extended.dict.yaml",
+                            "link": "~/.config/ibus/rime/luna_pinyin.extended.dict.yaml"
+                        },
+                        {
+                            "dst": "plugins/rime-dict/配置文件/luna_pinyin.sogou.dict.yaml",
+                            "link": "~/.config/ibus/rime/luna_pinyin.sogou.dict.yaml"
+                        }
+                    ],
+                    "actions": [
+                        "clone",
+                        "link"
+                    ]
+                },
+                {
+                    "name": "rime-emoji",
+                    "repo": "ssnhd/rime",
+                    "links": [
+                        {
+                            "dst": "plugins/rime-emoji/opencc",
+                            "link": "~/.config/ibus/rime/opencc"
+                        }
+                    ],
+                    "actions": [
+                        "clone",
+                        "link"
+                    ]
+                }
+            ]
+        }
+    ]
+}
