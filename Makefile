@@ -31,20 +31,13 @@ env:
 $(PACKAGE_PLUGINS):
 	if ! type $@ 2>/dev/null; then $(SUDO) $(PKG_MANAGER) install $@ -y; fi
 
-$(BINARIES_CMDS): build
-	cp binaries/$@ .
-
-build:
+built-in:
 	$(MAKE) -C binaries
 
 clean:
 	$(MAKE) -C binaries $@
-	rm -rf $(BINARIES_CMDS)
 
 BINARIES_CMDS = $(shell ls binaries/cmd)
-install: $(BINARIES_CMDS)
-	mkdir -p $(INSTALL_PATH)
-	if [ ! -h $(INSTALL_PATH)/annal ]; then ln -s $(shell pwd)/binaries/annal $(INSTALL_PATH)/annal; fi
 
 .PHONY: env build clean
 $(VERBOSE).SILENT:

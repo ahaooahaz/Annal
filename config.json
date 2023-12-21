@@ -213,6 +213,38 @@
             "actions": [
                 "link"
             ]
+        },
+        {
+            "name": "annal",
+            "links": [
+                {
+                    "dst": "binaries/annal",
+                    "link": "~/.local/bin/annal"
+                }
+            ],
+            "actions": [
+                "link"
+            ]
+        },
+        {
+            "name": "scripts",
+            "links": [
+                {
+                    "dst": "scripts/docker-wechat.sh",
+                    "link": "~/.local/bin/docker-wechat.sh"
+                },
+                {
+                    "dst": "scripts/docker-wechat.work.sh",
+                    "link": "~/.local/bin/docker-wechat.work.sh"
+                },
+                {
+                    "dst": "scripts/jt.sh",
+                    "link": "~/.local/bin/jt"
+                }
+            ],
+            "actions": [
+                "link"
+            ]
         }
     ]
 }

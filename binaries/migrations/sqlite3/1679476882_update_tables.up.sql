@@ -1,1 +1,0 @@
-ALTER TABLE `todos` ADD COLUMN `notify_job_id` integer NOT NULL DEFAULT '0';

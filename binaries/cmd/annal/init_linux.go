@@ -6,15 +6,10 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/ahaooahaz/Annal/binaries/cmd/annal/child/jt"
 	"github.com/ahaooahaz/Annal/binaries/cmd/annal/child/version"
 	"github.com/ahaooahaz/Annal/binaries/cmd/annal/child/webrtc"
-	"github.com/ahaooahaz/Annal/binaries/cmd/annal/child/words"
 
 	"github.com/ahaooahaz/Annal/binaries/config"
-
-	"github.com/ahaooahaz/Annal/binaries/storage"
-	"github.com/ahaooahaz/Annal/binaries/todo"
 
 	"github.com/ahaooahaz/encapsutils"
 	"github.com/sirupsen/logrus"
@@ -26,11 +21,8 @@ func init() {
 		panic(err.Error())
 	}
 
-	rootCmd.AddCommand(jt.Cmd)
-	rootCmd.AddCommand(todo.Cmd)
 	rootCmd.AddCommand(version.Cmd)
 	rootCmd.AddCommand(webrtc.Cmd)
-	rootCmd.AddCommand(words.Cmd)
 }
 
 func initEnv() (err error) {
@@ -59,22 +51,6 @@ func initEnv() (err error) {
 	})
 	logrus.SetOutput(f)
 
-	migrations := config.ANNALROOT + "/migrations/sqlite3"
-	storageFile := config.ANNALROOT + "/storage/annal.db"
-	config.DBPATH = storageFile
-	err = encapsutils.CreateDir(filepath.Dir(storageFile), os.ModePerm)
-	if err != nil {
-		return
-	}
-	log := logrus.WithFields(logrus.Fields{
-		"migrations":   migrations,
-		"storage_file": storageFile,
-	})
-	err = storage.Sqlite3Migrate(migrations, storageFile)
-	if err != nil {
-		log.Errorf("migrate failed, err: %v", err.Error())
-		return
-	}
-	log.Info("init done")
+	logrus.Info("init done")
 	return
 }
