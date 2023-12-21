@@ -22,6 +22,7 @@ set history=1000
 set nu
 set ruler
 set showcmd
+set rnu
 
 " 在状态行上显示补全匹配
 set wildmenu

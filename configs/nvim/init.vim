@@ -119,3 +119,4 @@ set laststatus=2
 
 "autocmd VimEnter * silent !tmux set status off
 " autocmd VimLeave * silent !tmux set status on
+set relativenumber

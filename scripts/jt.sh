@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# set -x
+set -x
 
 old_details=${HOME}/.config/jt.csv
 details=${HOME}/.config/annal/jt/jt.csv
+gauth_config=${HOME}/.config/gauth.csv
 
 function usage() {
 cat << USAGE
@@ -14,6 +15,8 @@ usage: jt [OPTION] [PARAMS]
             -u|--user       remote user.
             -p|--password   remote password.
             -P|--port       remote sshd service binding port.
+            --2FA           2FA secret, base on gauth.
+            --2FA-tag       2FA secret tag.
             -f|--focus      overwrite already exist detail.
         l    show exist detail ips.
 
@@ -62,6 +65,16 @@ function s() {
                 focus=true
                 shift
                 ;;
+            --2FA)
+                fa2_secret=$2
+                shift
+                shift
+                ;;
+            --2FA-tag)
+                fa2_tag=$2
+                shift
+                shift
+                ;;
             *)
                 usage
                 return 1
@@ -95,15 +108,39 @@ function s() {
     else
         echo "password: ${password}"
     fi
+    
+    if [ -z ${fa2_tag} ]; then
+        if [ $(type gauth >/dev/null 2>&1; echo $?) -ne 0 ]; then
+            alert "2FA install gauth first"
+            return
+        fi
+        echo -n "2FA tag: "
+        read fa2_tag
+    else
+        echo "2FA tag: ${fa2_tag}"
+    fi
 
-    if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}$" ${details} 2>/dev/null)" -a -z "${focus}" ]; then
+    if [ -z ${fa2_secret} ]; then
+        if [ $(type gauth >/dev/null 2>&1; echo $?) -ne 0 ]; then
+            alert "2FA install gauth first"
+            return
+        fi
+        echo -n "2FA secret: "
+        read fa2_secret
+    else
+        echo "2FA secret: ${fa2_secret}"
+    fi
+
+    if [ ! -z "$(grep -E "^[^:]*{1}:${ip}:[^:]*{1}:[0-9]{1,5}{1}.*$" ${details} 2>/dev/null)" -a -z "${focus}" ]; then
         warn "ip already exist"
         return
     fi
     
-    if [ $(sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null 'exit' 2>/dev/null; echo $?) -ne 0 ]; then
-        alert "ssh check remote machine failed"
-        return
+    if [ -z ${fa2_tag} ]; then
+        if [ $(sshpass -p ${password} ssh ${user}@${ip} -p ${port} -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null 'exit' 2>/dev/null; echo $?) -ne 0 ]; then
+            alert "ssh check remote machine failed"
+            return
+        fi
     fi
 
     if [ ! -f ${details} ]; then
@@ -111,7 +148,10 @@ function s() {
     fi
 
     crypted=$(base64 <<< ${password})
-    echo "${user}:${ip}:${crypted}:${port}" >> ${details}
+    echo "${user}:${ip}:${crypted}:${port}:${fa2_tag}" >> ${details}
+    if [ -z ${fa2_secret} -a -z ${fa2_tag} ]; then
+        fa2 ${fa2_tag} ${fa2_secret}
+    fi
     info "OK"
 }
 
@@ -127,28 +167,32 @@ function e() {
         usage
         return
     fi
-    detail=$(tac ${details} 2>/dev/null | grep -E "^[^:]*{1}:[^:]*${1}{1}:[^:]*{1}:[0-9]{1,5}{1}$" 2>/dev/null)
+    detail=$(tac ${details} 2>/dev/null | grep -E "^[^:]*{1}:[^:]*${1}{1}:[^:]*{1}:[0-9]{1,5}{1}.*$" 2>/dev/null)
+    if [ "${detail}" == "" ]; then
+        warn "${1} not match"
+        return
+    fi
 
-    read user ip crypted port <<< $(echo ${detail} | awk -F ':' '{print $1,$2,$3,$4}' 2>/dev/null)
-    if [ $(echo ${ip} | grep -E ".*$1$" >/dev/null 2>&1; echo $?) -eq 0 ]; then
-        password=$(base64 -d <<< ${crypted})
-       exec sshpass -p ${password} ssh ${user}@${ip} -p ${port} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
-       # expect -c "
-       #     debug 1
-       #     log_user 0
-       #     set timeout 60
-       #     spawn ssh ${user}@${ip} -p ${port} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
-       #     log_user 1
-       #     expect {
-       #         -re \".*(p|P)assword:\" {send \"${password}\r\";exp_continue}
-       #         -re \".*#\" {}
-       #         -re \".*\$\" {}
-       #         eof {exit 1}
-       #     }
-       #     set timeout -1
-       #     interact
-       # "
-       # exit 0
+    read user ip crypted port fa2_tag <<< $(echo ${detail} | awk -F ':' '{print $1,$2,$3,$4,$5}' 2>/dev/null)
+    password=$(base64 -d <<< ${crypted})
+    if [ -z ${fa2_tag} ]; then
+        exec sshpass -p ${password} ssh ${user}@${ip} -p ${port} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+    else
+        fa2_auth=$(gauth | grep ${fa2_tag} 2>/dev/null | awk -F ' ' '{print $2}')
+        expect -c "
+            log_user 0
+            set timeout 60
+            spawn ssh ${user}@${ip} -p ${port} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+            log_user 1
+            expect {
+                -re \".*(p|P)assword:\" {send \"${password}\r\";exp_continue}
+                -re \".*FA auth]:\" {send \"${fa2_auth}\r\"}
+                -re \".*>\" {}
+            }
+            set timeout -1
+            interact
+        "
+    exit 0
     fi
 
     alert "not match details. insert remote machine into ${details}"
@@ -166,6 +210,22 @@ function upgrade() {
     if [ -f ${old_details} ]; then
         mv ${old_details} ${details}
     fi
+}
+
+# $1: tag $2: secret
+function fa2() {
+    tag=$1
+    secret=$2
+    if [ -z $tag -o -z $secret ]; then
+        alert "tag or secret invalid"
+        return
+    fi
+
+    if [ $(grep ${tag} ${gauth_config} >/dev/null 2>&1; echo $?) -eq 0 ]; then
+        return
+    fi
+
+    echo -n "$tag:$secret" >> ${gauth_config}
 }
 
 function main() {
@@ -192,5 +252,6 @@ function main() {
             e $@
     esac
 }
+
 
 main $@
