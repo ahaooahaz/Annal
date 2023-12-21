@@ -166,7 +166,7 @@
             "name": "vim",
             "links": [
                 {
-                    "dst": "rcs/.vimrc",
+                    "dst": "configs/rcs/.vimrc",
                     "link": "~/.vimrc"
                 },
                 {
@@ -182,31 +182,31 @@
             "name": "env",
             "links": [
                 {
-                    "dst": "rcs/.zshrc",
+                    "dst": "configs/rcs/.zshrc",
                     "link": "~/.zshrc"
                 },
                 {
-                    "dst": "rcs/.bashrc",
+                    "dst": "configs/rcs/.bashrc",
                     "link": "~/.bashrc"
                 },
                 {
-                    "dst": "rcs/.aliases",
+                    "dst": "configs/rcs/.aliases",
                     "link": "~/.aliases"
                 },
                 {
-                    "dst": "rcs/.bash_profile",
+                    "dst": "configs/rcs/.bash_profile",
                     "link": "~/.bash_profile"
                 },
                 {
-                    "dst": "rcs/.envrc",
+                    "dst": "configs/rcs/.envrc",
                     "link": "~/.envrc"
                 },
                 {
-                    "dst": "rcs/.profile",
+                    "dst": "configs/rcs/.profile",
                     "link": "~/.profile"
                 },
                 {
-                    "dst": "rcs/.zshenv",
+                    "dst": "configs/rcs/.zshenv",
                     "link": "~/.zshenv"
                 }
             ],
