@@ -6,13 +6,6 @@ alias t=tmux
 
 alias kubectx='kubectl config use-context '
 
-alias jt='annal jt'
-alias todo='annal todo'
-
-alias awr='annal words remb'
-alias awc='annal words check'
-alias kubem='kubectl -n milvus-v2'
-
 alias icat='kitty +kitten icat'
 alias s='kitten ssh'
 alias d='kitten diff'
