@@ -11,8 +11,8 @@ from kitty.tab_bar import (
     Formatter,
     TabBarData,
     as_rgb,
-    draw_tab_with_powerline,
     draw_attributed_string,
+    draw_tab_with_powerline
 )
 
 timer_id = None
