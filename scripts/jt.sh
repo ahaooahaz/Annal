@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+# set -x
 
 old_details=${HOME}/.config/jt.csv
 details=${HOME}/.config/annal/jt/jt.csv
