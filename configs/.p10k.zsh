@@ -184,7 +184,7 @@
 
   #################################[ os_icon: os identifier ]##################################
   # OS identifier color.
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=244
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=238
   typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=202
   # Custom icon.
   typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='${USER##*\\}'

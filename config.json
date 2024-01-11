@@ -1,6 +1,20 @@
 {
     "plugins": [
         {
+            "name": "jt",
+            "repo": "ahaooahaz/jt",
+            "links": [
+                {
+                    "dst": "plugins/jt/jt.sh",
+                    "link": "~/.local/bin/jt"
+                }
+            ],
+            "actions": [
+                "clone",
+                "link"
+            ]
+        },
+        {
             "name": "ohmyzsh",
             "repo": "ohmyzsh/ohmyzsh",
             "links": [
@@ -236,10 +250,6 @@
                 {
                     "dst": "scripts/docker-wechat.work.sh",
                     "link": "~/.local/bin/docker-wechat.work.sh"
-                },
-                {
-                    "dst": "scripts/jt.sh",
-                    "link": "~/.local/bin/jt"
                 }
             ],
             "actions": [

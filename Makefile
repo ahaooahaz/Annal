@@ -23,7 +23,7 @@ ifneq ($(USER), "root")
 	SUDO := sudo
 endif
 
-all: build
+all: env
 
 env:
 	python3 install.py
@@ -31,13 +31,7 @@ env:
 $(PACKAGE_PLUGINS):
 	if ! type $@ 2>/dev/null; then $(SUDO) $(PKG_MANAGER) install $@ -y; fi
 
-built-in:
-	$(MAKE) -C binaries
-
-clean:
-	$(MAKE) -C binaries $@
-
 BINARIES_CMDS = $(shell ls binaries/cmd)
 
-.PHONY: env build clean
+.PHONY: env clean
 $(VERBOSE).SILENT:

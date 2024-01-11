@@ -11,7 +11,6 @@ patch:
     option_list_separator: "/"
     # 只保留F4为打开设置菜单
     hotkeys:
-    - F4
     # 仅显示开关首字，如"全角"只显示"全"
     abbreviate_options: false
 
