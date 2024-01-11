@@ -18,20 +18,5 @@ Synchronize develop environment, reference samples, built-in utils and configura
 - [docker-wechat](scripts/docker-wechat.sh)
 - [docker-wechat.work](scripts/docker-chat.work.sh)
 
-## built-in utils
-
-### jt
-
-`jumpto` in order to improve the efficiency of switching between multiple machines.
-
-jump to remote machine by ssh and sshpass, suitable for scenarios where multiple jump to different machines in a safe environment, password and details will save in ${HOME}/.jtremote.local, make sure it will not leak.
-
-### WebRTC Media Publish Client
-
-Publish video stream to server by `WebRTC` protocol through `UDP` or `TCP`.
-
-supported media server:
-- [zlmediakit](https://github.com/ZLMediaKit/ZLMediaKit)
-
 ### [MIT LICENSE](LICENSE)
 
