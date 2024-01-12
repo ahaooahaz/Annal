@@ -4,7 +4,7 @@
 *.avi
 *.mp4
 *.h264
-*.vscode
+/*.vscode
 /annal
 /log
 /storage
