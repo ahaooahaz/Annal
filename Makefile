@@ -28,6 +28,9 @@ all: env
 env:
 	python3 install.py
 
+upgrade:
+	find plugins -maxdepth 1 -mindepth 1 -type d -exec git -C {} pull \;
+
 $(PACKAGE_PLUGINS):
 	if ! type $@ 2>/dev/null; then $(SUDO) $(PKG_MANAGER) install $@ -y; fi
 
