@@ -2,4 +2,6 @@ require("options")
 require("keymaps")
 require("plugins")
 require('colorscheme')
-require('lualine').setup()
+if next(vim.fn.argv()) ~= nil then
+    require('lualine').setup({})
+end

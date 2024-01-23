@@ -34,7 +34,5 @@ upgrade:
 $(PACKAGE_PLUGINS):
 	if ! type $@ 2>/dev/null; then $(SUDO) $(PKG_MANAGER) install $@ -y; fi
 
-BINARIES_CMDS = $(shell ls binaries/cmd)
-
 .PHONY: env clean
 $(VERBOSE).SILENT:
