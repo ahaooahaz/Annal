@@ -1,11 +1,11 @@
 {
     "plugins": [
         {
-            "name": "jt",
-            "repo": "ahaooahaz/jt",
+            "name": "JumpTo",
+            "repo": "ahaooahaz/JumpTo",
             "links": [
                 {
-                    "dst": "plugins/jt/jt.sh",
+                    "dst": "plugins/JumpTo/jt.sh",
                     "link": "~/.local/bin/jt"
                 }
             ],
