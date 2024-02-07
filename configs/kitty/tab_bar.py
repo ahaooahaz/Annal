@@ -72,7 +72,6 @@ def draw_right_status(draw_data: DrawData, screen: Screen) -> None:
         screen.cursor.bg = tab_bg
         screen.draw(f" {cell} ")
 
-
 def create_cells() -> list[str]:
     now = datetime.datetime.now()
     return [
