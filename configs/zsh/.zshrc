@@ -19,12 +19,16 @@ include -f "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 include -f "${HOME}/.zcomet/bin/zcomet.zsh"
 
 zcomet load ohmyzsh lib {completion,clipboard}.zsh
+zcomet load ohmyzsh plugins/autojump
+zcomet load ohmyzsh plugins/history
+zcomet load ohmyzsh plugins/history-substring-search
 zcomet load tj/git-extras etc git-extras-completion.zsh
+zcomet load hlissner/zsh-autopair
 
 zcomet compinit
 
 zcomet load Aloxaf/fzf-tab
-zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
+# zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps --pid=$word -o cmd --no-headers -w -w'
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-flags '--preview-window=down:3:wrap'
 zstyle ':fzf-tab:complete:kill:*' popup-pad 0 3
