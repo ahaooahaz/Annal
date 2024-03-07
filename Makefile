@@ -9,7 +9,7 @@ INSTALL_PATH = $${HOME}/.local/bin
 SHELL = /bin/bash
 VERBOSE ?= 1
 
-PACKAGE_PLUGINS = sshpass base64 at xsel
+PACKAGE_PLUGINS = sshpass base64 at xsel bat
 
 ifneq ($(findstring "ubuntu", $(OS_RELEASE)),)
 	PKG_MANAGER := apt

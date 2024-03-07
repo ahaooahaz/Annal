@@ -1,6 +1,20 @@
 {
     "plugins": [
         {
+            "name": "zcomet",
+            "repo": "agkozak/zcomet",
+            "links": [
+                {
+                    "dst": "plugins/zcomet",
+                    "link": "~/.zcomet/bin"
+                }
+            ],
+            "actions": [
+                "clone",
+                "link"
+            ]
+        },
+        {
             "name": "JumpTo",
             "repo": "ahaooahaz/JumpTo",
             "links": [
@@ -12,68 +26,6 @@
             "actions": [
                 "clone",
                 "link"
-            ]
-        },
-        {
-            "name": "ohmyzsh",
-            "repo": "ohmyzsh/ohmyzsh",
-            "links": [
-                {
-                    "dst": "plugins/ohmyzsh",
-                    "link": "~/.oh-my-zsh"
-                }
-            ],
-            "actions": [
-                "clone",
-                "link"
-            ],
-            "childrens": [
-                {
-                    "name": "powerlevel10k",
-                    "repo": "romkatv/powerlevel10k",
-                    "links": [
-                        {
-                            "dst": "plugins/powerlevel10k",
-                            "link": "~/.oh-my-zsh/custom/themes/powerlevel10k"
-                        },
-                        {
-                            "dst": "configs/.p10k.zsh",
-                            "link": "~/.p10k.zsh"
-                        }
-                    ],
-                    "actions": [
-                        "clone",
-                        "link"
-                    ]
-                },
-                {
-                    "name": "zsh-autosuggestions",
-                    "repo": "zsh-users/zsh-autosuggestions",
-                    "links": [
-                        {
-                            "dst": "plugins/zsh-autosuggestions",
-                            "link": "~/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-                        }
-                    ],
-                    "actions": [
-                        "clone",
-                        "link"
-                    ]
-                },
-                {
-                    "name": "zsh-syntax-highlighting",
-                    "repo": "zsh-users/zsh-syntax-highlighting",
-                    "links": [
-                        {
-                            "dst": "plugins/zsh-syntax-highlighting",
-                            "link": "~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
-                        }
-                    ],
-                    "actions": [
-                        "clone",
-                        "link"
-                    ]
-                }
             ]
         },
         {
@@ -196,31 +148,31 @@
             "name": "env",
             "links": [
                 {
-                    "dst": "configs/rcs/.zshrc",
-                    "link": "~/.zshrc"
-                },
-                {
-                    "dst": "configs/rcs/.bashrc",
-                    "link": "~/.bashrc"
-                },
-                {
-                    "dst": "configs/rcs/.aliases",
-                    "link": "~/.aliases"
-                },
-                {
                     "dst": "configs/rcs/.bash_profile",
                     "link": "~/.bash_profile"
                 },
                 {
-                    "dst": "configs/rcs/.envrc",
+                    "dst": "configs/env.rc",
                     "link": "~/.envrc"
                 },
                 {
                     "dst": "configs/rcs/.profile",
                     "link": "~/.profile"
+                }
+            ],
+            "actions": [
+                "link"
+            ]
+        },
+        {
+            "name": "zsh",
+            "links": [
+                {
+                    "dst": "configs/zsh",
+                    "link": "~/.config/zsh"
                 },
                 {
-                    "dst": "configs/rcs/.zshenv",
+                    "dst": "configs/zsh/.zshenv",
                     "link": "~/.zshenv"
                 }
             ],
