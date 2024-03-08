@@ -41,7 +41,7 @@
                     "link": "~/.tmux.conf"
                 },
                 {
-                    "dst": "configs/.tmux.conf.local",
+                    "dst": "configs/tmux/.tmux.conf.local",
                     "link": "~/.tmux.conf.local"
                 }
             ],
