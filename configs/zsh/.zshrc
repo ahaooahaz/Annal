@@ -13,9 +13,9 @@ hash -d zdot=$ZDOTDIR
 #=====================#
 include -f "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 
-#==================#
-# Plugins          #
-#==================#
+#=========#
+# Plugins #
+#=========#
 include -f "${HOME}/.zcomet/bin/zcomet.zsh"
 
 zcomet load ohmyzsh lib {completion,clipboard}.zsh
@@ -34,23 +34,44 @@ zstyle ':fzf-tab:complete:kill:argument-rest' fzf-flags '--preview-window=down:3
 zstyle ':fzf-tab:complete:kill:*' popup-pad 0 3
 
 # zcomet load zsh-users/zsh-autosuggestions
-# ZSH_AUTOSUGGEST_MANUAL_REBIND=true
-# ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(
-#     qc-accept-line
-# )
-# ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(
-#     qc-forward-subword
-#     qc-forward-shellword
-# )
-
 zcomet load zdharma-continuum/fast-syntax-highlighting
-# unset 'FAST_HIGHLIGHT[chroma-man]'  # chroma-man will stuck history browsing
 
 zcomet load romkatv/powerlevel10k
+
+###############
+# Key Binding #
+###############
+
+bindkey -r '^['  # Unbind [Esc]    (default: vi-cmd-mode)
+
+bindkey '^A'   beginning-of-line   # [Ctrl-A]
+bindkey '^E'   end-of-line         # [Ctrl-E]
+bindkey '^Z'   undo                # [Ctrl-Z]
+bindkey '^Y'   redo                # [Ctrl-Y]
+bindkey ' '    magic-space         # [Space]     Trigger history expansion
+bindkey '^[^M' self-insert-unmeta  # [Alt-Enter] Insert newline
 
 #=========#
 # Configs #
 #=========#
+
+# zsh misc
+setopt auto_cd               # simply type dir name to `cd`
+setopt auto_pushd            # make `cd` behave like pushd
+setopt pushd_ignore_dups     # don't pushd duplicates
+setopt pushd_minus           # exchange the meanings of `+` and `-` in pushd
+setopt ksh_option_print      # make `setopt` output all options
+setopt extended_glob         # extended globbing
+
+# time (zsh built-in)
+TIMEFMT="\
+%J   %U  user %S system %P cpu %*E total
+avg shared (code):         %X KB
+avg unshared (data/stack): %D KB
+total (sum):               %K KB
+max memory:                %M MB
+page faults from disk:     %F
+other page faults:         %R"
 
 # fzf
 export FZF_DEFAULT_OPTS='--ansi --height=60% --reverse --cycle --bind=tab:accept'
@@ -72,15 +93,20 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000000  # number of commands that are loaded
 SAVEHIST=1000000  # number of commands that are stored
 
+autoload -Uz colors && colors  # provide color variables (see `which colors`)
+
+# fix echo <fe0f> chars when rime input a emoji
+# Ref: https://github.com/rime/rime-emoji/issues/8
+setopt COMBINING_CHARS
+
+#=========#
+# Scripts #
+#=========#
+include -f "${ZDOTDIR:-${HOME}}/.p10k.zsh"
+
 apps=(kubectl helm)
 for app in ${apps}; do
     if [ $(type ${app} >/dev/null 2>&1; echo $?) -eq 0 ]; then
         source <(${app} completion zsh)
     fi
 done
-
-autoload -Uz colors && colors  # provide color variables (see `which colors`)
-
-# fix echo <fe0f> chars when rime input a emoji.
-setopt COMBINING_CHARS
-include -f "${ZDOTDIR:-${HOME}}/.p10k.zsh"

@@ -152,7 +152,7 @@
                     "link": "~/.bash_profile"
                 },
                 {
-                    "dst": "configs/env.rc",
+                    "dst": "configs/rcs/.envrc",
                     "link": "~/.envrc"
                 },
                 {
