@@ -33,7 +33,8 @@ zstyle ':fzf-tab:complete:kill:argument-rest' fzf-flags '--preview-window=down:3
 zstyle ':fzf-tab:complete:kill:*' popup-pad 0 3
 
 # zcomet load zsh-users/zsh-autosuggestions
-zcomet load zsh-users/zsh-syntax-highlighting
+# zcomet load zsh-users/zsh-syntax-highlighting
+zcomet load zdharma-continuum/fast-syntax-highlighting
 
 zcomet load romkatv/powerlevel10k
 ###############
@@ -48,6 +49,7 @@ bindkey '^Z'   undo                # [Ctrl-Z]
 bindkey '^Y'   redo                # [Ctrl-Y]
 bindkey ' '    magic-space         # [Space]     Trigger history expansion
 bindkey '^[^M' self-insert-unmeta  # [Alt-Enter] Insert newline
+bindkey '^R' history-incremental-search-backward  # [Ctrl-R] history search
 
 #=========#
 # Configs #
