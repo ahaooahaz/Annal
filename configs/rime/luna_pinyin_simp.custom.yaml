@@ -26,9 +26,8 @@ patch:
     - uniquifier
     - charset_filter@gbk # (※3) GBK 过滤
     - single_char_filter
-  # engine/translators:
-    # ubuntu unsupport luatranslator
-    # - lua_translator@date_translator
+  engine/translators/+:
+    - lua_translator@date_translator
   # 使用自定义词典
   translator/dictionary: ahaooahaz.extended
   emoji_suggestion:

@@ -2,9 +2,10 @@
 
 xhost +
 
+#    -v $HOME/.WeChatFiles:/WeChatFiles \
+
 docker run -d --name wechat --device /dev/snd --ipc=host \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v $HOME/.WeChatFiles:/WeChatFiles \
     -e DISPLAY=unix$DISPLAY \
     -e XMODIFIERS=@im=ibus \
     -e QT_IM_MODULE=ibus \
