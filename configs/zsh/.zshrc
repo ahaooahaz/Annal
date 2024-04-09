@@ -41,11 +41,16 @@ zcomet load romkatv/powerlevel10k
 ###############
 # Key Binding #
 ###############
+bindkey -v
 
 bindkey -r '^['  # Unbind [Esc]    (default: vi-cmd-mode)
 
 bindkey '^A'   beginning-of-line   # [Ctrl-A]
+bindkey '^B'   vi-backward-blank-word       # [Ctrl-B]
+bindkey '^N'   vi-forward-blank-word-end        # [Ctrl-N]
 bindkey '^E'   end-of-line         # [Ctrl-E]
+bindkey "^D"   delete-char         # [Ctrl-D]
+bindkey "^K"   kill-line           # [Ctrl-K]
 bindkey '^Z'   undo                # [Ctrl-Z]
 bindkey '^Y'   redo                # [Ctrl-Y]
 bindkey ' '    magic-space         # [Space]     Trigger history expansion
