@@ -13,6 +13,7 @@ schema:
     阿昊拼音
     https://github.com/ahaooahaz/Annal/configs/rime
   dependencies:
+    - radical_pinyin  # 部件拆字，反查及辅码
 
 # 开关
 # reset: 默认状态。注释掉后，切换窗口时不会重置到默认状态。
@@ -26,25 +27,22 @@ switches:
     states: [ ¥, $ ]
   - name: full_shape
     states: ["半角", "全角"]
-  - name: zh_simp
-    reset: 1
+  - name: traditionalization
+    # reset: 1
     states: [ 简, 繁 ]
-  - name: emoji_suggestion
+  - name: emoji
     reset: 1
     states: ["🈚︎", "🈶️"]
-  - options: [utf8, gbk, gb2312]
-    reset: 0
-    states: ["UTF-8", GBK, GB2312]
-
 
 engine:
   filters:
-    - simplifier
-    - simplifier@emoji_suggestion
+    - lua_filter@corrector                          # 错音错字提示
+    - reverse_lookup_filter@radical_reverse_lookup  # 部件拆字滤镜
+    - simplifier@emoji
+    - simplifier@traditionalize                     # 简繁切换
     - uniquifier                                    # 去重
-    - "charset_filter@gbk"
-    - single_char_filter  
   processors:
+    - lua_processor@select_character          # 以词定字
     - ascii_composer
     - recognizer
     - key_binder
@@ -57,14 +55,20 @@ engine:
     - ascii_segmentor
     - matcher
     - abc_segmentor
+    - affix_segmentor@radical_lookup  # 部件拆字自定义 tag
     - punct_segmentor
     - fallback_segmentor
   translators:
     - punct_translator
-    - table_translator@custom_phrase
-    - reverse_lookup_translator
     - script_translator
     - lua_translator@date_translator    # 时间、日期、星期
+    - lua_translator@lunar              # 农历
+    - lua_translator@unicode            # Unicode
+    - lua_translator@number_translator  # 数字、金额大写
+    - lua_translator@force_gc           # 暴力 GC
+    - table_translator@custom_phrase
+    - table_translator@radical_lookup   # 部件拆字反查
+
 
 # Lua 配置: 日期、时间、星期、ISO 8601、时间戳的触发关键字
 date_translator:
@@ -74,19 +78,28 @@ date_translator:
   datetime: datetime   # ISO 8601： 2022-11-29T18:13:11+08:00
   timestamp: timestamp  # 时间戳： 1669716794
 
+# Lua 配置：农历的触发关键字
+lunar: nl  # 农历： 二〇二三年冬月二十 癸卯年（兔）冬月二十
+
+# Lua 配置：为 corrector 格式化 comment，占位符为 {comment}
+# 默认 "{comment}" 输入 hun dun 时会在「馄饨」旁边生成 hún tun 的 comment
+# 例如左右加个括号 "({comment})" 就会变成 (hún tun)
+corrector: "{comment}"
 
 translator:
   dictionary: rime_ice # 挂载词库 rime_ice.dict.yaml
   spelling_hints: 8           # corrector.lua ：为了让错音错字提示的 Lua 同时适配全拼双拼，将拼音显示在 comment 中
   always_show_comments: true  # corrector.lua ：Rime 默认在 preedit 等于 comment 时取消显示 comment，这里强制一直显示，供 corrector.lua 做判断用。
   initial_quality: 1.2        # 拼音的权重应该比英文大
+  comment_format:             # 标记拼音注释，供 corrector.lua 做判断用
+    - xform/^/［/
+    - xform/$/］/
   preedit_format:             # preedit_format 影响到输入框的显示和“Shift+回车”上屏的字符
     - xform/([jqxy])v/$1u/    # 显示为 ju qu xu yu
     # - xform/([nl])v/$1ü/    # 显示为 nü lü
     # - xform/([nl])ue/$1üe/  # 显示为 nüe lüe
     - xform/([nl])v/$1v/      # 显示为 nv lv
     - xform/([nl])ue/$1ve/    # 显示为 nve lve
-
 
 # 自定义短语：custom_phrase.txt
 custom_phrase:
@@ -98,12 +111,19 @@ custom_phrase:
   initial_quality: 99       # custom_phrase 的权重应该比 pinyin 和 melt_eng 大
 
 
-emoji_suggestion:
-  inherit_comment: false
+# Emoji
+emoji:
+  option_name: emoji
   opencc_config: emoji.json
-  option_name: emoji_suggestion
-  tags: abc
-  tips: all
+  inherit_comment: false  # 在 corrector.lua 及反查中，emoji 返回空注释
+
+# 简繁切换
+traditionalize:
+  option_name: traditionalization
+  opencc_config: s2t.json  # s2t.json | s2hk.json | s2tw.json | s2twp.json
+  tips: none               # 转换提示: all 都显示 | char 仅单字显示 | none 不显示。
+  tags: [ abc, number, gregorian_to_lunar ]  # 限制在对应 tag，不对其他如反查的内容做简繁转换
+
 
 # 标点符号
 # punctuator 下面有三个子项：
@@ -132,21 +152,7 @@ recognizer:
     unicode: "^U[a-f0-9]+"              # 脚本将自动获取第 2 个字符 U 作为触发前缀，响应 lua_translator@unicode，输出 Unicode 字符
     number: "^R[0-9]+[.]?[0-9]*"        # 脚本将自动获取第 2 个字符 R 作为触发前缀，响应 lua_translator@number_translator，数字金额大写
     gregorian_to_lunar: "^N[0-9]{1,8}"  # 脚本将自动获取第 2 个字符 N 作为触发前缀，响应 lua_translator@lunar，公历转农历，输入 N20240115 得到「二〇二三年腊月初五」
-    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
-    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
-    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
-    reverse_lookup: "`[a-z]*'?$"
 
-reverse_lookup:
-  comment_format:
-    - "xform/([nl])v/$1ü/"
-  dictionary: stroke
-  enable_completion: true
-  preedit_format:
-    - "xlit/hspnz/一丨丿丶乙/"
-  prefix: "`"
-  suffix: "'"
-  tips: "〔筆畫〕"
 
 
 # 部件拆字反查
@@ -163,7 +169,7 @@ radical_reverse_lookup:
   tags: [ radical_lookup ]
   # dictionary 为拼音标注来源。目前是显示本方案词库的注音，可去部件拆字方案下载更全的、带声调的、已编译好的词典
   # https://github.com/mirtlecn/rime-radical-pinyin?tab=readme-ov-file#%E5%8F%8D%E6%9F%A5%E5%B8%A6%E5%A3%B0%E8%B0%83%E6%B3%A8%E9%9F%B3
-  dictionary: ahaooahaz.extended
+  dictionary: rime_ice
   # comment_format:     # 自定义 comment，例如在左右加上括号
   #  - xform/^/(/
   #  - xform/$/)/
@@ -189,42 +195,3 @@ speller:
     - "derive/ong$/on/"
     - "derive/ao$/oa/"
     - "derive/([iu])a(o|ng?)$/a$1$2/"
-
-
-simplifier:
-  option_name: zh_simp
-
-
-##########################################################
-# # 次翻译器，英文
-# melt_eng:
-#   dictionary: melt_eng     # 挂载词库 melt_eng.dict.yaml
-#   enable_sentence: false   # 禁止造句
-#   enable_user_dict: false  # 禁用用户词典
-#   initial_quality: 1.1     # 初始权重
-#   comment_format:          # 自定义提示码
-#     - xform/.*//           # 清空提示码
-
-# # 中英混合词汇
-# cn_en:
-#   dictionary: ""
-#   user_dict: en_dicts/cn_en
-#   db_class: stabledb
-#   enable_completion: true
-#   enable_sentence: false
-#   initial_quality: 0.5
-#   comment_format:
-#     - xform/^.+$//
-
-# # Emoji
-# emoji:
-#   option_name: emoji
-#   opencc_config: emoji.json
-#   inherit_comment: false  # 在 corrector.lua 及反查中，emoji 返回空注释
-
-# # 简繁切换
-# traditionalize:
-#   option_name: traditionalization
-#   opencc_config: s2t.json  # s2t.json | s2hk.json | s2tw.json | s2twp.json
-#   tips: none               # 转换提示: all 都显示 | char 仅单字显示 | none 不显示。
-#   tags: [ abc, number, gregorian_to_lunar ]  # 限制在对应 tag，不对其他如反查的内容做简繁转换

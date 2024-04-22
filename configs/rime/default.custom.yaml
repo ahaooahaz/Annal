@@ -11,6 +11,7 @@ patch:
     option_list_separator: "/"
     # 只保留F4为打开设置菜单
     hotkeys:
+      - Control+F4
     # 仅显示开关首字，如"全角"只显示"全"
     abbreviate_options: false
 
@@ -21,52 +22,108 @@ patch:
   # clear: 丢弃已输入的内容并切换至西文输入模式
   # noop: 屏蔽该切换键
   ascii_composer/switch_key:
-    Caps_Lock: commit_text
-    Shift_R: commit_code
+    Caps_Lock: clear
     Shift_L: commit_code
+    Shift_R: noop
+    Control_L: noop
+    control_R: noop
   # 设置候选字符为7
   menu/page_size: 7
-  key_binder/bindings:
-    # 使用Enter上屏选中的文字
-    - when: has_menu
-      accept: Return
-      send: space
-    # 使用'[]'上下翻页
-    - when: has_menu
-      accept: bracketleft
-      send: Page_Up
-    - when: has_menu
-      accept: bracketright
-      send: Page_Down
-    # 选词时，通过ctrl+hjkl移动选词
-    - accept: "Control+k"
-      send: "Up"
-      when: "composing"
-    - accept: "Control+j"
-      send: "Down"
-      when: "composing"
-    - accept: "Control+h"
-      send: "Left"
-      when: "composing"
-    - accept: "Control+l"
-      send: "Right"
-      when: "composing"
-    - accept: "Tab"
-      send: "Down"
-      when: "has_menu"
-    # 与zsh冲突
-    # - accept: "Shift+Tab"
-    #   send: "Up"
-    #   when: "has_menu"
-  
+
   recognizer:
     patterns:
       # 出现认为是email解析不再出现中文候选
       email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
-      # 符合这个格式,就会解析punctuator/symbols;
-      # ！！！！！要留意的是，假如若设定/01就是表情很坑的一点是
-      punct: "^/[A-Za-z0-9]+$"
       # 如果以大写字母开头，后面字符不再找字典里中文了，不出候选了，这时空格与回车上屏字符相同
       uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
       # 符合下列规则就当成一个url，不再找字典中文
       url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
+
+  punctuator/full_shape:
+    ' ' : { commit: '　' }
+    ',' : { commit: ， }
+    '.' : { commit: 。 }
+    '<' : [ 《, 〈, «, ‹ ]
+    '>' : [ 》, 〉, », › ]
+    '/' : [ ／, ÷ ]
+    '?' : { commit: ？ }
+    ';' : { commit: ； }
+    ':' : { commit: ： }
+    '''' : { pair: [ '‘', '’' ] }
+    '"' : { pair: [ '“', '”' ] }
+    '\' : [ 、, ＼ ]
+    '|' : [ ·, ｜, '§', '¦' ]
+    '`' : ｀
+    '~' : ～
+    '!' : { commit: ！ }
+    '@' : [ ＠, ☯ ]
+    '#' : [ ＃, ⌘ ]
+    '%' : [ ％, '°', '℃' ]
+    '$' : [ ￥, '$', '€', '£', '¥', '¢', '¤' ]
+    '^' : { commit: …… }
+    '&' : ＆
+    '*' : [ ＊, ·, ・, ×, ※, ❂ ]
+    '(' : （
+    ')' : ）
+    '-' : －
+    '_' : ——
+    '+' : ＋
+    '=' : ＝
+    '[' : [ 「, 【, 〔, ［ ]
+    ']' : [ 」, 】, 〕, ］ ]
+    '{' : [ 『, 〖, ｛ ]
+    '}' : [ 』, 〗, ｝ ]
+  punctuator/half_shape:
+    ',' : '，'
+    '.' : '。'
+    '<' : '《'
+    '>' : '》'
+    '/' : '/'
+    '?' : '？'
+    ';' : '；'
+    ':' : '：'
+    '''' : { pair: [ '‘', '’' ] }
+    '"' : { pair: [ '“', '”' ] }
+    '\' : '、'
+    '|' : '|'
+    '`' : '`'
+    '~' : '~'
+    '!' : '！'
+    '@' : '@'
+    '#' : '#'
+    '%' : '%'
+    '$' : '¥'
+    '^' : '……'
+    '&' : '&'
+    '*' : '*'
+    '(' : '（'
+    ')' : '）'
+    '-' : '-'
+    '_' : ——
+    '+' : '+'
+    '=' : '='
+    '[' : '【'
+    ']' : '】'
+    '{' : '「'
+    '}' : '」'
+
+  # Lua 配置: 以词定字（上屏当前词句的第一个或最后一个字），和中括号翻页有冲突
+  key_binder/select_first_character: "bracketleft"
+  key_binder/select_last_character: "bracketright"
+  key_binder/bindings:
+    # Tab / Shift+Tab 切换光标到下/上一个拼音
+    - { when: composing, accept: Shift+Tab, send: Shift+Left }
+    - { when: composing, accept: Tab, send: Right }
+
+    # 使用Enter上屏选中的文字
+    - { when: has_menu, accept: Return, send: space }
+
+    # 使用'- ='上下翻页
+    - { when: has_menu, accept: minus, send: Page_Up }
+    - { when: has_menu, accept: equal, send: Page_Down }
+
+    # 选词时，通过ctrl+hjkl移动选词
+    - { when: "composing", accept: "Control+k", send: "Up" }
+    - { when: "composing", accept: "Control+j", send: "Down" }
+    - { when: "composing", accept: "Control+h", send: "Left" }
+    - { when: "composing", accept: "Control+l", send: "Right" }
