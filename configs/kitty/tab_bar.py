@@ -63,7 +63,8 @@ def draw_right_status(draw_data: DrawData, screen: Screen) -> None:
         # Draw the separator
         if cell == cells[0]:
             screen.cursor.fg = tab_bg
-            screen.draw("")
+            # screen.draw("")
+            screen.draw("")
         else:
             screen.cursor.fg = default_bg
             screen.cursor.bg = tab_bg
