@@ -22,6 +22,11 @@ vim.keymap.set('n', '<C-Down>', ':resize +2<CR>', opts)
 vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>', opts)
 vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', opts)
 
+-- Not change clipboard
+vim.keymap.set('n', 'x', '"_x', opts)
+vim.keymap.set('n', 'd', '"_d', opts)
+vim.keymap.set('n', 'D', '"_D', opts)
+
 -----------------
 -- Visual mode --
 -----------------
@@ -31,6 +36,7 @@ vim.keymap.set('v', '<', '<gv', opts)
 vim.keymap.set('v', '>', '>gv', opts)
 
 
-vim.keymap.set('n', 'x', '"_x', opts)
-vim.keymap.set('n', 'd', '"_d', opts)
-vim.keymap.set('n', 'D', '"_D', opts)
+-- Not change clipboard
+vim.keymap.set('v', 'x', '"_x', opts)
+vim.keymap.set('v', 'd', '"_d', opts)
+vim.keymap.set('v', 'D', '"_D', opts)
