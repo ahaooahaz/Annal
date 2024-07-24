@@ -195,18 +195,6 @@
             ]
         },
         {
-            "name": "annal",
-            "links": [
-                {
-                    "dst": "binaries/annal",
-                    "link": "~/.local/bin/annal"
-                }
-            ],
-            "actions": [
-                "link"
-            ]
-        },
-        {
             "name": "scripts",
             "links": [
                 {
@@ -216,6 +204,10 @@
                 {
                     "dst": "scripts/docker-wechat.work.sh",
                     "link": "~/.local/bin/docker-wechat.work.sh"
+                },
+                {
+                    "dst": "scripts/jesus.sh",
+                    "link": "~/.local/bin/jesus.sh"
                 }
             ],
             "actions": [
