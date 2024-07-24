@@ -15,11 +15,11 @@
             ]
         },
         {
-            "name": "JumpTo",
-            "repo": "ahaooahaz/JumpTo",
+            "name": "jumpto",
+            "repo": "ahaooahaz/jumpto",
             "links": [
                 {
-                    "dst": "plugins/JumpTo/jt.sh",
+                    "dst": "plugins/jumpto/jt.sh",
                     "link": "~/.local/bin/jt"
                 }
             ],
