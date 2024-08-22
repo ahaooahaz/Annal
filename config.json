@@ -90,6 +90,10 @@
                     "link": "~/.config/ibus/rime/custom_phrase.txt"
                 },
                 {
+                    "dst": "configs/rime/ibus_rime.custom.yaml",
+                    "link": "~/.config/ibus/rime/ibus_rime.custom.yaml"
+                },
+                {
                     "dst": "configs/rime/ibus_rime.yaml",
                     "link": "~/.config/ibus/rime/ibus_rime.yaml"
                 }

@@ -1,19 +1,2 @@
-
-style:
-  # 候选词水平展示
-  horizontal: false
-
-  # embed preedit text in the input field (false|true).
-  inline_preedit: true
-
-  # `preedit_style` specifies what to display as inline preedit text.
-  # display inline the input under conversion.
-  preedit_style: composition
-  # preview the converted text.
-  # preedit_style: preview
-
-  # `cursor_type` specifies where the inline cursor is located.
-  # inline cursor is at the insertion point.
-  cursor_type: insert
-  # inline cursor is at the beginning of text under conversion.
-  # cursor_type: select
+# ibus_rime.yaml用于让ibus_rime.custom.yaml生效
+# ref: https://github.com/rime/ibus-rime/issues/42#issuecomment-727666959
