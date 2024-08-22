@@ -14,6 +14,7 @@ schema:
     https://github.com/ahaooahaz/Annal/configs/rime
   dependencies:
     - radical_pinyin  # 部件拆字，反查及辅码
+    - melt_eng # 英文方案
 
 # 开关
 # reset: 默认状态。注释掉后，切换窗口时不会重置到默认状态。
@@ -68,6 +69,8 @@ engine:
     - lua_translator@force_gc           # 暴力 GC
     - table_translator@custom_phrase
     - table_translator@radical_lookup   # 部件拆字反查
+    - table_translator@melt_eng         # 英文输入（作为子翻译器，优先级需要比原生的低）
+    - table_translator@cn_en            # 中英混合词汇
 
 
 # Lua 配置: 日期、时间、星期、ISO 8601、时间戳的触发关键字
@@ -195,3 +198,19 @@ speller:
     - "derive/ong$/on/"
     - "derive/ao$/oa/"
     - "derive/([iu])a(o|ng?)$/a$1$2/"
+
+melt_eng:
+  dictionary: melt_eng           # 英文词典
+  enable_sentence: false         # 关闭自动造句
+  enable_completion: false       # 关闭自动提示
+  initial_quality: 0.8
+
+cn_en:
+  dictionary: ""                 # 中英混输，直接使用短语词典，普通字典直接留空即可
+  user_dict: en_dicts/en
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: false
+  initial_quality: 0.5
+  comment_format:
+    - xform/^.+$//

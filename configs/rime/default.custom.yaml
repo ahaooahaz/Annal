@@ -128,3 +128,4 @@ patch:
     - { when: "composing", accept: "Control+j", send: "Down" }
     - { when: "composing", accept: "Control+h", send: "Left" }
     - { when: "composing", accept: "Control+l", send: "Right" }
+

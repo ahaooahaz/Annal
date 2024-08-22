@@ -88,6 +88,10 @@
                 {
                     "dst": "configs/rime/custom_phrase.txt",
                     "link": "~/.config/ibus/rime/custom_phrase.txt"
+                },
+                {
+                    "dst": "configs/rime/ibus_rime.yaml",
+                    "link": "~/.config/ibus/rime/ibus_rime.yaml"
                 }
             ],
             "actions": [
@@ -117,6 +121,10 @@
                         {
                             "dst": "plugins/rime-dict/melt_eng.dict.yaml",
                             "link": "~/.config/ibus/rime/melt_eng.dict.yaml"
+                        },
+                        {
+                            "dst": "plugins/rime-dict/melt_eng.schema.yaml",
+                            "link": "~/.config/ibus/rime/melt_eng.schema.yaml"
                         },
                         {
                             "dst": "plugins/rime-dict/opencc",
