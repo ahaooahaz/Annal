@@ -1,7 +1,7 @@
 
 style:
   # 候选词水平展示
-  horizontal: true
+  horizontal: false
 
   # embed preedit text in the input field (false|true).
   inline_preedit: true
