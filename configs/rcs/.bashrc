@@ -135,6 +135,3 @@ for app in ${apps}; do
     fi
 done
 
-
-
-[[ -s "/home/SENSETIME/zhanghao4/.gvm/scripts/gvm" ]] && source "/home/SENSETIME/zhanghao4/.gvm/scripts/gvm" && unset -f cd
