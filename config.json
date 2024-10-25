@@ -103,35 +103,35 @@
             ],
             "childrens": [
                 {
-                    "name": "rime-dict",
+                    "name": "rime-ice",
                     "repo": "iDvel/rime-ice",
                     "links": [
                         {
-                            "dst": "plugins/rime-dict/rime_ice.dict.yaml",
+                            "dst": "plugins/rime-ice/rime_ice.dict.yaml",
                             "link": "~/.config/ibus/rime/rime_ice.dict.yaml"
                         },
                         {
-                            "dst": "plugins/rime-dict/cn_dicts",
+                            "dst": "plugins/rime-ice/cn_dicts",
                             "link": "~/.config/ibus/rime/cn_dicts"
                         },
                         {
-                            "dst": "plugins/rime-dict/en_dicts",
+                            "dst": "plugins/rime-ice/en_dicts",
                             "link": "~/.config/ibus/rime/en_dicts"
                         },
                         {
-                            "dst": "plugins/rime-dict/radical_pinyin.dict.yaml",
+                            "dst": "plugins/rime-ice/radical_pinyin.dict.yaml",
                             "link": "~/.config/ibus/rime/radical_pinyin.dict.yaml"
                         },
                         {
-                            "dst": "plugins/rime-dict/melt_eng.dict.yaml",
+                            "dst": "plugins/rime-ice/melt_eng.dict.yaml",
                             "link": "~/.config/ibus/rime/melt_eng.dict.yaml"
                         },
                         {
-                            "dst": "plugins/rime-dict/melt_eng.schema.yaml",
+                            "dst": "plugins/rime-ice/melt_eng.schema.yaml",
                             "link": "~/.config/ibus/rime/melt_eng.schema.yaml"
                         },
                         {
-                            "dst": "plugins/rime-dict/opencc",
+                            "dst": "plugins/rime-ice/opencc",
                             "link": "~/.config/ibus/rime/opencc"
                         }
                     ],
