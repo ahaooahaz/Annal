@@ -39,6 +39,7 @@ zstyle ':fzf-tab:complete:kill:*' popup-pad 0 3
 zcomet load zdharma-continuum/fast-syntax-highlighting
 
 zcomet load romkatv/powerlevel10k
+zcomet load trapd00r/LS_COLORS
 ###############
 # Key Binding #
 ###############
@@ -124,6 +125,4 @@ for app in ${apps}; do
         source <(${app} --completion zsh)
     fi
 done
-
-export LS_COLORS="$LS_COLORS:*.tar=1;31:*.tgz=1;31:*.arj=1;31:*.taz=1;31:*.lzh=1;31:*.lzma=1;31:*.tlz=1;31:*.txz=1;31:*.zip=1;31:*.z=1;31:*.Z=1;31:*.dz=1;31:*.gz=1;31:*.lz=1;31:*.xz=1;31:*.bz2=1;31:*.bz=1;31:*.tbz=1;31:*.tbz2=1;31:*.tz=1;31:*.deb=1;31:*.rpm=1;31:*.jar=1;31:*.war=1;31:*.ear=1;31:*.sar=1;31:*.rar=1;31:*.ace=1;31:*.zoo=1;31:*.cpio=1;31:*.7z=1;31:*.rz=1;31"
 
