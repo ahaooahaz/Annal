@@ -1,17 +1,25 @@
-#GSSAPIAuthentication=no
+# GSSAPIAuthentication=no
 StrictHostKeyChecking=no
-#TCPKeepAlive=yes
+TCPKeepAlive=yes
 CheckHostIP=no
 # "ServerAliveInterval [seconds]" configuration in the SSH configuration so that your ssh client sends a "dummy packet" on a regular interval so that the router thinks that the connection is active even if it;s particularly quiet
 ServerAliveInterval=15
-#ServerAliveCountMax=6
+# ServerAliveCountMax=6
 ForwardAgent=yes
 
 UserKnownHostsFile /dev/null
 
-#reuse the same connection
+# Reuse the same connection
 ControlMaster auto
 ControlPath /tmp/ssh_mux_%h_%p_%r
 
-#keep one connection in 72hour
+# Keep one connection in 72hour
 ControlPersist 72h
+
+Host *
+  ControlMaster auto
+  ControlPath ~/.ssh/sockets/%r@%h-%p
+  ControlPersist 600
+
+# Define non-public config in this folder
+Include ~/.ssh/config.d/*
