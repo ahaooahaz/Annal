@@ -1,4 +1,4 @@
-if [ -f ${HOME}/.envrc ];then
+if [ -f ${HOME}/.envrc ]; then
     source ${HOME}/.envrc
 fi
 

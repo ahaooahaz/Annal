@@ -31,21 +31,21 @@ vim.cmd([[
 --     ft = string or list,              -- Specifies filetypes which load this plugin.
 --     run = string, function, or table, -- Specify operations to be run after successful installs/updates of a plugin
 return require('packer').startup(function(use)
-        -- Packer can manage itself
-        use 'wbthomason/packer.nvim'
-        use 'tanvirtin/monokai.nvim'
-        use {
-            'nvim-lualine/lualine.nvim',
-            requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-        }
+    -- Packer can manage itself
+    use 'wbthomason/packer.nvim'
+    use 'tanvirtin/monokai.nvim'
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+    }
 
-        ---------------------------------------
-        -- NOTE: PUT YOUR THIRD PLUGIN HERE --
-        ---------------------------------------
+    ---------------------------------------
+    -- NOTE: PUT YOUR THIRD PLUGIN HERE --
+    ---------------------------------------
 
-        -- Automatically set up your configuration after cloning packer.nvim
-        -- Put this at the end after all plugins
-        if packer_bootstrap then
-            require('packer').sync()
-        end
-    end)
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if packer_bootstrap then
+        require('packer').sync()
+    end
+end)

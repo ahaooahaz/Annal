@@ -112,7 +112,7 @@ setopt COMBINING_CHARS
 #=========#
 include -f "${ZDOTDIR:-${HOME}}/.p10k.zsh"
 
-apps=(kubectl helm) 
+apps=(kubectl helm)
 for app in ${apps}; do
     if [ $(type ${app} >/dev/null 2>&1; echo $?) -eq 0 ]; then
         source <(${app} completion zsh)
@@ -125,4 +125,3 @@ for app in ${apps}; do
         source <(${app} --completion zsh)
     fi
 done
-
