@@ -16,10 +16,5 @@ ControlPath /tmp/ssh_mux_%h_%p_%r
 # Keep one connection in 72hour
 ControlPersist 72h
 
-Host *
-  ControlMaster auto
-  ControlPath ~/.ssh/sockets/%r@%h-%p
-  ControlPersist 600
-
 # Define non-public config in this folder
 Include ~/.ssh/config.d/*
